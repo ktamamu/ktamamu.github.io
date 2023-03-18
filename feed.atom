@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://ktamamu.github.io</id>
+    <title>tamamu blog</title>
+    <updated>2023-03-18T04:15:45.009Z</updated>
+    <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
+    <link rel="alternate" href="https://ktamamu.github.io"/>
+    <link rel="self" href="https://ktamamu.github.io/feed.atom"/>
+    <entry>
+        <title type="html"><![CDATA[Github Pages + VuePress + Github Actionsでブログを作る]]></title>
+        <id>https://ktamamu.github.io/2022/02/03/a0001/</id>
+        <link href="https://ktamamu.github.io/2022/02/03/a0001/">
+        </link>
+        <updated>2022-02-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[環境
+概要図
+Public リポジトリにGithub Pagesを開設
+Private リポジトリにブログの更新環境を作る
+[VuePressでブログを作る](#vuepressでブログを ...]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[WebARENA IndigoでIPv6の安いインスタンスが出たから、遊ぶ]]></title>
+        <id>https://ktamamu.github.io/2022/09/03/a0002/</id>
+        <link href="https://ktamamu.github.io/2022/09/03/a0002/">
+        </link>
+        <updated>2022-09-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[IPv6用のインスタンス作成
+Google Domainsに登録する
+Macから接続設定
+既存のIndigo上のインスタンスとの接続
+[nginxとcertbot入れてみる](#nginxとcertbot入れてみ ...]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[mastodonインスタンスを立てる（動作検証用）]]></title>
+        <id>https://ktamamu.github.io/2023/03/18/a0003/</id>
+        <link href="https://ktamamu.github.io/2023/03/18/a0003/">
+        </link>
+        <updated>2023-03-18T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[あくまで動作検証の環境なので、このインスタンスサイズじゃ運用できません。
+RedisやElasticSearch周りもちゃんとチューニングできてません。
+画像ファイルのS3配置等は真面目に運用するなら必須だと思います。
+:::
+
+やったこと
+環境準備
+Domain設定
+[Gmailアプリパスワード設定](#gmail ...]]></summary>
+    </entry>
+</feed>

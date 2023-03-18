@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Github Pages + VuePress + Github Actionsでブログを作る | tamamu blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="alternate" type="application/rss+xml" href="https://ktamamu.github.io/rss.xml" title="tamamu blog RSS Feed">
+    <link rel="alternate" type="application/atom+xml" href="https://ktamamu.github.io/feed.atom" title="tamamu blog Atom Feed">
+    <link rel="alternate" type="application/json" href="https://ktamamu.github.io/feed.json" title="tamamu blog JSON Feed">
+    <meta name="description" content="
+環境
+概要図
+Public リポジトリにGithub Pagesを開設
+Private リポジトリにブログの更新環境を作る
+[VuePressでブログを作る](#vuepressでブログを ...">
+    
+    <link rel="preload" href="/assets/css/0.styles.89986362.css" as="style"><link rel="preload" href="/assets/js/app.86b3277a.js" as="script"><link rel="preload" href="/assets/js/6.2c5572aa.js" as="script"><link rel="preload" href="/assets/js/3.6c347925.js" as="script"><link rel="preload" href="/assets/js/12.bc8059c5.js" as="script"><link rel="prefetch" href="/assets/js/10.f8d058b4.js"><link rel="prefetch" href="/assets/js/11.21a12b5f.js"><link rel="prefetch" href="/assets/js/13.f8a47624.js"><link rel="prefetch" href="/assets/js/14.c97e4af1.js"><link rel="prefetch" href="/assets/js/15.71a9cadd.js"><link rel="prefetch" href="/assets/js/16.14857623.js"><link rel="prefetch" href="/assets/js/4.9dc7ab62.js"><link rel="prefetch" href="/assets/js/5.3b321d6b.js"><link rel="prefetch" href="/assets/js/7.a69b7fd8.js"><link rel="prefetch" href="/assets/js/8.7e541604.js"><link rel="prefetch" href="/assets/js/9.c7586465.js"><link rel="prefetch" href="/assets/js/vuejs-paginate.f18848e7.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.89986362.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-blog__global-layout"><section id="header-wrapper"><header id="header"><div class="header-wrapper"><div class="title"><a href="/" class="nav-link home-link">tamamu blog </a></div> <div class="header-right-wrap"><ul class="nav"><li class="nav-item"><a href="/" class="nav-link">Blog</a></li><li class="nav-item"><a href="/tag/" class="nav-link">Tags</a></li></ul> <div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <a href="/rss.xml" class="feed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></div></div></header></section> <div id="mobile-header"><div class="mobile-header-bar"><div class="mobile-header-title"><a href="/" class="nav-link mobile-home-link">tamamu blog </a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></div> <div class="mobile-menu-wrapper"><hr class="menu-divider"> <ul class="mobile-nav"><li class="mobile-nav-item"><a href="/" class="nav-link">Blog</a></li><li class="mobile-nav-item"><a href="/tag/" class="nav-link">Tags</a></li> <li class="mobile-nav-item"><a href="/rss.xml" class="feed"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></li></ul></div></div></div> <div class="content-wrapper"><div id="vuepress-theme-blog__post-layout"><article itemscope="itemscope" itemtype="https://schema.org/BlogPosting" class="vuepress-blog-theme-content"><header><h1 itemprop="name headline" class="post-title">
+        Github Pages + VuePress + Github Actionsでブログを作る
+      </h1> <div class="post-meta"><!----> <div class="post-meta-date"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <time pubdate itemprop="datePublished" datetime="2022-02-03T00:00:00.000Z">
+      Thu Feb 03 2022
+    </time></div> <ul itemprop="keywords" class="post-meta-tags"><li class="post-tag" data-v-42ccfcd5><a href="/tag/Github Pages" data-v-42ccfcd5><span data-v-42ccfcd5>Github Pages</span></a></li><li class="post-tag" data-v-42ccfcd5><a href="/tag/Github Actions" data-v-42ccfcd5><span data-v-42ccfcd5>Github Actions</span></a></li><li class="post-tag" data-v-42ccfcd5><a href="/tag/VuePress" data-v-42ccfcd5><span data-v-42ccfcd5>VuePress</span></a></li></ul></div></header> <div itemprop="articleBody" class="content__default"><h1 id=""><a href="#" class="header-anchor">#</a></h1> <h2 id="やったこと"><a href="#やったこと" class="header-anchor">#</a> やったこと</h2> <ul><li><a href="#%E7%92%B0%E5%A2%83">環境</a></li> <li><a href="#%E6%A6%82%E8%A6%81%E5%9B%B3-%E3%83%95%E3%82%99%E3%83%AD%E3%82%AF%E3%82%99%E6%9B%B4%E6%96%B0">概要図</a></li> <li><a href="#public-%E3%83%AA%E3%83%9B%E3%82%9A%E3%82%B7%E3%82%99%E3%83%88%E3%83%AA%E3%81%ABgithub-pages%E3%82%92%E9%96%8B%E8%A8%AD">Public リポジトリにGithub Pagesを開設</a></li> <li><a href="#private-%E3%83%AA%E3%83%9B%E3%82%9A%E3%82%B7%E3%82%99%E3%83%88%E3%83%AA%E3%81%AB%E3%83%95%E3%82%99%E3%83%AD%E3%82%AF%E3%82%99%E3%81%AE%E6%9B%B4%E6%96%B0%E7%92%B0%E5%A2%83%E3%82%92%E4%BD%9C%E3%82%8B">Private リポジトリにブログの更新環境を作る</a></li> <li><a href="#vuepress%E3%81%A6%E3%82%99%E3%83%95%E3%82%99%E3%83%AD%E3%82%AF%E3%82%99%E3%82%92%E4%BD%9C%E3%82%8B">VuePressでブログを作る</a></li> <li><a href="#github-actions%E3%81%A6%E3%82%99%E3%83%92%E3%82%99%E3%83%AB%E3%83%88%E3%82%99-%E3%83%86%E3%82%99%E3%83%95%E3%82%9A%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B">Github Actionsでビルド＆デプロイを自動化する</a></li></ul> <h2 id="環境"><a href="#環境" class="header-anchor">#</a> 環境</h2> <table><thead><tr><th>実行環境</th> <th>用途</th></tr></thead> <tbody><tr><td>Ubuntu 20.04</td> <td>初期構築</td></tr> <tr><td>Windows 11 &amp; macOS 12</td> <td>ブログ更新</td></tr></tbody></table> <p>全てWindows、macOSで実施できるものの、この時は妻に借りたPCで作業していたので、Nodeとかインストールするのもなぁと思い、WebARENA Indigoに一時的にUbuntuサーバ借りて、VuePressの初期構築だけやりました。<br>
+作りきってからの更新時のビルドはGithub Actions上で行われるのでGitだけあれば更新できる環境になったはず。<br>
+テーマとか設定とかをいじりたい人はGUIでブラウザ環境が使えるクライアントOSのみで実施することをお勧めします。</p> <h2 id="概要図-ブログ更新"><a href="#概要図-ブログ更新" class="header-anchor">#</a> 概要図(ブログ更新)</h2> <p><img src="/20220203a0001_01.svg" alt="01"></p> <h2 id="public-リポジトリにgithub-pagesを開設"><a href="#public-リポジトリにgithub-pagesを開設" class="header-anchor">#</a> Public リポジトリにGithub Pagesを開設</h2> <p>Githubのリポジトリに「username/username.github.io」というPublicリポジトリを作ると、ホスティングサービスであるGithub Pagesが作れます。</p> <h2 id="private-リポジトリにブログの更新環境を作る"><a href="#private-リポジトリにブログの更新環境を作る" class="header-anchor">#</a> Private リポジトリにブログの更新環境を作る</h2> <p>Publicリポジトリにビルド前のVuePressコードが載るのが嫌だったので、ソースはPrivateリポジトリで作成して、ビルドしたアウトプットのみをPublicリポジトリにデプロイすることにしました。
+「username/blog」というPrivatreリポジトリを作ります。</p> <h2 id="vuepressでブログを作る"><a href="#vuepressでブログを作る" class="header-anchor">#</a> VuePressでブログを作る</h2> <p>今回はブログ環境として静的サイトジェネレータのVuePressを利用します。<br>
+またブログ用途で利用するので、「@vuepress/plugin-blog」「@vuepress/theme-blog」のプラグインも使用します。</p> <h2 id="-2"><a href="#-2" class="header-anchor">#</a></h2> <h3 id="indigo上のubuntu-20-04で下記を実施"><a href="#indigo上のubuntu-20-04で下記を実施" class="header-anchor">#</a> Indigo上のUbuntu 20.04で下記を実施</h3> <div class="language- extra-class"><pre class="language-text"><code>## Nodeインストール
+$ sudo apt install nodejs npm
+
+## Yarn Classicインストール
+$ sudo npm install --global yarn
+
+## Git Cloneでブログ用リポジトリを取得
+$ git config --global user.email &quot;メールアドレス&quot;
+$ git config --global user.name &quot;ユーザー名&quot;
+$ git clone https://github.com/ユーザー名/blog.git
+$ cd blog/
+
+## Manual インストール※Quickインストールだと一階層深くて自動デプロイがうまく動かなかった
+$ yarn create vuepress-site
+$ yarn init
+$ yarn add -D vuepress
+$ mkdir docs &amp;&amp; echo '# Hello VuePress' &gt; docs/README.md
+$ cd docs/
+$ yarn install
+$ yarn docs:build
+$ vi package.json
+
+## 下記を追記
+{
+  &quot;scripts&quot;: {
+    &quot;docs:dev&quot;: &quot;vuepress dev docs&quot;,
+    &quot;docs:build&quot;: &quot;vuepress build docs&quot;
+  }
+}
+
+</code></pre></div><h3 id="ディレクトリ構成を下記サイトを参考に設定"><a href="#ディレクトリ構成を下記サイトを参考に設定" class="header-anchor">#</a> ディレクトリ構成を下記サイトを参考に設定</h3> <p><a href="https://vuepress.vuejs.org/guide/directory-structure.html" target="_blank" rel="noopener noreferrer">Vuepress ディレクトリ構成<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <div class="language- extra-class"><pre class="language-text"><code>.
+├── docs
+│   ├── .vuepress (Optional)
+│   │   ├── components (Optional)
+│   │   ├── theme (Optional)
+│   │   │   └── Layout.vue
+│   │   ├── public (Optional)
+│   │   ├── styles (Optional)
+│   │   │   ├── index.styl
+│   │   │   └── palette.styl
+│   │   ├── templates (Optional, Danger Zone)
+│   │   │   ├── dev.html
+│   │   │   └── ssr.html
+│   │   ├── config.js (Optional)
+│   │   └── enhanceApp.js (Optional)
+│   │ 
+│   ├── README.md
+│   ├── guide
+│   │   └── README.md
+│   └── config.md
+│ 
+└── package.json
+
+</code></pre></div><h3 id="vuepress-plugin-blogインストール"><a href="#vuepress-plugin-blogインストール" class="header-anchor">#</a> @vuepress/plugin-blogインストール</h3> <p>例は新規記載追加だけど、既存の内容に追記してください</p> <div class="language- extra-class"><pre class="language-text"><code>$ cd
+$ cd blog/docs
+$ yarn add -D @vuepress/plugin-blog
+$ vi .vuepress/config.js
+
+// .vuepress/config.js
+module.exports = {
+  plugins: [
+    '@vuepress/blog',
+    {
+      /* options */
+    },
+  ],
+}
+
+
+## ディレクトリ構成を下記のサンプルのように作成
+├── blog
+│   ├── _posts
+│   │   ├── 2018-11-7-frontmatter-in-vuepress.md #example
+│   │   ├── 2019-2-26-markdown-slot.md #example
+│   │   └── 2019-5-6-writing-a-vuepress-theme.md #example
+│   └── .vuepress
+│       ├── `components` _(**Optional**)_
+│       ├── `public` _(**Optional**)_
+│       ├── `styles` _(**Optional**)_
+│       │   ├── index.styl
+│       │   └── palette.styl
+│       ├── config.js
+│       └── `enhanceApp.js` _(**Optional**)_
+└── package.json
+
+$ yarn docs:build
+</code></pre></div><h3 id="vuepress-theme-blogインストール"><a href="#vuepress-theme-blogインストール" class="header-anchor">#</a> @vuepress/theme-blogインストール</h3> <p>例は新規記載追加だけど、既存の内容に追記してください</p> <div class="language- extra-class"><pre class="language-text"><code>$ cd
+$ cd blog/docs
+$ yarn add -D @vuepress/theme-blog
+$ vi .vuepress/config.js
+
+// .vuepress/config.js
+module.exports = {
+  title: 'VuePress Blog Example', // Title for the site. This will be displayed in the navbar.
+  theme: '@vuepress/theme-blog',
+  themeConfig: {
+    // Please keep looking down to see the available options.
+  }
+}
+
+$ yarn docs:build
+</code></pre></div><h2 id="github-actionsでビルド-デプロイする"><a href="#github-actionsでビルド-デプロイする" class="header-anchor">#</a> Github Actionsでビルド＆デプロイする</h2> <h3 id="accesstokenの作成"><a href="#accesstokenの作成" class="header-anchor">#</a> ACCESSTOKENの作成</h3> <p><a href="https://github.com/settings/tokens" target="_blank" rel="noopener noreferrer">Github Token設定ページ<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <ul><li><p>本リポジトリ更新用TOKENの作成 → Ubuntuや今後のBlog更新で利用</p> <ul><li>repo</li> <li>workflows</li></ul></li> <li><p>GithubActions用のTOKEN作成 → GithubActionsがコンテナ内でSecretsとして利用</p> <ul><li>repo</li></ul></li></ul> <h3 id="環境変数の設定"><a href="#環境変数の設定" class="header-anchor">#</a> 環境変数の設定</h3> <p><a href="https://docs.github.com/ja/actions/security-guides/encrypted-secrets" target="_blank" rel="noopener noreferrer">暗号化されたシークレット<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <ul><li>ACCESS_TOKEN
+<ul><li>GithubActions用のトークンで作成したものをACCESS_TOKENとして設定</li></ul></li></ul> <h3 id="github-actionsの有効化"><a href="#github-actionsの有効化" class="header-anchor">#</a> Github Actionsの有効化</h3> <div class="language- extra-class"><pre class="language-text"><code>$ cd
+$ cd blog/docs
+$ mkdir -p .guthub/workflows
+$ cd .guthub/workflows
+## 自動化アクションを下記に記載
+$ vi vuepress-deploy.yml
+
+name: CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  # Build and Deploy
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        env: 
+          TZ: &quot;Asia/Tokyo&quot;
+
+      - name: vuepress-deploy
+        uses: jenkey2011/vuepress-deploy@master
+        env:
+          TZ: &quot;Asia/Tokyo&quot;
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          TARGET_REPO: ユーザー名/ユーザー名.github.io
+          TARGET_BRANCH: main
+          BUILD_SCRIPT: yarn &amp;&amp; yarn docs:build
+          BUILD_DIR: docs/.vuepress/dist
+
+</code></pre></div><h3 id="pushして実行"><a href="#pushして実行" class="header-anchor">#</a> pushして実行</h3> <div class="language- extra-class"><pre class="language-text"><code>$ cd
+$ cd blog
+$ git add .
+$ git commit -m &quot;コメント&quot;
+$ git branch -M main
+$ git remote add origin https://github.com/ktamamu/blog.git
+$ git push origin main
+</code></pre></div><hr> <h2 id="links"><a href="#links" class="header-anchor">#</a> Links</h2> <ul><li><a href="https://vuepress.vuejs.org/guide/getting-started.html#prerequisites" target="_blank" rel="noopener noreferrer">Vuepressインストール<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://classic.yarnpkg.com/en/docs/install#windows-stable" target="_blank" rel="noopener noreferrer">Yarnインストール<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://github.com/vuepress/vuepress-plugin-blog" target="_blank" rel="noopener noreferrer">Vuepress Blog Plugin<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li> <li><a href="https://github.com/jenkey2011/vuepress-deploy/" target="_blank" rel="noopener noreferrer">Vuepress Deploy by Github Actions (jenkey2011/vuepress-deploy)<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div> <footer><!----> <hr> <!----></footer></article> <div class="sticker vuepress-toc"><div class="vuepress-toc-item vuepress-toc-h2 active"><a href="#やったこと" title="やったこと">やったこと</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#環境" title="環境">環境</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#概要図-ブログ更新" title="概要図(ブログ更新)">概要図(ブログ更新)</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#public-リポジトリにgithub-pagesを開設" title="Public リポジトリにGithub Pagesを開設">Public リポジトリにGithub Pagesを開設</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#private-リポジトリにブログの更新環境を作る" title="Private リポジトリにブログの更新環境を作る">Private リポジトリにブログの更新環境を作る</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#vuepressでブログを作る" title="VuePressでブログを作る">VuePressでブログを作る</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#-2" title=""></a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#indigo上のubuntu-20-04で下記を実施" title="Indigo上のUbuntu 20.04で下記を実施">Indigo上のUbuntu 20.04で下記を実施</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#ディレクトリ構成を下記サイトを参考に設定" title="ディレクトリ構成を下記サイトを参考に設定">ディレクトリ構成を下記サイトを参考に設定</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#vuepress-plugin-blogインストール" title="@vuepress/plugin-blogインストール">@vuepress/plugin-blogインストール</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#vuepress-theme-blogインストール" title="@vuepress/theme-blogインストール">@vuepress/theme-blogインストール</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#github-actionsでビルド-デプロイする" title="Github Actionsでビルド＆デプロイする">Github Actionsでビルド＆デプロイする</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#accesstokenの作成" title="ACCESSTOKENの作成">ACCESSTOKENの作成</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#環境変数の設定" title="環境変数の設定">環境変数の設定</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#github-actionsの有効化" title="Github Actionsの有効化">Github Actionsの有効化</a></div><div class="vuepress-toc-item vuepress-toc-h3"><a href="#pushして実行" title="pushして実行">pushして実行</a></div><div class="vuepress-toc-item vuepress-toc-h2"><a href="#links" title="Links">Links</a></div></div></div></div> <footer class="footer" data-v-3d9deeb8><div class="footer-left-wrap" data-v-3d9deeb8><ul class="contact" data-v-3d9deeb8></ul></div> <div class="footer-right-wrap" data-v-3d9deeb8><ul class="copyright" data-v-3d9deeb8></ul></div></footer></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.86b3277a.js" defer></script><script src="/assets/js/6.2c5572aa.js" defer></script><script src="/assets/js/3.6c347925.js" defer></script><script src="/assets/js/12.bc8059c5.js" defer></script>
+  </body>
+</html>

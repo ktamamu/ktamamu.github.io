@@ -1,0 +1,30 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "tamamu blog",
+    "home_page_url": "https://ktamamu.github.io",
+    "feed_url": "https://ktamamu.github.io/feed.json",
+    "items": [
+        {
+            "id": "https://ktamamu.github.io/2022/02/03/a0001/",
+            "url": "https://ktamamu.github.io/2022/02/03/a0001/",
+            "title": "Github Pages + VuePress + Github Actionsでブログを作る",
+            "summary": "環境\n概要図\nPublic リポジトリにGithub Pagesを開設\nPrivate リポジトリにブログの更新環境を作る\n[VuePressでブログを作る](#vuepressでブログを ...",
+            "image": "https://ktamamu.github.io/20220203a0001_01.svg",
+            "date_modified": "2022-02-03T00:00:00.000Z"
+        },
+        {
+            "id": "https://ktamamu.github.io/2022/09/03/a0002/",
+            "url": "https://ktamamu.github.io/2022/09/03/a0002/",
+            "title": "WebARENA IndigoでIPv6の安いインスタンスが出たから、遊ぶ",
+            "summary": "IPv6用のインスタンス作成\nGoogle Domainsに登録する\nMacから接続設定\n既存のIndigo上のインスタンスとの接続\n[nginxとcertbot入れてみる](#nginxとcertbot入れてみ ...",
+            "date_modified": "2022-09-03T00:00:00.000Z"
+        },
+        {
+            "id": "https://ktamamu.github.io/2023/03/18/a0003/",
+            "url": "https://ktamamu.github.io/2023/03/18/a0003/",
+            "title": "mastodonインスタンスを立てる（動作検証用）",
+            "summary": "あくまで動作検証の環境なので、このインスタンスサイズじゃ運用できません。\nRedisやElasticSearch周りもちゃんとチューニングできてません。\n画像ファイルのS3配置等は真面目に運用するなら必須だと思います。\n:::\n\nやったこと\n環境準備\nDomain設定\n[Gmailアプリパスワード設定](#gmail ...",
+            "date_modified": "2023-03-18T00:00:00.000Z"
+        }
+    ]
+}
