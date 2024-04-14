@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Amazon EventBridge Pipes - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Tamamu blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="出典：AWS Blackbelt Amazon EventBridge　とはAWSサービス、カスタムイベント、SaaSからのイベント連携のためのマネージドサービスノーコード&amp;#x2F;ローコードでのイベント連携を実現  イベントソース イベントバス ルール ターゲット  JSON形式で届いたイベントをルールによってフィルターして次に受け渡すことができるターゲットはAWSだとStep Functio"><meta property="og:type" content="blog"><meta property="og:title" content="Amazon EventBridge Pipes"><meta property="og:url" content="https://ktamamu.github.io/2024/04/14/EventBridge-Pipes/"><meta property="og:site_name" content="Tamamu blog"><meta property="og:description" content="出典：AWS Blackbelt Amazon EventBridge　とはAWSサービス、カスタムイベント、SaaSからのイベント連携のためのマネージドサービスノーコード&amp;#x2F;ローコードでのイベント連携を実現  イベントソース イベントバス ルール ターゲット  JSON形式で届いたイベントをルールによってフィルターして次に受け渡すことができるターゲットはAWSだとStep Functio"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://ktamamu.github.io/img/og_image.png"><meta property="article:published_time" content="2024-04-14T03:27:12.000Z"><meta property="article:modified_time" content="2024-04-14T05:51:10.776Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="EventBridge"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://ktamamu.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ktamamu.github.io/2024/04/14/EventBridge-Pipes/"},"headline":"Amazon EventBridge Pipes","image":["https://ktamamu.github.io/img/og_image.png"],"datePublished":"2024-04-14T03:27:12.000Z","dateModified":"2024-04-14T05:51:10.776Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"出典：AWS Blackbelt Amazon EventBridge　とはAWSサービス、カスタムイベント、SaaSからのイベント連携のためのマネージドサービスノーコード&#x2F;ローコードでのイベント連携を実現  イベントソース イベントバス ルール ターゲット  JSON形式で届いたイベントをルールによってフィルターして次に受け渡すことができるターゲットはAWSだとStep Functio"}</script><link rel="canonical" href="https://ktamamu.github.io/2024/04/14/EventBridge-Pipes/"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-14T03:27:12.000Z" title="2024/4/14 12:27:12">2024-04-14</time></span><span class="level-item"><a class="link-muted" href="/categories/application-integration/">application-integration</a></span></div></div><h1 class="title is-3 is-size-4-mobile">Amazon EventBridge Pipes</h1><div class="content"><p>出典：AWS Blackbelt</p>
+<h2 id="Amazon-EventBridge-とは"><a href="#Amazon-EventBridge-とは" class="headerlink" title="Amazon EventBridge　とは"></a>Amazon EventBridge　とは</h2><p>AWSサービス、カスタムイベント、SaaSからのイベント連携のためのマネージドサービス<br>ノーコード&#x2F;ローコードでのイベント連携を実現</p>
+<ul>
+<li>イベントソース</li>
+<li>イベントバス</li>
+<li>ルール</li>
+<li>ターゲット</li>
+</ul>
+<p>JSON形式で届いたイベントをルールによってフィルターして次に受け渡すことができる<br>ターゲットはAWSだとStep FunctionsやLambda関数など、その他のサービスにも連携可能</p>
+<h2 id="EventBridge-Pipesとは"><a href="#EventBridge-Pipesとは" class="headerlink" title="EventBridge Pipesとは"></a>EventBridge Pipesとは</h2><p>sourceからのデータをフィルターしてターゲットに受け渡すことは同じだが、enrichmentフェーズの追加されている<br>これによりAPIをHookしてイベントの内部情報を拡張することが可能</p>
+<h3 id="イベントバスとパイプの違い"><a href="#イベントバスとパイプの違い" class="headerlink" title="イベントバスとパイプの違い"></a>イベントバスとパイプの違い</h3><p>パイプにはイベントバスがなく、イベントバスを使わずに送受信が可能<br>イベントバスとの使い分けとしては<br>イベントバス：多数のイベントソースと多数の送信先(Many publishers and many counsumers)<br>パイプ：一つのイベントソースと一つの送信先(Single publisher to single consumer)<br>Input Transformによって簡単なデータ操作であればテンプレートを使ってデータの書き換えなども可能</p>
+<h3 id="サービス関連系の課題"><a href="#サービス関連系の課題" class="headerlink" title="サービス関連系の課題"></a>サービス関連系の課題</h3><p>これまでは連携するためだけのコード(Integration (glue) code)が必要で下記の考慮が必要だった</p>
+<ul>
+<li>サービスごとに異なる仕様や実装</li>
+<li>エラーハンドリング</li>
+<li>配信順序の維持</li>
+<li>認証、認可、流量制御</li>
+<li>パフォーマンステスト</li>
+<li>デプロイ</li>
+<li>運用監視</li>
+</ul>
+<p>上記を EventBridge Pipes で解決できる</p>
+<h3 id="EventBridge-Pipes-を構成する要素"><a href="#EventBridge-Pipes-を構成する要素" class="headerlink" title="EventBridge Pipes を構成する要素"></a>EventBridge Pipes を構成する要素</h3><table>
+<thead>
+<tr>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Amazon SQS キュー</td>
+</tr>
+<tr>
+<td>Amazon Kinesis Data Streams</td>
+</tr>
+<tr>
+<td>Amazon DynamoDB　Streams</td>
+</tr>
+<tr>
+<td>Amazon MSK トピック</td>
+</tr>
+<tr>
+<td>Amazon MQ</td>
+</tr>
+<tr>
+<td>セルフマネージドApache Kafka ストリーム</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Filtering(optional)</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>Enrichment(optional)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Amazon Eventridge(API Destinations)</td>
+</tr>
+<tr>
+<td>AWS Step Functions(同期)</td>
+</tr>
+<tr>
+<td>Amazon API Gateway</td>
+</tr>
+<tr>
+<td>AWS Lamnbda(同期)</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Input Transformer(optional)</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Amazon Eventridge(イベントバス、API Destinations)</td>
+</tr>
+<tr>
+<td>AWS Batch ジョブキュー</td>
+</tr>
+<tr>
+<td>Amazon Redshift Data API</td>
+</tr>
+<tr>
+<td>Amazon Simple Notification Service(SNS)※標準トピックのみ</td>
+</tr>
+<tr>
+<td>Amazon Elastic Container Service(ECS)タスク</td>
+</tr>
+<tr>
+<td>Amazon SageMaker Pipeleines</td>
+</tr>
+<tr>
+<td>Amazon Kinesis Data Streams</td>
+</tr>
+<tr>
+<td>Amazon Kinesis Data Firehose</td>
+</tr>
+<tr>
+<td>AWS Step Functions(標準：同期、Express:同期 or 非同期)</td>
+</tr>
+<tr>
+<td>Amazon API Gateway</td>
+</tr>
+<tr>
+<td>Amazon SQS</td>
+</tr>
+<tr>
+<td>AWS Lamnbda(同期 or 非同期)</td>
+</tr>
+<tr>
+<td>Amazon CloudWatch ロググループ</td>
+</tr>
+<tr>
+<td>Amazon Inspector 評価点のプレート</td>
+</tr>
+</tbody></table>
+<h3 id="EventBridge-Pipes-の主な機能"><a href="#EventBridge-Pipes-の主な機能" class="headerlink" title="EventBridge Pipes 　の主な機能"></a>EventBridge Pipes 　の主な機能</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>イベントのフィルタリング</td>
+<td>パターンマッチングによるフィルターを追加して、ターゲットに渡す必要なないイベントを除外できる。除外されたイベントは課金対象外、フィルターではJOSNバスが利用可能</td>
+</tr>
+<tr>
+<td>バッチ処理</td>
+<td>イベントソースから受診したイベントを、ターゲット&#x2F;エンリッチメントに対してバッチで送信できる。バッチの利用可否や最大バッチサイズは後続サービスの仕様に依存する。</td>
+</tr>
+<tr>
+<td>順序保証</td>
+<td>イベントソースから受診したイベントの順序を維持したまま動機でターゲットを呼び出す。順序保証がないソースからのイベントの場合は、非同期でターゲットを呼び出す</td>
+</tr>
+<tr>
+<td>同時実行による高いスループット</td>
+<td>バックログに応じて自動でスケールアップ&#x2F;ダウンを行う。サービスごとに最大同時実行数は異なる（例：Amazon SQS は 1,250）</td>
+</tr>
+<tr>
+<td>イベントデータの拡張</td>
+<td>AWS Lambda,AWS Step Funcitons,API Gateway,API Destinationsを呼び出して追加のデータを取得できる。各サービスは同期的に呼び出し、最大レスポンスサイズは6MBに制限される</td>
+</tr>
+</tbody></table>
+<h2 id="ユースケース"><a href="#ユースケース" class="headerlink" title="ユースケース"></a>ユースケース</h2><ol>
+<li>SQS→Step Functions<br>キュー内のメッセージに対して、複雑な一連の処理（ワークフロー）を実行  </li>
+<li>Kinesis Data Steamsの分離<br>多重化されたデータストリームをドメインに応じて複数のデータストリームに分割  </li>
+<li>Kafka→EventBridge API Destinations<br>セルフマネージドKafkaクラスターとAWSサービスを接続し、コードを書かずにHTTP(s) APIを実行  </li>
+<li>DynamoDB→EventBridge<br>DynamoDBレコードの変更をノーコードで他AWSサービスに連携<br>※EventBridge Pipesからイベントバスを通すことで複数に連携可能</li>
+</ol>
+<h2 id="バッチの設定について"><a href="#バッチの設定について" class="headerlink" title="バッチの設定について"></a>バッチの設定について</h2><ul>
+<li>ソースからの取得およびターゲットの呼び出しでバッチをサポート</li>
+<li>複数のイベントがJSONレコードの配列として渡される</li>
+<li>バッチの利用可否や最大バッチサイズは利用する各サービスに依存</li>
+<li>エンリッチメントについてはLambdaおよびStep Functionsでサポート</li>
+<li>エンリッチメントおよびターゲットの呼び出しは、各サービスのバッチAPIにマッピングされる（※LambdaやStep Functionsの場合は1人区ストの入力にJSON配列全体が渡される）</li>
+<li>エンリッチメントはレスポンスとしてJSONの配列を返すようにする</li>
+<li>ターゲットがサポートするより大きいバッチサイズを指定することはできない</li>
+<li>バッチ内の一部のレコードの処理に失敗した場合の挙動<ul>
+<li>SQS、Kinesis、DynamoDBなどのストリームがソースの場合、失敗したレコードに対して自動的にリトライを行う</li>
+<li>エンリッチメントでの失敗の場合、部分的なリトライは行われない</li>
+<li>ターゲットがLambdaまたはStep Functionsの場合、batchItemFailuresにリトライを行うイベントIDを含めてレスポンスを返すことで、部分的なリトライの実行が可能</li>
+</ul>
+</li>
+</ul>
+<h3 id="ターゲットごとの最大バッチサイズ"><a href="#ターゲットごとの最大バッチサイズ" class="headerlink" title="ターゲットごとの最大バッチサイズ"></a>ターゲットごとの最大バッチサイズ</h3><p>ターゲットごとに最大バッチサイズが異なる<br>LambdaおよびStep Functionsについては、バッチに含まれるペイロードの合計サイズが制限を超過しないか注意する必要がある<br>Lambda：６MB,Step Functions：262144 Bytes</p>
+<h2 id="スループットと同時実行について"><a href="#スループットと同時実行について" class="headerlink" title="スループットと同時実行について"></a>スループットと同時実行について</h2><ul>
+<li>STARTED状態のパイプはソースからのイベントを継続的にポーリングし、利用可能なバックログとバッチの設定に応じて自動的にスケーリングを行う</li>
+<li>単一のパイプは、デフォルトで最大同時実行数までスケールするが、一部上限緩和の申請は可能</li>
+<li>パイプの実行時間は最大5分まで（※エンリッチメント泳ぎターゲットを含む）</li>
+</ul>
+<h2 id="実行ロールの設定"><a href="#実行ロールの設定" class="headerlink" title="実行ロールの設定"></a>実行ロールの設定</h2><ul>
+<li>パイプごとに実行IAMロールを指定する必要がある（コンソールから作れば付与される）</li>
+<li>ソースへのアクセス許可を付与</li>
+<li>必要に応じてエンリッチメントおよびターゲットの呼び出し許可を付与</li>
+</ul>
+<h2 id="ログの設定"><a href="#ログの設定" class="headerlink" title="ログの設定"></a>ログの設定</h2><ul>
+<li>各実行ステップでログレコードを生成</li>
+<li>ログレベルを選択可能（OFF、ERROR、INFO、TRACE）</li>
+<li>ログの配信先としてCloudWatch,Kinesis Data Firehose,S3をサポート</li>
+<li>CloudWatchはログレコードの最大サイズ256KBでフィールドごとに自動で切り捨て</li>
+<li>実行データをログに含めるか選択可能（機密データがログに含まれる可能性がある点に注意）</li>
+</ul>
+<h2 id="料金"><a href="#料金" class="headerlink" title="料金"></a>料金</h2><ul>
+<li>パイプが処理するリクエスト数に応じて課金</li>
+<li>100万リクエストごとに$0.50</li>
+<li>フィルタリングで除外されたイベントは課金対象外</li>
+<li>ペイロードサイズ64KBを上限として1リクエストとして扱う（例：256KBなら4リクエスト）</li>
+</ul>
+<h2 id="クォータ"><a href="#クォータ" class="headerlink" title="クォータ"></a>クォータ</h2><p>上限緩和申請は可能</p>
+<ul>
+<li>アカウント全体で作成できるパイプの上限：1,000</li>
+<li>アカウント全体でのパイプの最大同時実行数：1,000（USリージョンは3,000）</li>
+</ul>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/EventBridge/">EventBridge</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/04/13/AWS_KMS_1/"><span class="level-item">AWS Key Management Service(KMS) part1</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.jpg" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">2</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#Amazon-EventBridge-とは"><span class="level-left"><span class="level-item">1</span><span class="level-item">Amazon EventBridge　とは</span></span></a></li><li><a class="level is-mobile" href="#EventBridge-Pipesとは"><span class="level-left"><span class="level-item">2</span><span class="level-item">EventBridge Pipesとは</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#イベントバスとパイプの違い"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">イベントバスとパイプの違い</span></span></a></li><li><a class="level is-mobile" href="#サービス関連系の課題"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">サービス関連系の課題</span></span></a></li><li><a class="level is-mobile" href="#EventBridge-Pipes-を構成する要素"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">EventBridge Pipes を構成する要素</span></span></a></li><li><a class="level is-mobile" href="#EventBridge-Pipes-の主な機能"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">EventBridge Pipes 　の主な機能</span></span></a></li></ul></li><li><a class="level is-mobile" href="#ユースケース"><span class="level-left"><span class="level-item">3</span><span class="level-item">ユースケース</span></span></a></li><li><a class="level is-mobile" href="#バッチの設定について"><span class="level-left"><span class="level-item">4</span><span class="level-item">バッチの設定について</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#ターゲットごとの最大バッチサイズ"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">ターゲットごとの最大バッチサイズ</span></span></a></li></ul></li><li><a class="level is-mobile" href="#スループットと同時実行について"><span class="level-left"><span class="level-item">5</span><span class="level-item">スループットと同時実行について</span></span></a></li><li><a class="level is-mobile" href="#実行ロールの設定"><span class="level-left"><span class="level-item">6</span><span class="level-item">実行ロールの設定</span></span></a></li><li><a class="level is-mobile" href="#ログの設定"><span class="level-left"><span class="level-item">7</span><span class="level-item">ログの設定</span></span></a></li><li><a class="level is-mobile" href="#料金"><span class="level-left"><span class="level-item">8</span><span class="level-item">料金</span></span></a></li><li><a class="level is-mobile" href="#クォータ"><span class="level-left"><span class="level-item">9</span><span class="level-item">クォータ</span></span></a></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/application-integration/"><span class="level-start"><span class="level-item">application-integration</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/security/"><span class="level-start"><span class="level-item">security</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-14T03:27:12.000Z">2024-04-14</time></p><p class="title"><a href="/2024/04/14/EventBridge-Pipes/">Amazon EventBridge Pipes</a></p><p class="categories"><a href="/categories/application-integration/">application-integration</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-13T12:34:00.000Z">2024-04-13</time></p><p class="title"><a href="/2024/04/13/AWS_KMS_1/">AWS Key Management Service(KMS) part1</a></p><p class="categories"><a href="/categories/security/">security</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
