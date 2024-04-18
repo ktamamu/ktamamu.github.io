@@ -40,7 +40,7 @@
 <p>JSON形式で届いたイベントをルールによってフィルターして次に受け渡すことができる<br>ターゲットはAWSだとStep FunctionsやLambda関数など、その他のサービスにも連携可能</p>
 <h2 id="EventBridge-Pipesとは"><a href="#EventBridge-Pipesとは" class="headerlink" title="EventBridge Pipesとは"></a>EventBridge Pipesとは</h2><p>sourceからのデータをフィルターしてターゲットに受け渡すことは同じだが、enrichmentフェーズの追加されている<br>これによりAPIをHookしてイベントの内部情報を拡張することが可能</p>
 <h3 id="イベントバスとパイプの違い"><a href="#イベントバスとパイプの違い" class="headerlink" title="イベントバスとパイプの違い"></a>イベントバスとパイプの違い</h3><p>パイプにはイベントバスがなく、イベントバスを使わずに送受信が可能<br>イベントバスとの使い分けとしては<br>イベントバス：多数のイベントソースと多数の送信先(Many publishers and many counsumers)<br>パイプ：一つのイベントソースと一つの送信先(Single publisher to single consumer)<br>Input Transformによって簡単なデータ操作であればテンプレートを使ってデータの書き換えなども可能</p>
-<h3 id="サービス関連系の課題"><a href="#サービス関連系の課題" class="headerlink" title="サービス関連系の課題"></a>サービス関連系の課題</h3><p>これまでは連携するためだけのコード(Integration (glue) code)が必要で下記の考慮が必要だった</p>
+<h3 id="サービス間連携の課題"><a href="#サービス間連携の課題" class="headerlink" title="サービス間連携の課題"></a>サービス間連携の課題</h3><p>これまでは連携するためだけのコード(Integration (glue) code)が必要で下記の考慮が必要だった</p>
 <ul>
 <li>サービスごとに異なる仕様や実装</li>
 <li>エラーハンドリング</li>
