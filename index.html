@@ -29,7 +29,111 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-20T03:30:00.000Z" title="2024/4/20 12:30:00">2024-04-20</time></span><span class="level-item"><a class="link-muted" href="/categories/Column/">Column</a></span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/04/20/Compare_Redis/">AWSのRedisサービスの使い分け</a></p><div class="content"><h2 id="２種類のサービス特徴"><a href="#２種類のサービス特徴" class="headerlink" title="２種類のサービス特徴"></a>２種類のサービス特徴</h2><p>AWSには２種類のRedisマネージドサービスがあって、どう使い分けるのかな？と思ったので、その使い分けについて調べた結果を下記にまとめる。</p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-20T05:15:00.000Z" title="2024/4/20 14:15:00">2024-04-20</time></span><span class="level-item"><a class="link-muted" href="/categories/Blackbelt/">Blackbelt</a></span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/04/20/DynamoDB/">Amazon DynamoDB</a></p><div class="content"><p>出典：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ZhkXwNFBErn5wiWi">AWS Blackbelt</a></p>
+<h2 id="DynamoDBの概要"><a href="#DynamoDBの概要" class="headerlink" title="DynamoDBの概要"></a>DynamoDBの概要</h2><p>OLTP用途（≠OLAP）</p>
+<ul>
+<li>大規模なパフォーマンス<ul>
+<li>一貫した1桁ミリ秒単位の読み取り&#x2F;書き取りパフォーマンス</li>
+<li>ほぼ無制限のスループットとストレージ</li>
+<li>大規模なスケーラビリティ</li>
+</ul>
+</li>
+<li>安全性と耐障害性<ul>
+<li>保存時のデータ暗号化</li>
+<li>グローバルレプリケーション</li>
+<li>最大99.999%の可用性に関するSLA</li>
+</ul>
+</li>
+<li>サーバレス<ul>
+<li>大規模環境でのパフォーマンスのスケールアップとゼロへのスケールダウンが可能</li>
+<li>ダウンタイムなし、メンテナンス時間なし、メンテナンスウインドウなし</li>
+<li>従量制料金</li>
+</ul>
+</li>
+<li>他のAWSサービスとの統合<ul>
+<li>ロギング、モニタリング、分析</li>
+<li>S3を使ったデータのインポート&#x2F;エクスポート</li>
+<li>OpenSearchへのゼロETLが可能（OLTP→OLAP)</li>
+</ul>
+</li>
+</ul>
+<h2 id="DynamoDBの詳細"><a href="#DynamoDBの詳細" class="headerlink" title="DynamoDBの詳細"></a>DynamoDBの詳細</h2><h3 id="データベースのスケーリング"><a href="#データベースのスケーリング" class="headerlink" title="データベースのスケーリング"></a>データベースのスケーリング</h3><p>従来のSQLではスケールアップ：スケールアップ限界がある<br>NoSQLではスケールアウト：理論上、上限なくスケールを拡張できる</p>
+<p>通常、スケールアウトには様々な考慮点が発生するが、<br>DynamoDBでは利用する側はテーブルの操作のみを意識すればよく、<br>サーバの必要数やスケールなどについてマネージドで実施される</p>
+<h3 id="DynamoDBテーブル"><a href="#DynamoDBテーブル" class="headerlink" title="DynamoDBテーブル"></a>DynamoDBテーブル</h3><p>TableにはItemsがある（RDBで言うところのレコード）</p>
+<ul>
+<li>Partition Key<ul>
+<li>指定は必須</li>
+<li>キーによる値へのアクセス</li>
+<li>データ位置の決定</li>
+</ul>
+</li>
+<li>Sort Key<ul>
+<li>指定はオプション</li>
+<li>モデルに対して1：Nの関係</li>
+<li>豊富なクエリ機能を実現</li>
+</ul>
+</li>
+</ul>
+<h3 id="アイテムの分散（happy-path）"><a href="#アイテムの分散（happy-path）" class="headerlink" title="アイテムの分散（happy path）"></a>アイテムの分散（happy path）</h3><p>アイテムはパーティションキーの順番には並んでおらず、<br>コンシステントハッシング（パーティションキーに対してHash関数をかけて分散）で分散されている</p>
+<h3 id="レプリケーション"><a href="#レプリケーション" class="headerlink" title="レプリケーション"></a>レプリケーション</h3><p>データは常に1つのデータを3つのAZにコピーして保持している</p>
+<h3 id="スケールするサービス"><a href="#スケールするサービス" class="headerlink" title="スケールするサービス"></a>スケールするサービス</h3><ul>
+<li>リクエストルーター<ul>
+<li>ステートレスであり、どのルーターでも同じ動作をする</li>
+<li>認証、認可、キャパシティを見てストレージへリクエストを渡す</li>
+</ul>
+</li>
+<li>ストレージノード<ul>
+<li>1.5秒間隔でハートビートしており、リーダーとレプリカが即時に入れ替われる</li>
+</ul>
+</li>
+</ul>
+<h3 id="整合性"><a href="#整合性" class="headerlink" title="整合性"></a>整合性</h3><p>DynamoDBは各レプリカは結果整合性となる</p>
+<ul>
+<li>強い整合性での読み込み：リーダーノードにのみアクセスする</li>
+<li>結果整合性での読み込み：リーダーかレプリカのどちらかにアクセスする(読み込みキャパシティコストを半分で利用できる)</li>
+</ul>
+<h3 id="Global-Secondary-Index"><a href="#Global-Secondary-Index" class="headerlink" title="Global Secondary Index"></a>Global Secondary Index</h3><p>すべてのデータのスキャンが必要な場合、非キー属性に対するクエリの速度を上げる目的で利用</p>
+<ul>
+<li>ログプロパゲーター<ul>
+<li>Index用のストレージノードへログを配信を行う</li>
+<li>バックエンドでIndex用のストレージノードの削除やPUTなどを実行する</li>
+</ul>
+</li>
+</ul>
+<h3 id="Auto-Admin"><a href="#Auto-Admin" class="headerlink" title="Auto Admin"></a>Auto Admin</h3><p>水平スケーリングにまつわる様々な動作を自動化している（DynamoDBの自動化されたDBA）</p>
+<ul>
+<li>テーブルとインデックスの作成</li>
+<li>テーブルとインデックスのプロビジョニング</li>
+<li>パーティションの分割</li>
+<li>パーティションの修復</li>
+</ul>
+<h2 id="キャパシティ管理"><a href="#キャパシティ管理" class="headerlink" title="キャパシティ管理"></a>キャパシティ管理</h2><h3 id="スループットを管理するトークンバケット"><a href="#スループットを管理するトークンバケット" class="headerlink" title="スループットを管理するトークンバケット"></a>スループットを管理するトークンバケット</h3><p>リクエストを処理できるだけのリソースをユーザーが持っているかを下記のトークンバケットにより確認する</p>
+<ul>
+<li>テーブルのトークンバケット</li>
+<li>それぞれのストレージノードでのトークンバケット</li>
+</ul>
+<h3 id="プロビジョンドモードとオンデマンドモード"><a href="#プロビジョンドモードとオンデマンドモード" class="headerlink" title="プロビジョンドモードとオンデマンドモード"></a>プロビジョンドモードとオンデマンドモード</h3><ul>
+<li>プロビジョンドモード：安定したワークロード<ul>
+<li>予めコンソール等で設定することが可能</li>
+<li>リザーブドキャパシティの利用が可能</li>
+</ul>
+</li>
+<li>オンデマンドモード：予測不可能なワークロード<ul>
+<li>自動でキャパシティ計画、プロビジョニングが行われる</li>
+<li>実行した読み取りと書き込みに対してのみ料金が発生</li>
+<li>以前のピークの２倍までスケール可能</li>
+<li>スケールダウンが自動で行われることはない</li>
+</ul>
+</li>
+</ul>
+<h3 id="Adaptive-Capacity"><a href="#Adaptive-Capacity" class="headerlink" title="Adaptive Capacity"></a>Adaptive Capacity</h3><ul>
+<li>トラフィックの多いアイテムの分離は自動で行われる<ul>
+<li>一部のアイテムに負荷が集中した場合、パーティションを自動で分割</li>
+<li>さらに集中する場合、アイテム自体を分割</li>
+</ul>
+</li>
+</ul>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-20T03:30:00.000Z" title="2024/4/20 12:30:00">2024-04-20</time></span><span class="level-item"><a class="link-muted" href="/categories/Column/">Column</a></span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/04/20/Compare_Redis/">AWSのRedisサービスの使い分け</a></p><div class="content"><h2 id="２種類のサービス特徴"><a href="#２種類のサービス特徴" class="headerlink" title="２種類のサービス特徴"></a>２種類のサービス特徴</h2><p>AWSには２種類のRedisマネージドサービスがあって、どう使い分けるのかな？と思ったので、その使い分けについて調べた結果を下記にまとめる。</p>
 <h3 id="Elasiticache-for-Redis"><a href="#Elasiticache-for-Redis" class="headerlink" title="Elasiticache for Redis"></a>Elasiticache for Redis</h3><ul>
 <li>既存のRedisワークロードとの互換性<br> ElastiCache for Redisは、オープンソースのRedisと高い互換性を持っている</li>
 <li>クラスターモードの利用<br>　クラスタモードの有効化を選択できる柔軟性</li>
@@ -85,7 +189,7 @@
 <h2 id="使い分けの考え方"><a href="#使い分けの考え方" class="headerlink" title="使い分けの考え方"></a>使い分けの考え方</h2><ul>
 <li>コスト<ul>
 <li>同等構成において両者にコスト面の差異はほとんどなく、機能面だけを見ればMemoryDBに優位性がある</li>
-<li>ただしリザーブドインスタンスへの対応状況により、倍以上のコスト差が生まれる点ため、コスト面ではElasticacheの優位性が高いと言える</li>
+<li>ただしリザーブドインスタンスへの対応状況により、倍以上のコスト差が生まれるため、コスト面ではElasticacheの優位性が高いと言える</li>
 </ul>
 </li>
 <li>互換性<ul>
@@ -698,7 +802,311 @@
 <li>FedRAMP</li>
 <li>HIPAA</li>
 </ul>
-</div></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">4</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Redis/"><span class="tag">Redis</span><span class="tag">2</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Blackbelt/"><span class="level-start"><span class="level-item">Blackbelt</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/Column/"><span class="level-start"><span class="level-item">Column</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T03:30:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/Compare_Redis/">AWSのRedisサービスの使い分け</a></p><p class="categories"><a href="/categories/Column/">Column</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T01:54:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/MemoryDB_Redis/">Amazon MemoryDB for Redis</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-14T03:27:12.000Z">2024-04-14</time></p><p class="title"><a href="/2024/04/14/EventBridge-Pipes/">Amazon EventBridge Pipes</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-13T12:34:00.000Z">2024-04-13</time></p><p class="title"><a href="/2024/04/13/AWS_KMS_1/">AWS Key Management Service(KMS) part1</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-13T12:34:00.000Z" title="2024/4/13 21:34:00">2024-04-13</time></span><span class="level-item"><a class="link-muted" href="/categories/Blackbelt/">Blackbelt</a></span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/04/13/CloudWatch/">Amazon CloudWatch</a></p><div class="content"><p>出典：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=fzVkJne3OMI">AWS Blackbelt</a></p>
+<h2 id="モニタリング・オブザーバビリティ"><a href="#モニタリング・オブザーバビリティ" class="headerlink" title="モニタリング・オブザーバビリティ"></a>モニタリング・オブザーバビリティ</h2><h3 id="オブザーバビリティ（可観測性）"><a href="#オブザーバビリティ（可観測性）" class="headerlink" title="オブザーバビリティ（可観測性）"></a>オブザーバビリティ（可観測性）</h3><ul>
+<li>システムで何がなぜ起こっているかといった動作状況を把握できている状態のこと</li>
+<li>システムがどのように動作しているかを理解することで、運用上の優秀性・ビジネス目標を達成することにも役立つ</li>
+<li>モニタリングとの違いについては明確な定義がないが、監視はエラーに対応するために検知することが目的としていることのみを指すことが多い</li>
+</ul>
+<h3 id="システムの状態把握に必要な３要素"><a href="#システムの状態把握に必要な３要素" class="headerlink" title="システムの状態把握に必要な３要素"></a>システムの状態把握に必要な３要素</h3><ul>
+<li>メトリクス(Amazon CloudWatch Metrics)<ul>
+<li>時間感覚で計測されたデータの数値表現</li>
+<li>傾向の把握、予測に役立つ</li>
+</ul>
+</li>
+<li>ログ(Amazon CloudWatch Logs)<ul>
+<li>タイムスタンプに記録された、イベントの記録</li>
+<li>予測不可能な振る舞いの発見に役立つ</li>
+</ul>
+</li>
+<li>トレース(AWS X-Ray)<ul>
+<li>関連する一連の分散イベントの表現、エンドツーエンドのリクエストフローの記録</li>
+<li>因果関係の追跡に役立つ</li>
+</ul>
+</li>
+</ul>
+<h3 id="イベントとの組み合わせ"><a href="#イベントとの組み合わせ" class="headerlink" title="イベントとの組み合わせ"></a>イベントとの組み合わせ</h3><ul>
+<li>イベント＝状態の変化(EventBridge)</li>
+<li>モニタリングと業務機能双方で活用される</li>
+</ul>
+<h2 id="AWSにおけるObservability全体像"><a href="#AWSにおけるObservability全体像" class="headerlink" title="AWSにおけるObservability全体像"></a>AWSにおけるObservability全体像</h2><h3 id="2つの実現方式"><a href="#2つの実現方式" class="headerlink" title="2つの実現方式"></a>2つの実現方式</h3><ul>
+<li>AWS Native Servicesでの実現<ul>
+<li>CloudWatch、X-Ray（トレースデータの送信についてはOSSも活用することは一般的）</li>
+</ul>
+</li>
+<li>Open Source Managed Servicesでの実現<ul>
+<li>OpenSearch ServiceやGrafanaなど</li>
+</ul>
+</li>
+</ul>
+<h2 id="Amazon-CloudWatch全体像"><a href="#Amazon-CloudWatch全体像" class="headerlink" title="Amazon CloudWatch全体像"></a>Amazon CloudWatch全体像</h2><h3 id="CloudWatchの機能一覧"><a href="#CloudWatchの機能一覧" class="headerlink" title="CloudWatchの機能一覧"></a>CloudWatchの機能一覧</h3><p>Infrastructure</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CloudWatch Metrics</td>
+<td>メトリクス</td>
+</tr>
+<tr>
+<td>CloudWatch Log</td>
+<td>ログ</td>
+</tr>
+<tr>
+<td>CloudWatch Alarm</td>
+<td>アラーム</td>
+</tr>
+<tr>
+<td>CloudWatch Dashboard</td>
+<td>ダッシュボード</td>
+</tr>
+<tr>
+<td>CloudWatch Metrics Explorer</td>
+<td>メトリクス検索</td>
+</tr>
+<tr>
+<td>CloudWatch Metrics Stream</td>
+<td>メトリクス連携</td>
+</tr>
+<tr>
+<td>CloudWatch Events</td>
+<td>イベント（現在はEventBridgeに統合）</td>
+</tr>
+<tr>
+<td>CloudWatch Resource Health</td>
+<td>EC2の健全性、パフォーマンス可視化</td>
+</tr>
+</tbody></table>
+<p>Application Monitoring</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CloudWatch Synthetics</td>
+<td>外形監視</td>
+</tr>
+<tr>
+<td>CloudWatch RUM</td>
+<td>リアルユーザーモニタリング</td>
+</tr>
+<tr>
+<td>CloudWatch Evidently</td>
+<td>フィーチャーフラグA&#x2F;Bテスト</td>
+</tr>
+<tr>
+<td>CloudWatch Internet Monitor</td>
+<td>インターネット監視</td>
+</tr>
+<tr>
+<td>CloudWatch ServiceLens</td>
+<td>トレース</td>
+</tr>
+</tbody></table>
+<p>Insights</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CloudWatch Contributer Insights</td>
+<td>ログの時系列分析</td>
+</tr>
+<tr>
+<td>CloudWatch Container Insights</td>
+<td>コンテナ分析</td>
+</tr>
+<tr>
+<td>CloudWatch Lambda Insights</td>
+<td>Lambda分析</td>
+</tr>
+<tr>
+<td>CloudWatch Application Insights</td>
+<td>アプリケーション分析</td>
+</tr>
+<tr>
+<td>CloudWatch Logs Insights</td>
+<td>ログ分析</td>
+</tr>
+<tr>
+<td>CloudWatch Metrics Insights</td>
+<td>メトリクス分析</td>
+</tr>
+</tbody></table>
+<h2 id="メトリクス"><a href="#メトリクス" class="headerlink" title="メトリクス"></a>メトリクス</h2><h3 id="取得間隔"><a href="#取得間隔" class="headerlink" title="取得間隔"></a>取得間隔</h3><ul>
+<li>標準メトリクス　５分間隔</li>
+<li>詳細モニタリングの有効化　１分間隔</li>
+<li>高解像度のカスタムメトリクス　１秒</li>
+<li>データの保管期間は解像度で異なる<ul>
+<li>デフォルトは15ヶ月間保管</li>
+<li>60秒以下は3時間のみ保持される</li>
+<li>長く保管するとデータが丸められていくので、注意が必要</li>
+</ul>
+</li>
+</ul>
+<h3 id="集計"><a href="#集計" class="headerlink" title="集計"></a>集計</h3><ul>
+<li>平均、Trim、パーセンタイル、最小、最大などを利用可能</li>
+<li>CloudWatchMetricsはデータポイントを収集</li>
+<li>これらはメトリクス名で表現される、名前空間にあり、ディメンション単位でまとめられている（InstanceIdなど）</li>
+<li>これにStatistic(集計方法)とPeriod(期間など)で取り扱う</li>
+</ul>
+<h3 id="CloudWatch-Metric-Insights"><a href="#CloudWatch-Metric-Insights" class="headerlink" title="CloudWatch Metric Insights"></a>CloudWatch Metric Insights</h3><p>柔軟なクエリ機能で分析が可能</p>
+<ul>
+<li>SQLベースのクエリ</li>
+<li>クエリビルダー</li>
+</ul>
+<h3 id="Metric-Math"><a href="#Metric-Math" class="headerlink" title="Metric Math"></a>Metric Math</h3><p>CloudWatchメトリクスに数式を使用して新しいメトリクスを作成</p>
+<ul>
+<li>メトリクスに[Id]フィールドを設定し、関数で利用</li>
+<li>AVG、SUM、METRICSなどを使用可能</li>
+</ul>
+<p>例）全リクエストのうち4xx,5xxレスポンスの割合を表示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SUM([METRIC(&quot;res4xx&quot;),METRICS(#res5xx&quot;)])/SUM(METRICS(&quot;reqall&quot;))</span><br></pre></td></tr></table></figure>
+
+<h3 id="CloudWatch-Alarms"><a href="#CloudWatch-Alarms" class="headerlink" title="CloudWatch Alarms"></a>CloudWatch Alarms</h3><ol>
+<li>静的閾値に基づくアラーム</li>
+<li>Metrics Insightsクエリに基づくCloudWatchアラーム</li>
+<li>CloudWatch異常検知にもどついたアラーム</li>
+<li>複合アラーム</li>
+</ol>
+<p>メトリクスアラームの状態</p>
+<ul>
+<li>OK：正常値</li>
+<li>ALARM：異常値</li>
+<li>INSUFFICIENT DATA：判定不能</li>
+</ul>
+<h3 id="EventBridgeでCloudWatch-Alarmのイベントを取り扱う例"><a href="#EventBridgeでCloudWatch-Alarmのイベントを取り扱う例" class="headerlink" title="EventBridgeでCloudWatch Alarmのイベントを取り扱う例"></a>EventBridgeでCloudWatch Alarmのイベントを取り扱う例</h3><ul>
+<li>CloudWatch Alarmのステータス変化がEventBridgeで取得可能</li>
+<li>CloudWatch Alarmの機能では送信先としてEC2、SNS、AutoScaling、Systems Managerのみが選択可能</li>
+<li>EventBridgeを介せばAlarmのイベントが実装なしで様々なサービスに連携可能</li>
+</ul>
+<h3 id="CloudWatch-Metrics-streams"><a href="#CloudWatch-Metrics-streams" class="headerlink" title="CloudWatch Metrics streams"></a>CloudWatch Metrics streams</h3><ul>
+<li>KinesisData Firehoseやサードパーティへ送信</li>
+</ul>
+<h2 id="ログ"><a href="#ログ" class="headerlink" title="ログ"></a>ログ</h2><h3 id="収集方法"><a href="#収集方法" class="headerlink" title="収集方法"></a>収集方法</h3><ul>
+<li>エージェントやログドライバー・サイドカー等(EC2、Fargate)</li>
+<li>CloudWatch Logsに統合されたマネージドサービス(CloudTrail、Lambda,RDS、VPC Flow Log)</li>
+<li>設定によりCloudWatch Logsに追加でログ発行するサービス(API GW,Step Functions,Route53クエリログ)</li>
+</ul>
+<h3 id="仕組み"><a href="#仕組み" class="headerlink" title="仕組み"></a>仕組み</h3><ul>
+<li>ログイベント<br>1つのログエントリ、アクティビティのレコード、タイムスタンプとメッセージ</li>
+<li>ログストリーム<br>同じソースの一連のログイベント、タイムスタンプ順でイベントを表す</li>
+<li>ロググループ<br>複数のログストリームで構成され、保持・監視・アクセス制御で同じ設定を共有してグループ化</li>
+</ul>
+<h3 id="CloudWatch-Logs-Insights"><a href="#CloudWatch-Logs-Insights" class="headerlink" title="CloudWatch Logs Insights"></a>CloudWatch Logs Insights</h3><ul>
+<li>専用のクエリ言語</li>
+<li>時系列データの可視化し、ここのログイベントへのドリルダウンが可能</li>
+</ul>
+<h2 id="統合CloudWatchエージェント"><a href="#統合CloudWatchエージェント" class="headerlink" title="統合CloudWatchエージェント"></a>統合CloudWatchエージェント</h2><ul>
+<li>CloudWatch Logs&#x2F;Metrics双方に対応しているエージェント</li>
+<li>クラウドでもオンプレミスでも利用可能</li>
+<li>Linux,Windowsの両方で稼働</li>
+<li>以前のCloudWatch Logs エージェントは非推奨</li>
+</ul>
+<h3 id="インストール方法"><a href="#インストール方法" class="headerlink" title="インストール方法"></a>インストール方法</h3><ul>
+<li>インストール方法として、CLI、SSM、IaCなどを利用可能</li>
+</ul>
+<h3 id="SSMでの導入"><a href="#SSMでの導入" class="headerlink" title="SSMでの導入"></a>SSMでの導入</h3><ul>
+<li>SSM AgentはAWSオフィシャルイメージには導入済み、それ以外はインストール</li>
+<li>SSM ParameterStoreへ設定ファイルを格納</li>
+<li>RunCommandで統合CloudWatchエージェントを一括インストール</li>
+<li>RunCommandでParameterStoreの設定を一括ロード</li>
+</ul>
+<h3 id="オンプレミスと閉域網接続の場合"><a href="#オンプレミスと閉域網接続の場合" class="headerlink" title="オンプレミスと閉域網接続の場合"></a>オンプレミスと閉域網接続の場合</h3><ul>
+<li>SSMとCloudWatchの各エージェントが通信するサービスエンドポイントへの経路をVPC endpointで構成</li>
+<li>Route53 Resolverでの名前解決</li>
+</ul>
+<h3 id="VPC-Endpoint"><a href="#VPC-Endpoint" class="headerlink" title="VPC Endpoint"></a>VPC Endpoint</h3><p>サービスごとに使い分けが必要</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>com.amazonaws.<em>region</em>.monitoring</td>
+<td>CloudWatch</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.evidently</td>
+<td>CloudWatch Evidentlyサービス通信</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.evidently-dataplane</td>
+<td>CloudWatch Evidently管理通信</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.rum</td>
+<td>CloudWatch RUMサービス通信</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.rum-dataplane</td>
+<td>CloudWatch RUMM管理通信</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.synthetics</td>
+<td>CloudWatch Synthetics</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.events</td>
+<td>EventBridge</td>
+</tr>
+<tr>
+<td>com.amazonaws.<em>region</em>.logs</td>
+<td>CloudWatch Logs</td>
+</tr>
+</tbody></table>
+<p>※SSM、EC2、S3などもエンドポイントが必要</p>
+<h3 id="awslogsログドライバー"><a href="#awslogsログドライバー" class="headerlink" title="awslogsログドライバー"></a>awslogsログドライバー</h3><ul>
+<li>コンテナ化されたアプリケーションログをCloudWatch Logsに送信</li>
+<li>タスク定義にlogConfigurationパラメータを追加するだけで有効化が可能</li>
+<li>ECS on EC2、ECS on Fargateのいずれでも利用可能</li>
+</ul>
+<h3 id="ECS対応FireLens"><a href="#ECS対応FireLens" class="headerlink" title="ECS対応FireLens"></a>ECS対応FireLens</h3><ul>
+<li>Fluentd &#x2F; FluentBitを利用した柔軟なログルーティング</li>
+</ul>
+<h3 id="EKS-on-Fargate対応FireLens"><a href="#EKS-on-Fargate対応FireLens" class="headerlink" title="EKS　on Fargate対応FireLens"></a>EKS　on Fargate対応FireLens</h3><ul>
+<li>FluentBitをベースにした組み込みのログルーター</li>
+</ul>
+<h2 id="ログからメトリクスを抽出"><a href="#ログからメトリクスを抽出" class="headerlink" title="ログからメトリクスを抽出"></a>ログからメトリクスを抽出</h2><h3 id="CloudWatch-Logsメトリクスフィルタ"><a href="#CloudWatch-Logsメトリクスフィルタ" class="headerlink" title="CloudWatch Logsメトリクスフィルタ"></a>CloudWatch Logsメトリクスフィルタ</h3><p>CloudWatch Logsに集めた後、ロググループ単位で分析し、通知に活用</p>
+<ul>
+<li>ログデータから特定の文字列のフィルタリングが可能</li>
+<li>フィルターとパターンの構文で指定できる範囲内で文字列フィルターが可能</li>
+<li>特定文字列のエントリ頻度等によりアラーム作成、SNS連携が可能</li>
+</ul>
+<h3 id="CloudWatch-Embedded-Metrics-Format-EMF"><a href="#CloudWatch-Embedded-Metrics-Format-EMF" class="headerlink" title="CloudWatch Embedded Metrics Format(EMF)"></a>CloudWatch Embedded Metrics Format(EMF)</h3><p>ログ出力時に埋め込み分析に活用</p>
+<ul>
+<li>複雑なアプリケーションデータをログ形式で取り込み、実用的なメトリクス生成</li>
+<li>カスタムメトリクスかをログから自動的に抽出</li>
+<li>クライアントライブラリを使用してEMF形式のログを生成（手動も可能）</li>
+<li>ADOTにもEMF Exporterがあり対応</li>
+</ul>
+<h2 id="ログデータエクスポート"><a href="#ログデータエクスポート" class="headerlink" title="ログデータエクスポート"></a>ログデータエクスポート</h2><h3 id="CloudWatch-LogsメトリクスフィルタAmazon-S3へのログデータのエクスポート"><a href="#CloudWatch-LogsメトリクスフィルタAmazon-S3へのログデータのエクスポート" class="headerlink" title="CloudWatch LogsメトリクスフィルタAmazon S3へのログデータのエクスポート"></a>CloudWatch LogsメトリクスフィルタAmazon S3へのログデータのエクスポート</h3><ul>
+<li>コンソールかAWS CLIで設定可能</li>
+<li>エクスポートするデータの期間、バケット、プレフィックスの指定</li>
+<li>エクスポートするまで最大12時間かかる場合がある</li>
+</ul>
+<h3 id="CloudWatch-Logsサブスクリプションフィルタ"><a href="#CloudWatch-Logsサブスクリプションフィルタ" class="headerlink" title="CloudWatch Logsサブスクリプションフィルタ"></a>CloudWatch Logsサブスクリプションフィルタ</h3><ul>
+<li>AWS CLIからのみ設定可能</li>
+<li>Kinesis Data Streams&#x2F;Firehose&#x2F;Lambdaへ転送可能</li>
+<li>1つのロググループにつき、2つのサブスクリプションフィルタを設定可能</li>
+</ul>
+<h2 id="アカウント横断の監視"><a href="#アカウント横断の監視" class="headerlink" title="アカウント横断の監視"></a>アカウント横断の監視</h2><ul>
+<li>メトリクスとログは追加料金なし</li>
+<li>トレースは1つの監視アカウントでの利用は追加料金なし</li>
+<li>全商用リージョンで利用可能</li>
+</ul>
+</div></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">5</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CloudWatch/"><span class="tag">CloudWatch</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/DynamoDB/"><span class="tag">DynamoDB</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Redis/"><span class="tag">Redis</span><span class="tag">2</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Blackbelt/"><span class="level-start"><span class="level-item">Blackbelt</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/Column/"><span class="level-start"><span class="level-item">Column</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T05:15:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/DynamoDB/">Amazon DynamoDB</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T03:30:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/Compare_Redis/">AWSのRedisサービスの使い分け</a></p><p class="categories"><a href="/categories/Column/">Column</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T01:54:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/MemoryDB_Redis/">Amazon MemoryDB for Redis</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-14T03:27:12.000Z">2024-04-14</time></p><p class="title"><a href="/2024/04/14/EventBridge-Pipes/">Amazon EventBridge Pipes</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-13T12:34:00.000Z">2024-04-13</time></p><p class="title"><a href="/2024/04/13/AWS_KMS_1/">AWS Key Management Service(KMS) part1</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
