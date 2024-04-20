@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Amazon MemoryDB for Redis - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Tamamu blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="出典：AWS Blackbelt なぜ Amazon MemoryDB for Redis　か最新のアプリケーションでは応答性能の重要性が増している データの爆発的増加 マイクロサービスはデータと分析の要件を変える DevOpsがもたらす急速な変化  マイクロサービスではホットデータの重要性が高い ホットデータ　：頻繁にアクセスされる ウォームデータ　：時々アクセスされる コールドデータ　：ほとん"><meta property="og:type" content="blog"><meta property="og:title" content="Amazon MemoryDB for Redis"><meta property="og:url" content="https://ktamamu.github.io/2024/04/20/Redis/"><meta property="og:site_name" content="Tamamu blog"><meta property="og:description" content="出典：AWS Blackbelt なぜ Amazon MemoryDB for Redis　か最新のアプリケーションでは応答性能の重要性が増している データの爆発的増加 マイクロサービスはデータと分析の要件を変える DevOpsがもたらす急速な変化  マイクロサービスではホットデータの重要性が高い ホットデータ　：頻繁にアクセスされる ウォームデータ　：時々アクセスされる コールドデータ　：ほとん"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://ktamamu.github.io/images/twcard.jpeg"><meta property="article:published_time" content="2024-04-20T01:54:00.000Z"><meta property="article:modified_time" content="2024-04-20T03:17:44.222Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="Redis"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://ktamamu.github.io/images/twcard.jpeg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ktamamu.github.io/2024/04/20/Redis/"},"headline":"Amazon MemoryDB for Redis","image":[],"datePublished":"2024-04-20T01:54:00.000Z","dateModified":"2024-04-20T03:17:44.222Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"出典：AWS Blackbelt なぜ Amazon MemoryDB for Redis　か最新のアプリケーションでは応答性能の重要性が増している データの爆発的増加 マイクロサービスはデータと分析の要件を変える DevOpsがもたらす急速な変化  マイクロサービスではホットデータの重要性が高い ホットデータ　：頻繁にアクセスされる ウォームデータ　：時々アクセスされる コールドデータ　：ほとん"}</script><link rel="canonical" href="https://ktamamu.github.io/2024/04/20/Redis/"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-20T01:54:00.000Z" title="2024/4/20 10:54:00">2024-04-20</time></span><span class="level-item"><a class="link-muted" href="/categories/Database/">Database</a></span></div></div><h1 class="title is-3 is-size-4-mobile">Amazon MemoryDB for Redis</h1><div class="content"><p>出典：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=d518N7kzSpE">AWS Blackbelt</a></p>
+<h2 id="なぜ-Amazon-MemoryDB-for-Redis-か"><a href="#なぜ-Amazon-MemoryDB-for-Redis-か" class="headerlink" title="なぜ Amazon MemoryDB for Redis　か"></a>なぜ Amazon MemoryDB for Redis　か</h2><h3 id="最新のアプリケーションでは応答性能の重要性が増している"><a href="#最新のアプリケーションでは応答性能の重要性が増している" class="headerlink" title="最新のアプリケーションでは応答性能の重要性が増している"></a>最新のアプリケーションでは応答性能の重要性が増している</h3><ul>
+<li>データの爆発的増加</li>
+<li>マイクロサービスはデータと分析の要件を変える</li>
+<li>DevOpsがもたらす急速な変化</li>
+</ul>
+<h3 id="マイクロサービスではホットデータの重要性が高い"><a href="#マイクロサービスではホットデータの重要性が高い" class="headerlink" title="マイクロサービスではホットデータの重要性が高い"></a>マイクロサービスではホットデータの重要性が高い</h3><ul>
+<li>ホットデータ　：頻繁にアクセスされる</li>
+<li>ウォームデータ　：時々アクセスされる</li>
+<li>コールドデータ　：ほとんどアクセスされない</li>
+</ul>
+<h3 id="インメモリデータベースとは"><a href="#インメモリデータベースとは" class="headerlink" title="インメモリデータベースとは"></a>インメモリデータベースとは</h3><p>ホットデータのための高速で柔軟なデータベース</p>
+<ol>
+<li>高速<ul>
+<li>１つのユーザーアクションで多数のマイクロサービスが関与し、それぞれにわずかなレイテンシ猶予しかない</li>
+<li>数百万人のユーザーが毎秒すうひゃくまんけんのリクエストを行うスループット</li>
+<li>ここのサービスがより多くの計算を行い、より多くのデータにアクセスする</li>
+</ul>
+</li>
+<li>柔軟<ul>
+<li>アプリケーションの速度が速く、開発にはデータベースの俊敏性が必要</li>
+<li>予期せぬビジネス要件をサポートするアプリケーションの進化</li>
+<li>アプリケーションモデルとデータベースモデル間のインピーダンスミスマッチを最小化</li>
+</ul>
+</li>
+</ol>
+<h3 id="セルフマネージド型インメモリデータストアの課題"><a href="#セルフマネージド型インメモリデータストアの課題" class="headerlink" title="セルフマネージド型インメモリデータストアの課題"></a>セルフマネージド型インメモリデータストアの課題</h3><ul>
+<li>管理の難しさ</li>
+<li>堅牢性の問題</li>
+<li>スケーラビリティ</li>
+<li>高価</li>
+</ul>
+<h3 id="AWSインメモリ耐久性選択"><a href="#AWSインメモリ耐久性選択" class="headerlink" title="AWSインメモリ耐久性選択"></a>AWSインメモリ耐久性選択</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ElastiCache for memcached</td>
+<td>揮発性</td>
+<td>パーシステンスなし</td>
+</tr>
+<tr>
+<td>ElastiCache for  Redis</td>
+<td>半耐久性</td>
+<td>スナップショット、非同期レプリケーション</td>
+</tr>
+<tr>
+<td>MemoryDB for Redis</td>
+<td>耐久性</td>
+<td>マルチAZトランザクションログ</td>
+</tr>
+</tbody></table>
+<h3 id="MemoeyDB-for-Redis-vs-Elasticache"><a href="#MemoeyDB-for-Redis-vs-Elasticache" class="headerlink" title="MemoeyDB for Redis vs Elasticache"></a>MemoeyDB for Redis vs Elasticache</h3><p>MemoryDB for Redisのユースケース</p>
+<ul>
+<li>超高速なパフォーマンスを提供する堅牢なデータベースを必要するアプリケーション</li>
+<li>RedisのAPIとデータ構造を使用するが、データ損失のリスクを回避するための耐久性を求めるアプリケーション</li>
+<li>キャッシュとデータベースを使用して低レイテンシーを実現し、アーキテクチャを簡素化してコストを削減したいアプリケーション</li>
+</ul>
+<p>Elasticache for Redisのユースケース</p>
+<ul>
+<li>既存のプライマリデータベースでデータアクセスを高速化したいワークロードをキャッシュする場合</li>
+<li>Redisのデータ構造とAPIを使用して、プライマリデータベースまたはデータストアに格納されているデータにアクセスする場合</li>
+</ul>
+<h2 id="Amazon-MemoryDB-for-Redis-の概要"><a href="#Amazon-MemoryDB-for-Redis-の概要" class="headerlink" title="Amazon MemoryDB for Redis の概要"></a>Amazon MemoryDB for Redis の概要</h2><h3 id="特長"><a href="#特長" class="headerlink" title="特長"></a>特長</h3><ul>
+<li>超高速パフォーマンス</li>
+<li>Redis互換</li>
+<li>耐久性と可用性</li>
+<li>フルマネージド</li>
+<li>スケーラビリティ</li>
+<li>セキュリティと統制</li>
+</ul>
+<h3 id="超高速パフォーマンス"><a href="#超高速パフォーマンス" class="headerlink" title="超高速パフォーマンス"></a>超高速パフォーマンス</h3><p>書き込み：マルチAZトランザクションログに保存</p>
+<ul>
+<li>１桁msという低いレイテンシの書き込み</li>
+<li>シャードあたり最大10万回&#x2F;秒の書き込み</li>
+<li>シャードあたり100MBのスループット&#x2F;秒</li>
+</ul>
+<p>読み取り：すべてのデータをメモリ上に展開</p>
+<ul>
+<li>マイクロ秒のレイテンシー読み取り</li>
+<li>ノードあたり最大47万回&#x2F;秒の読み取り</li>
+<li>ノードあたり1.3GBのスループット&#x2F;秒</li>
+</ul>
+<p>極限のスケール</p>
+<ul>
+<li>クラスタあたり500ノード</li>
+<li>高可用性構成では105TB</li>
+<li>数百万のRPS</li>
+</ul>
+<h3 id="Memory-DBのユースケース"><a href="#Memory-DBのユースケース" class="headerlink" title="Memory DBのユースケース"></a>Memory DBのユースケース</h3><ul>
+<li>マイクロサービス</li>
+<li>リアルタイムデータとソーシャルメディア分析</li>
+<li>地理空間</li>
+<li>メディアストリーミング</li>
+<li>チャットとメッセージング</li>
+<li>機械学習とジャネレーティブAI</li>
+</ul>
+<h3 id="MemoryDBベクトル検索-Preview"><a href="#MemoryDBベクトル検索-Preview" class="headerlink" title="MemoryDBベクトル検索　(Preview)"></a>MemoryDBベクトル検索　(Preview)</h3><p>ベクター検索(AI関連：類似画像検索、自然言語処理、音声検索、推薦システム、異常検知)機能を利用可能</p>
+<ul>
+<li>マネージドコンソールで有効化して利用</li>
+<li>NodeTypes：R7g、R6g、T4g</li>
+<li>Version：v7.1</li>
+</ul>
+<h2 id="Amazon-MemoryDB-for-Redis-の技術詳細"><a href="#Amazon-MemoryDB-for-Redis-の技術詳細" class="headerlink" title="Amazon MemoryDB for Redis の技術詳細"></a>Amazon MemoryDB for Redis の技術詳細</h2><h3 id="基本的なRedisの高可用性構成"><a href="#基本的なRedisの高可用性構成" class="headerlink" title="基本的なRedisの高可用性構成"></a>基本的なRedisの高可用性構成</h3><ul>
+<li>３つのシャード、シャードごとに１つのプライマリと２つのレプリカ</li>
+<li>マルチAZに跨って構成される</li>
+<li>シャードを追加して読み取り・書き込みをスケーリングし、インメモリ容量を増やす</li>
+<li>レプリカを追加して読み取りをスケーリングし、可用性を向上</li>
+</ul>
+<h3 id="クラスタ化アーキテクチャの特徴"><a href="#クラスタ化アーキテクチャの特徴" class="headerlink" title="クラスタ化アーキテクチャの特徴"></a>クラスタ化アーキテクチャの特徴</h3><ul>
+<li>リカバリタイム：計画時は200ミリ秒未満、予定外は10秒未満</li>
+<li>フェイルオーバー影響：書き込みはシャードに関連した場合影響あり、読み取りは問題なし</li>
+<li>ノードスケール：最大500ノード(83〜500シャード)、シャードごとに1つのプライマリ、0〜5のレプリカ</li>
+<li>オンラインスケーリング：シャード、プライマリノード。リードレプリカ</li>
+<li>マイグレーションパス：スナップショットのバックアップ・リストア、サードパーティツール</li>
+<li>スケラービリティとパフォーマンス：水平スケーリング、水平・垂直スケーリングをサポート</li>
+<li>スケーリング操作：クラスタサイズ変更、シャード追加による水平スケーリングと、読み取りスケールのためのレプリカ追加</li>
+</ul>
+<h3 id="MemoryDBの整合性"><a href="#MemoryDBの整合性" class="headerlink" title="MemoryDBの整合性"></a>MemoryDBの整合性</h3><ul>
+<li>プライマリからは強い整合性で読み取れる</li>
+<li>レプリカからは結果整合性で読み取れる（Transaction Logでのレプリケーションが非同期のため）</li>
+</ul>
+<h3 id="MemoryDBのフェイルオーバー"><a href="#MemoryDBのフェイルオーバー" class="headerlink" title="MemoryDBのフェイルオーバー"></a>MemoryDBのフェイルオーバー</h3><ul>
+<li>プライマリ障害時、レプリカはログから全てのトランザクションを読み込むとプライマリに昇格</li>
+<li>クライアントはすべての書き込みを新しく昇格したプライマリにリダイレクトする</li>
+<li>フェイルオーバー時のデータ損失はゼロ</li>
+</ul>
+<h3 id="オンラインリシャーディング"><a href="#オンラインリシャーディング" class="headerlink" title="オンラインリシャーディング"></a>オンラインリシャーディング</h3><ul>
+<li>アプリケーションの中断なく可能（リダイレクトは発生）</li>
+<li>オンラインスケールアウト、オンラインスケールイン：シャード全体で均一なスロット分散</li>
+</ul>
+<h3 id="Redis-データ構造"><a href="#Redis-データ構造" class="headerlink" title="Redis データ構造"></a>Redis データ構造</h3><table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>説明</th>
+<th>ユースケース例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String</td>
+<td>バイトシーケンス</td>
+<td>キャッシュ</td>
+</tr>
+<tr>
+<td>List</td>
+<td>Stringのリスト</td>
+<td>スタック</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>ユニークな順序なしコレクション</td>
+<td></td>
+</tr>
+<tr>
+<td>Sorted Set</td>
+<td>ユニークな順序ありコレクション</td>
+<td>リーダーボード</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>Key-Valueペアのマップ</td>
+<td></td>
+</tr>
+<tr>
+<td>Streams</td>
+<td>ログデータストラクチャ</td>
+<td>メッセージキュー</td>
+</tr>
+<tr>
+<td>Geospatial</td>
+<td>緯度経度</td>
+<td>地図、近接検索</td>
+</tr>
+<tr>
+<td>Bitmaps</td>
+<td>Stringの特殊な用法</td>
+<td></td>
+</tr>
+<tr>
+<td>HyperLogLogs</td>
+<td>近似的カウント</td>
+<td></td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>JSONフォーマットの保存とネイティブアクセス</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="MemoryDB-セキュリティ機能"><a href="#MemoryDB-セキュリティ機能" class="headerlink" title="MemorｙDB　セキュリティ機能"></a>MemorｙDB　セキュリティ機能</h3><ul>
+<li>暗号化<ul>
+<li>転送中の暗号化（パフォーマンス影響あり）</li>
+<li>保存中の全データ暗号化</li>
+</ul>
+</li>
+<li>認証<ul>
+<li>RedisACLによるパスワードとアクセス文字列を持つユーザー作成</li>
+<li>IAMを利用して認証することも可能</li>
+<li>転送中の暗号化が有効になっている場合のみ使用可能</li>
+</ul>
+</li>
+<li>認可<ul>
+<li>ACLを使用してコマンドとキーを制限する機能</li>
+</ul>
+</li>
+<li>Amazon VPC　統合<ul>
+<li>承認されたIP、AWSリソースのVPCセキュリティグループ</li>
+<li>ネットワーク分離のためのVPCサブネットグループ</li>
+</ul>
+</li>
+</ul>
+<p>Redisセキュリティコマンド（acl log）を使用可能</p>
+<h3 id="CloudWatchセキュリティメトリクス"><a href="#CloudWatchセキュリティメトリクス" class="headerlink" title="CloudWatchセキュリティメトリクス"></a>CloudWatchセキュリティメトリクス</h3><ul>
+<li>AuthenticationFailures：Redisへの認証試行の失敗</li>
+<li>KeyAuthrizationFailures：ユーザーが許可なくキーにアクセス使用して失敗した</li>
+<li>CommandAuthorizationFailures：ユーザーが許可なくコマンドを実行しようとして失敗した</li>
+</ul>
+<h2 id="Amazon-MemoryDB-for-Redis-のはじめ方"><a href="#Amazon-MemoryDB-for-Redis-のはじめ方" class="headerlink" title="Amazon MemoryDB for Redis のはじめ方"></a>Amazon MemoryDB for Redis のはじめ方</h2><h3 id="接続先エンドポイント"><a href="#接続先エンドポイント" class="headerlink" title="接続先エンドポイント"></a>接続先エンドポイント</h3><ul>
+<li>クラスタエンドポイントを指定するだけでOK</li>
+<li>ノードのスケールアウト&#x2F;インに設定で追従する必要なし</li>
+</ul>
+<h3 id="Redis-on-EC2、Elasticache-for-Redisからの移行：バックアップ-リストア"><a href="#Redis-on-EC2、Elasticache-for-Redisからの移行：バックアップ-リストア" class="headerlink" title="Redis on EC2、Elasticache for Redisからの移行：バックアップ&#x2F;リストア"></a>Redis on EC2、Elasticache for Redisからの移行：バックアップ&#x2F;リストア</h3><ul>
+<li>推奨事項：計画されたメンテナンスウインドウを活用する</li>
+<li>BGSAVEやSAVEを使用してRedisバックアップ(.RDBファイル)を作成、S3経由でリストアする</li>
+</ul>
+<h3 id="Elasticache-for-Redisからの移行：論理レプリケーション"><a href="#Elasticache-for-Redisからの移行：論理レプリケーション" class="headerlink" title="Elasticache for Redisからの移行：論理レプリケーション"></a>Elasticache for Redisからの移行：論理レプリケーション</h3><ul>
+<li>ダウンタイムを最小限に抑えるシナリオ</li>
+<li>MemoryDBクラスタを作成し、移行元、移行先双方にOSSレプリケーションツールのクライアントが接続できる状況にし、復元</li>
+</ul>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Redis/">Redis</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/04/14/EventBridge-Pipes/"><span class="level-item">Amazon EventBridge Pipes</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">3</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#なぜ-Amazon-MemoryDB-for-Redis-か"><span class="level-left"><span class="level-item">1</span><span class="level-item">なぜ Amazon MemoryDB for Redis　か</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#最新のアプリケーションでは応答性能の重要性が増している"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">最新のアプリケーションでは応答性能の重要性が増している</span></span></a></li><li><a class="level is-mobile" href="#マイクロサービスではホットデータの重要性が高い"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">マイクロサービスではホットデータの重要性が高い</span></span></a></li><li><a class="level is-mobile" href="#インメモリデータベースとは"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">インメモリデータベースとは</span></span></a></li><li><a class="level is-mobile" href="#セルフマネージド型インメモリデータストアの課題"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">セルフマネージド型インメモリデータストアの課題</span></span></a></li><li><a class="level is-mobile" href="#AWSインメモリ耐久性選択"><span class="level-left"><span class="level-item">1.5</span><span class="level-item">AWSインメモリ耐久性選択</span></span></a></li><li><a class="level is-mobile" href="#MemoeyDB-for-Redis-vs-Elasticache"><span class="level-left"><span class="level-item">1.6</span><span class="level-item">MemoeyDB for Redis vs Elasticache</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Amazon-MemoryDB-for-Redis-の概要"><span class="level-left"><span class="level-item">2</span><span class="level-item">Amazon MemoryDB for Redis の概要</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#特長"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">特長</span></span></a></li><li><a class="level is-mobile" href="#超高速パフォーマンス"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">超高速パフォーマンス</span></span></a></li><li><a class="level is-mobile" href="#Memory-DBのユースケース"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">Memory DBのユースケース</span></span></a></li><li><a class="level is-mobile" href="#MemoryDBベクトル検索-Preview"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">MemoryDBベクトル検索　(Preview)</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Amazon-MemoryDB-for-Redis-の技術詳細"><span class="level-left"><span class="level-item">3</span><span class="level-item">Amazon MemoryDB for Redis の技術詳細</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#基本的なRedisの高可用性構成"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">基本的なRedisの高可用性構成</span></span></a></li><li><a class="level is-mobile" href="#クラスタ化アーキテクチャの特徴"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">クラスタ化アーキテクチャの特徴</span></span></a></li><li><a class="level is-mobile" href="#MemoryDBの整合性"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">MemoryDBの整合性</span></span></a></li><li><a class="level is-mobile" href="#MemoryDBのフェイルオーバー"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">MemoryDBのフェイルオーバー</span></span></a></li><li><a class="level is-mobile" href="#オンラインリシャーディング"><span class="level-left"><span class="level-item">3.5</span><span class="level-item">オンラインリシャーディング</span></span></a></li><li><a class="level is-mobile" href="#Redis-データ構造"><span class="level-left"><span class="level-item">3.6</span><span class="level-item">Redis データ構造</span></span></a></li><li><a class="level is-mobile" href="#MemoryDB-セキュリティ機能"><span class="level-left"><span class="level-item">3.7</span><span class="level-item">MemorｙDB　セキュリティ機能</span></span></a></li><li><a class="level is-mobile" href="#CloudWatchセキュリティメトリクス"><span class="level-left"><span class="level-item">3.8</span><span class="level-item">CloudWatchセキュリティメトリクス</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Amazon-MemoryDB-for-Redis-のはじめ方"><span class="level-left"><span class="level-item">4</span><span class="level-item">Amazon MemoryDB for Redis のはじめ方</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#接続先エンドポイント"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">接続先エンドポイント</span></span></a></li><li><a class="level is-mobile" href="#Redis-on-EC2、Elasticache-for-Redisからの移行：バックアップ-リストア"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">Redis on EC2、Elasticache for Redisからの移行：バックアップ/リストア</span></span></a></li><li><a class="level is-mobile" href="#Elasticache-for-Redisからの移行：論理レプリケーション"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">Elasticache for Redisからの移行：論理レプリケーション</span></span></a></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Redis/"><span class="tag">Redis</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Database/"><span class="level-start"><span class="level-item">Database</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/application-integration/"><span class="level-start"><span class="level-item">application-integration</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/security/"><span class="level-start"><span class="level-item">security</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T01:54:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/Redis/">Amazon MemoryDB for Redis</a></p><p class="categories"><a href="/categories/Database/">Database</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-14T03:27:12.000Z">2024-04-14</time></p><p class="title"><a href="/2024/04/14/EventBridge-Pipes/">Amazon EventBridge Pipes</a></p><p class="categories"><a href="/categories/application-integration/">application-integration</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-13T12:34:00.000Z">2024-04-13</time></p><p class="title"><a href="/2024/04/13/AWS_KMS_1/">AWS Key Management Service(KMS) part1</a></p><p class="categories"><a href="/categories/security/">security</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
