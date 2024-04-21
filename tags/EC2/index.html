@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>Tag: EC2 - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Tamamu blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="AWSの学習記録"><meta property="og:type" content="blog"><meta property="og:title" content="Tamamu blog"><meta property="og:url" content="https://ktamamu.github.io/"><meta property="og:site_name" content="Tamamu blog"><meta property="og:description" content="AWSの学習記録"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://ktamamu.github.io/images/twcard.jpeg"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="aws"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://ktamamu.github.io/images/twcard.jpeg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ktamamu.github.io"},"headline":"Tamamu blog","image":[],"author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"AWSの学習記録"}</script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">Tags</a></li><li class="is-active"><a href="#" aria-current="page">EC2</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-04-21T00:45:00.000Z" title="2024/4/21 9:45:00">2024-04-21</time></span><span class="level-item"><a class="link-muted" href="/categories/Blackbelt/">Blackbelt</a></span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2024/04/21/EC2_AutoScaling/">Amazon EC2 Auto Scaling</a></p><div class="content"><p>出典：<a href="">AWS Blackbelt</a></p>
+<h2 id="Auto-Scalingサービス群の整理"><a href="#Auto-Scalingサービス群の整理" class="headerlink" title="Auto Scalingサービス群の整理"></a>Auto Scalingサービス群の整理</h2><ul>
+<li>Amazon EC2 Auto Scaling<ul>
+<li>EC2インスタンスの自動スケール機能を提供</li>
+</ul>
+</li>
+<li>Application Auto Scaling<ul>
+<li>EC2インスタンス以外のリソースにも自動スケーリング機能を提供<ul>
+<li>ECS、AppStream、DynamoDB、Aurora、Elasticacheなど</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AWS Auto Scaling<ul>
+<li>２種類のAutoScalingのスケーリングを設定・管理</li>
+<li>新規適用は非推奨、各サービス機能で設定・管理を行う</li>
+</ul>
+</li>
+</ul>
+<h2 id="EC2-Auto-Scaling-機能"><a href="#EC2-Auto-Scaling-機能" class="headerlink" title="EC2 Auto Scaling　機能"></a>EC2 Auto Scaling　機能</h2><h3 id="自動スケール設定"><a href="#自動スケール設定" class="headerlink" title="自動スケール設定"></a>自動スケール設定</h3><ul>
+<li>ターゲット追跡スケーリング＋予測スケーリングの組み合わせがおすすめ</li>
+<li>スケジュールスケーリングも組み合わせられる</li>
+</ul>
+<p><strong>ターゲット追跡スケーリング</strong></p>
+<ul>
+<li>1つのメトリクスに対し、単に目標値を指定するのみでよい<ul>
+<li>例：CPU Utilizationを50%に維持</li>
+</ul>
+</li>
+</ul>
+<p>※ステップスケーリングポリシーより簡易で、大半のユースケースをカバー可能</p>
+<p><strong>予測スケーリング</strong></p>
+<ul>
+<li>機械学習を利用、２週間分のメトリクスを分析し、次の２日の今後の需要を予測<ul>
+<li>最短で24時間分のメトリクスデータから始められる</li>
+</ul>
+</li>
+<li>予測データに基づいてキャパシティの増減がスケジュールされる</li>
+<li>予測値だけを表示させることも可能</li>
+</ul>
+<p><strong>組み合わせた利用方法</strong></p>
+<ol>
+<li>大まかなキャパシティ増減は予測スケーリングに任せ、前もってスケールしておく</li>
+<li>実際の負荷に対して不足した分をターゲット追跡で補充する</li>
+<li>さらにスケジュールスケーリングを組み合わせることもできる</li>
+</ol>
+<p><strong>その他のスケーリングポリシー</strong></p>
+<ul>
+<li>簡易スケーリングポリシー：互換性維持のために残されており、新規採用はしない</li>
+<li>ステップスケーリング：きめ細かい設定が可能だが複雑</li>
+</ul>
+<h3 id="ライサイクルフック"><a href="#ライサイクルフック" class="headerlink" title="ライサイクルフック"></a>ライサイクルフック</h3><ul>
+<li>インスタンスの起動時や終了時に何かをしたいを実現する仕組み<ul>
+<li>例：ELBに登録される前にインスタンス状の様々な準備が正しく完了していることを確認したい</li>
+</ul>
+</li>
+<li>終了時ライフサイクルフックが有効な場合<ul>
+<li>例：スケールインが発生する時、アプリケーションを安全に終了させ手からインスタンス削除したい</li>
+</ul>
+</li>
+</ul>
+<h3 id="インスタンスリフレッシュ"><a href="#インスタンスリフレッシュ" class="headerlink" title="インスタンスリフレッシュ"></a>インスタンスリフレッシュ</h3><ul>
+<li>AutoScalingグループ内のインスタンスを自動的に更新する仕組み<ul>
+<li>AMI更新時などの場面で、手動で入れ替える必要がなくなった</li>
+</ul>
+</li>
+<li>入れ替えは一定割合のインスタンスが稼働中（Healthy)であることを保ちながら実施される<ul>
+<li>デフォルトは90%</li>
+</ul>
+</li>
+</ul>
+<h3 id="ウォームプール"><a href="#ウォームプール" class="headerlink" title="ウォームプール"></a>ウォームプール</h3><ul>
+<li>軌道に長い時間のかかるインスタンスを事前起動できる仕組み<ul>
+<li>事前に起動されたインスタンスが「ウォームプール」にStopped状態で保持し起動時間短縮<ul>
+<li>発生する費用はEBSボリュームとEIPのみ</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>スケールアウトが発生すると、ウォームプールから開始（Start)される</li>
+<li>制約<ul>
+<li>スポットインスタンスを含むASG、複数インスタンスタイプを指定したASGにはウォームプールを追加できない</li>
+</ul>
+</li>
+</ul>
+<h2 id="その他の機能"><a href="#その他の機能" class="headerlink" title="その他の機能"></a>その他の機能</h2><h3 id="ヘルスチェック"><a href="#ヘルスチェック" class="headerlink" title="ヘルスチェック"></a>ヘルスチェック</h3><p>正常に動作しないインスタンスを自動的に置き換えたい</p>
+<ul>
+<li>特に指定がなければ、EC2ヘルスチェックが有効になっている<ul>
+<li>2&#x2F;2以外のステータスが続くとAutoScalingサービスを置き換える</li>
+</ul>
+</li>
+<li>ELBヘルスチェック<ul>
+<li>ELBからのヘルスチェックに応答しない場合の速やかな入れ替えが可能</li>
+</ul>
+</li>
+</ul>
+<h3 id="ヘルスチェックの猶予期間"><a href="#ヘルスチェックの猶予期間" class="headerlink" title="ヘルスチェックの猶予期間"></a>ヘルスチェックの猶予期間</h3><p>スケールイン・スケールアウトを繰り返してしまう場合に設定</p>
+<ul>
+<li>ヘルスチェックの猶予時間：デフォルトは5分(300秒)</li>
+<li>この時間より起動時間が長い場合、インスタンスの起動と削除が繰り返される問題<ul>
+<li>ELBヘルスチェックに、ユーザーデータなどで指示したS3からのコンテンツ配備や、DB接続などを前提としたアプリケーションパスをしている場合などに有効</li>
+</ul>
+</li>
+</ul>
+<h3 id="インスタンスの保護"><a href="#インスタンスの保護" class="headerlink" title="インスタンスの保護"></a>インスタンスの保護</h3><p>特定のインスタンスをスケールインから保護したい場合</p>
+<ul>
+<li>ASG単位、またはインスタンス単位で設定</li>
+<li>スケールインされなくなる</li>
+<li>次の条件からは保護できない点が注意<ul>
+<li>手動でのインスタンス削除（Terminate)</li>
+<li>ヘルスチェックによる置き換え</li>
+<li>スポットインスタンの中断</li>
+</ul>
+</li>
+<li>すべてのインスタンスが終了保護された状態でスケールインイベントが発生した場合、希望容量だけが減少し、スケールイン（インスタンス削除）は行わない</li>
+</ul>
+<h3 id="スケーリングプロセスの中断"><a href="#スケーリングプロセスの中断" class="headerlink" title="スケーリングプロセスの中断"></a>スケーリングプロセスの中断</h3><p>一時的にスケールインやスケールアウトを止めたい</p>
+<ul>
+<li>一時的にスケール動作を停止できる</li>
+<li>ASG単位で設定</li>
+<li>中断するプロセスを指定する(Launch、Terminateなど)</li>
+<li>使い所<ul>
+<li>機能テスト等で条件を整えたい場合</li>
+<li>動作のおかしいインスタンスの確認</li>
+</ul>
+</li>
+</ul>
+<h3 id="スタンバイ、デタッチ"><a href="#スタンバイ、デタッチ" class="headerlink" title="スタンバイ、デタッチ"></a>スタンバイ、デタッチ</h3><p>特定のインスタンスをAutoScaling Groupから外したい</p>
+<ul>
+<li>スタンバイ（一時的なインスタンスの削除）<ul>
+<li>インスタンス単位で設定</li>
+<li>そのインスタンスはAutoScaling Groupにいながら「スタンバイ」状態になる<ul>
+<li>ELBから登録解除され、ヘルスチェック対象外となり、ASGno希望容量が減少する</li>
+</ul>
+</li>
+<li>その間にインスタンスのトラブルシューティングを行う</li>
+</ul>
+</li>
+<li>デタッチ<ul>
+<li>インスタンス単位で設定</li>
+<li>そのインスタンスはAutoScaling Groupのメンバーから外される</li>
+<li>スタンバイと実質的な効果は同一</li>
+<li>インスタンスはそのままRunnning状態で保持される</li>
+<li>ASGとして与えられていたタグは除去される</li>
+<li>終了後、そのまま終了予定であればデタッチが適する</li>
+</ul>
+</li>
+</ul>
+</div></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">7</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a></div></div></div><!--!--><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CloudWatch/"><span class="tag">CloudWatch</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/DynamoDB/"><span class="tag">DynamoDB</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EC2/"><span class="tag">EC2</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Redis/"><span class="tag">Redis</span><span class="tag">2</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Blackbelt/"><span class="level-start"><span class="level-item">Blackbelt</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/categories/Column/"><span class="level-start"><span class="level-item">Column</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-21T00:45:00.000Z">2024-04-21</time></p><p class="title"><a href="/2024/04/21/EC2_AutoScaling/">Amazon EC2 Auto Scaling</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T12:34:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/CloudWatch/">Amazon CloudWatch</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T05:15:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/DynamoDB/">Amazon DynamoDB</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T03:30:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/Compare_Redis/">AWSのRedisサービスの使い分け</a></p><p class="categories"><a href="/categories/Column/">Column</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-20T01:54:00.000Z">2024-04-20</time></p><p class="title"><a href="/2024/04/20/MemoryDB_Redis/">Amazon MemoryDB for Redis</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
