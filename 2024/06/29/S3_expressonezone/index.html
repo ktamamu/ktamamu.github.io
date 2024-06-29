@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Amazon S3 Express One Zone - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Tamamu blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="出典：AWS Blackbelt"><meta property="og:type" content="blog"><meta property="og:title" content="Amazon S3 Express One Zone"><meta property="og:url" content="https://ktamamu.github.io/2024/06/29/S3_expressonezone/"><meta property="og:site_name" content="Tamamu blog"><meta property="og:description" content="出典：AWS Blackbelt"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://ktamamu.github.io/images/twcard.jpeg"><meta property="article:published_time" content="2024-06-29T05:00:00.000Z"><meta property="article:modified_time" content="2024-06-29T05:58:55.390Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="S3"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://ktamamu.github.io/images/twcard.jpeg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ktamamu.github.io/2024/06/29/S3_expressonezone/"},"headline":"Amazon S3 Express One Zone","image":[],"datePublished":"2024-06-29T05:00:00.000Z","dateModified":"2024-06-29T05:58:55.390Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"出典：AWS Blackbelt"}</script><link rel="canonical" href="https://ktamamu.github.io/2024/06/29/S3_expressonezone/"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-06-29T05:00:00.000Z" title="2024/6/29 14:00:00">2024-06-29</time></span><span class="level-item"><a class="link-muted" href="/categories/Blackbelt/">Blackbelt</a></span></div></div><h1 class="title is-3 is-size-4-mobile">Amazon S3 Express One Zone</h1><div class="content"><p>出典：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=kTBB-hNKMF4">AWS Blackbelt</a></p>
+<span id="more"></span>
+
+<h2 id="S3-Express-One-Zoneとは"><a href="#S3-Express-One-Zoneとは" class="headerlink" title="S3 Express One Zoneとは"></a>S3 Express One Zoneとは</h2><ul>
+<li>一桁msのリクエストレイテンシ<ul>
+<li>レイテンシが最も低いストレージクラス</li>
+<li>指定した単一のAZにデータを配置</li>
+</ul>
+</li>
+<li>10倍の高速化 ＋ リクエスト料金は半額(Standardクラスと比較して)</li>
+<li>ユースケースとしては頻繁にリクエストされるデータ<ul>
+<li>機械学習、データ分析、コンテンツ作成など</li>
+</ul>
+</li>
+</ul>
+<h3 id="実現する3つのポイント"><a href="#実現する3つのポイント" class="headerlink" title="実現する3つのポイント"></a>実現する3つのポイント</h3><h4 id="1-コンピュートリソースと同じAZにデータを配置"><a href="#1-コンピュートリソースと同じAZにデータを配置" class="headerlink" title="1. コンピュートリソースと同じAZにデータを配置"></a>1. コンピュートリソースと同じAZにデータを配置</h4><ul>
+<li>耐久性は99.999999999%(イレブンナイン)、可用性は99.5%</li>
+<li>ただし、シングルAZのアーキテクチャのため、AZ障害でのデータ損失の可能性はある</li>
+</ul>
+<h4 id="2-ディレクトバケット"><a href="#2-ディレクトバケット" class="headerlink" title="2. ディレクトバケット"></a>2. ディレクトバケット</h4><p><strong>バケットの違い</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>汎用バケット</td>
+<td>プレフィックスごとにスケール、負荷に応じて段階的にスケーリング</td>
+</tr>
+<tr>
+<td>ディレクトリバケット</td>
+<td>常に高い性能を発揮、プレフィックスに依存しない</td>
+</tr>
+</tbody></table>
+<ul>
+<li>汎用バケットとディレクトリバケット間をシームレスに変更することはできない</li>
+<li>ただし、シームレスに移行はできないがオブジェクトの移行は可能</li>
+<li>ディレクトリバケットの命名規則として、ベース名にAZ IDが含まれる</li>
+<li>ベース名＋AZサフィックス(例：–use1-az-6–x-s3)</li>
+</ul>
+<p><strong>S3 の種類</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S3 Express One Zone</td>
+<td>最も頻繁にアクセスされる</td>
+<td>ディレクトリバケット</td>
+</tr>
+<tr>
+<td>S3 Intellogent-Tiering</td>
+<td>アクセスパターンが変化する</td>
+<td>汎用バケット</td>
+</tr>
+<tr>
+<td>S3 Standard</td>
+<td>頻繁にアクセスされる</td>
+<td>汎用バケット</td>
+</tr>
+<tr>
+<td>S3 Standard-IA</td>
+<td>頻繁にアクセスされない</td>
+<td>汎用バケット</td>
+</tr>
+<tr>
+<td>S3 One Zone-IA</td>
+<td>アクセス頻度が低く再作成可能</td>
+<td>汎用バケット</td>
+</tr>
+<tr>
+<td>S3 Glacier Instant Retrieval</td>
+<td>ほとんどアクセスされない</td>
+<td>汎用バケット</td>
+</tr>
+<tr>
+<td>S3 Gracier Flexible Retrieval</td>
+<td>アーカイブデータ</td>
+<td>汎用バケット</td>
+</tr>
+<tr>
+<td>S3 Gracier Deep Archive</td>
+<td>長期アーカイブデータ</td>
+<td>汎用バケット</td>
+</tr>
+</tbody></table>
+<p><strong>制約</strong></p>
+<ul>
+<li>アクセスが90日間ないディレクトリバケットは、非アクティブ状態に移行<ul>
+<li>データは保持されるが、一時的に読み書き不可(503)</li>
+<li>アクセスリクエスト後、通常数分以内にアクティブ状態へ移行</li>
+</ul>
+</li>
+<li>サポートされていない機能の一例（用途がレイテンシー重視のワークロードのため）<ul>
+<li>AWS CloudTrailデータプレーンイベント（オブジェクト操作）</li>
+<li>静的ウェブサイトホスティング</li>
+<li>S3ライフサイクル</li>
+<li>オブジェクトタグ</li>
+<li>S3 Storage Lens</li>
+<li>SSE-KMS,SSE-C</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-SDKによる効率的なアクセス"><a href="#3-SDKによる効率的なアクセス" class="headerlink" title="3. SDKによる効率的なアクセス"></a>3. SDKによる効率的なアクセス</h3><ul>
+<li>レイテンシを最小限に抑えるためセッションベースでの認証を採用</li>
+<li>AWS SDKを使用することでユーザーに変わりセッション作成・管理</li>
+</ul>
+<h3 id="4-ネットワークとセキュリティ"><a href="#4-ネットワークとセキュリティ" class="headerlink" title="4. ネットワークとセキュリティ"></a>4. ネットワークとセキュリティ</h3><h4 id="２種類のAPIオペレーション"><a href="#２種類のAPIオペレーション" class="headerlink" title="２種類のAPIオペレーション"></a>２種類のAPIオペレーション</h4><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>リージョンエンドポイントAPIオペレーション</td>
+<td>バケットレベルの操作</td>
+<td>IAM認証</td>
+</tr>
+<tr>
+<td>ゾーンエンドポイントAPIオペレーション</td>
+<td>オブジェクトレベルの操作</td>
+<td>セッショントークン</td>
+</tr>
+<tr>
+<td>※CopyObject,HeadBucketのみIAM認証を利用</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="セッションベースの認証"><a href="#セッションベースの認証" class="headerlink" title="セッションベースの認証"></a>セッションベースの認証</h4><p>下記の認証の操作をSDKがラップしてくれる</p>
+<ol>
+<li>CreateSession：操作したいバケットとR&#x2F;W,R&#x2F;Oを指定</li>
+<li>認証情報；一次的な認証情報とセッショントークン</li>
+<li>データへアクセス：認証情報の有効性を確認(有効期限５分)</li>
+</ol>
+<h4 id="IAMポリシーの記載方法は既存のものと異なる"><a href="#IAMポリシーの記載方法は既存のものと異なる" class="headerlink" title="IAMポリシーの記載方法は既存のものと異なる"></a>IAMポリシーの記載方法は既存のものと異なる</h4><p>例</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="attr">&quot;Action&quot;</span><span class="punctuation">:</span><span class="string">&quot;s3express:CreateSession&quot;</span></span><br><span class="line">...</span><br><span class="line"><span class="attr">&quot;Condition&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;StringEquals&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;s3express:SessionMode&quot;</span><span class="punctuation">:</span><span class="string">&quot;ReadOnly&quot;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="VPCエンドポイントに対応"><a href="#VPCエンドポイントに対応" class="headerlink" title="VPCエンドポイントに対応"></a>VPCエンドポイントに対応</h4><ul>
+<li>リージョンAPI、ゾーンAPI両方を操作可能</li>
+<li>ゲートウェイ型のみの対応</li>
+</ul>
+<h3 id="制限と料金"><a href="#制限と料金" class="headerlink" title="制限と料金"></a>制限と料金</h3><h4 id="利用可能なリージョン（AZ-ID-コンソールの表記とは異なる）"><a href="#利用可能なリージョン（AZ-ID-コンソールの表記とは異なる）" class="headerlink" title="利用可能なリージョン（AZ ID : コンソールの表記とは異なる）"></a>利用可能なリージョン（AZ ID : コンソールの表記とは異なる）</h4><p>※2024年5月</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ap-northeast-1</td>
+<td>apne1-az1&#x2F;apne1-az4</td>
+</tr>
+<tr>
+<td>us-east-1</td>
+<td>use1-az4&#x2F;use1-az5&#x2F;use1-az6</td>
+</tr>
+<tr>
+<td>ue-west-1</td>
+<td>usw2-az1&#x2F;usw2-az3&#x2F;usw2-az4</td>
+</tr>
+<tr>
+<td>eu-north-1</td>
+<td>eun1-az1&#x2F;eun1-az2&#x2F;eun1-az3</td>
+</tr>
+</tbody></table>
+<h4 id="料金"><a href="#料金" class="headerlink" title="料金"></a>料金</h4><p>※2024年5月</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>S3 Express One Zone</th>
+<th>S3 Standard</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ストレージ料金</td>
+<td>$0.18&#x2F;GB</td>
+<td>$0.025&#x2F;GB</td>
+</tr>
+<tr>
+<td>Getリクエスト料金</td>
+<td>$0.00019&#x2F;1000 Request</td>
+<td>$0.00037&#x2F;1000 Request</td>
+</tr>
+<tr>
+<td>Putリクエスト料金</td>
+<td>$0.0024&#x2F;1000 Request</td>
+<td>$0.0047&#x2F;1000 Request</td>
+</tr>
+</tbody></table>
+<p>上記に加えて、データIOの時間が短縮されることでコンピュートリソースの削減が可能な可能性がある(TCOで判断)</p>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/S3/">S3</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/05/05/CDK_3/"><span class="level-item">AWS Cloud Development Kit(CDK) part3</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">12</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">9</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#S3-Express-One-Zoneとは"><span class="level-left"><span class="level-item">1</span><span class="level-item">S3 Express One Zoneとは</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#実現する3つのポイント"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">実現する3つのポイント</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-コンピュートリソースと同じAZにデータを配置"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">1. コンピュートリソースと同じAZにデータを配置</span></span></a></li><li><a class="level is-mobile" href="#2-ディレクトバケット"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">2. ディレクトバケット</span></span></a></li></ul></li><li><a class="level is-mobile" href="#3-SDKによる効率的なアクセス"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">3. SDKによる効率的なアクセス</span></span></a></li><li><a class="level is-mobile" href="#4-ネットワークとセキュリティ"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">4. ネットワークとセキュリティ</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#２種類のAPIオペレーション"><span class="level-left"><span class="level-item">1.3.1</span><span class="level-item">２種類のAPIオペレーション</span></span></a></li><li><a class="level is-mobile" href="#セッションベースの認証"><span class="level-left"><span class="level-item">1.3.2</span><span class="level-item">セッションベースの認証</span></span></a></li><li><a class="level is-mobile" href="#IAMポリシーの記載方法は既存のものと異なる"><span class="level-left"><span class="level-item">1.3.3</span><span class="level-item">IAMポリシーの記載方法は既存のものと異なる</span></span></a></li><li><a class="level is-mobile" href="#VPCエンドポイントに対応"><span class="level-left"><span class="level-item">1.3.4</span><span class="level-item">VPCエンドポイントに対応</span></span></a></li></ul></li><li><a class="level is-mobile" href="#制限と料金"><span class="level-left"><span class="level-item">1.4</span><span class="level-item">制限と料金</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#利用可能なリージョン（AZ-ID-コンソールの表記とは異なる）"><span class="level-left"><span class="level-item">1.4.1</span><span class="level-item">利用可能なリージョン（AZ ID : コンソールの表記とは異なる）</span></span></a></li><li><a class="level is-mobile" href="#料金"><span class="level-left"><span class="level-item">1.4.2</span><span class="level-item">料金</span></span></a></li></ul></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CDK/"><span class="tag">CDK</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/CloudWatch/"><span class="tag">CloudWatch</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/DynamoDB/"><span class="tag">DynamoDB</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EC2/"><span class="tag">EC2</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/ECS/"><span class="tag">ECS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Redis/"><span class="tag">Redis</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/S3/"><span class="tag">S3</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Blackbelt/"><span class="level-start"><span class="level-item">Blackbelt</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/categories/Column/"><span class="level-start"><span class="level-item">Column</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-06-29T05:00:00.000Z">2024-06-29</time></p><p class="title"><a href="/2024/06/29/S3_expressonezone/">Amazon S3 Express One Zone</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-05-05T01:25:00.000Z">2024-05-05</time></p><p class="title"><a href="/2024/05/05/CDK_3/">AWS Cloud Development Kit(CDK) part3</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-05-02T01:30:00.000Z">2024-05-02</time></p><p class="title"><a href="/2024/05/02/CDK_2/">AWS Cloud Development Kit(CDK) part2</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-29T12:00:00.000Z">2024-04-29</time></p><p class="title"><a href="/2024/04/29/CDK_1/">AWS Cloud Development Kit(CDK) part1</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-28T14:55:00.000Z">2024-04-28</time></p><p class="title"><a href="/2024/04/28/ECS/">Amazon Elastic Container Service</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/06/"><span class="level-start"><span class="level-item">June 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/05/"><span class="level-start"><span class="level-item">May 2024</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

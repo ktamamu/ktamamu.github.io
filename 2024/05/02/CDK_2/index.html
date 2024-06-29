@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>AWS Cloud Development Kit(CDK) part2 - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Tamamu blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="出典：AWS Blackbelt"><meta property="og:type" content="blog"><meta property="og:title" content="AWS Cloud Development Kit(CDK) part2"><meta property="og:url" content="https://ktamamu.github.io/2024/05/02/CDK_2/"><meta property="og:site_name" content="Tamamu blog"><meta property="og:description" content="出典：AWS Blackbelt"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://ktamamu.github.io/images/twcard.jpeg"><meta property="article:published_time" content="2024-05-02T01:30:00.000Z"><meta property="article:modified_time" content="2024-06-29T05:04:52.741Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="CDK"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://ktamamu.github.io/images/twcard.jpeg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ktamamu.github.io/2024/05/02/CDK_2/"},"headline":"AWS Cloud Development Kit(CDK) part2","image":[],"datePublished":"2024-05-02T01:30:00.000Z","dateModified":"2024-06-29T05:04:52.741Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"出典：AWS Blackbelt"}</script><link rel="canonical" href="https://ktamamu.github.io/2024/05/02/CDK_2/"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.1"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-05-02T01:30:00.000Z" title="2024/5/2 10:30:00">2024-05-02</time></span><span class="level-item"><a class="link-muted" href="/categories/Blackbelt/">Blackbelt</a></span></div></div><h1 class="title is-3 is-size-4-mobile">AWS Cloud Development Kit(CDK) part2</h1><div class="content"><p>出典：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=aqa2bFFzcjs">AWS Blackbelt</a></p>
+<span id="more"></span>
+
+<h2 id="CDKのライフサイクル"><a href="#CDKのライフサイクル" class="headerlink" title="CDKのライフサイクル"></a>CDKのライフサイクル</h2><p>AWS CDK -&gt; AWS CloudFormation -&gt; AWS Cloud</p>
+<ul>
+<li><p>AWS CDK<br>From: Source Code , To: CloudFormation Template</p>
+<ol>
+<li>Construct</li>
+<li>Prepare</li>
+<li>Validate</li>
+<li>Symthetize</li>
+</ol>
+<ul>
+<li>リソースのあるべき状態を宣言</li>
+<li>CloudFormationテンプレートにロジックは含めることはできないため、未確定な値はCDKまたは別のプログラムで解決してCloudFormationに渡す必要がある</li>
+</ul>
+</li>
+<li><p>AWS CloudFormation<br>Copy: Template , Props: Resources</p>
+<ul>
+<li>ユーザーの指示をテンプレートとして受け取ってAPI呼び出し</li>
+<li>スタックに永続化<ul>
+<li>テンプレートのコピー</li>
+<li>管理しているリソースの設定</li>
+<li>Export &#x2F; Import　された値</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CDK-Appのライフサイクル"><a href="#CDK-Appのライフサイクル" class="headerlink" title="CDK Appのライフサイクル"></a>CDK Appのライフサイクル</h3><ul>
+<li>CDK AppはCDK CLIによって実行され、さらに実行は４つの内部フェーズに分かれる</li>
+<li>コードは基本的にConstructionフェーズで実行される<ul>
+<li>後続フェーズでValidateされる例：RestApiにメソッドが一つも含まれない場合にエラーにする</li>
+</ul>
+</li>
+<li>コードの実行が完了してからCloudFormationやAssetのデプロイが行われる<ul>
+<li>コード上でデプロイ時に決定される値を受け取ったり、デプロイ中に処理を実行したりすることはできない<br>(未決定の値を扱うTokenやCustom Resource, Triggerなどの機能でカバー可能)</li>
+</ul>
+</li>
+</ul>
+<h3 id="CDK-AppとCDK-Toolkit"><a href="#CDK-AppとCDK-Toolkit" class="headerlink" title="CDK AppとCDK Toolkit"></a>CDK AppとCDK Toolkit</h3><ul>
+<li>CDK AppとCDK Toolkit(CLI)は直接統合しない<ul>
+<li>CDK Appをコマンドで実行（別プロセス）</li>
+<li>Contextは環境変数やJSONで渡す（言語非依存）</li>
+</ul>
+</li>
+<li><code>valueFromLookup</code>などによって未解決のContext値が参照されるとCDK Appが複数回実行されることがある<ul>
+<li>CDK AppでSDK呼び出しや副作用のある処理を書く場合はパフォーマンスの劣化や冪等性、権限などに注意が必要</li>
+</ul>
+</li>
+</ul>
+<h3 id="差分の検出"><a href="#差分の検出" class="headerlink" title="差分の検出"></a>差分の検出</h3><ul>
+<li>AWS CDK<ul>
+<li><code>cdk diff</code>コマンド<ul>
+<li>合成したテンプレートとすでにデプロイ済みのテンプレートを比較</li>
+<li>リソースの置換が起こるかどうかも仕様から確認</li>
+</ul>
+</li>
+<li>CDKのスナップショットテスト<ul>
+<li>合成したテンプレートと以前のテンプレート（スナップショット）を比較</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>AWS CloudFormation<ul>
+<li>CloudFormation変更セット<ul>
+<li>新しいテンプレートをアップロードし保存されているスタックリソースの状態と比較</li>
+<li>UpdateStackが呼ばれると以前の変更セットは削除</li>
+</ul>
+</li>
+<li>CloudFormationドリフト検出<ul>
+<li>保存されているあスタックリソースの状態と現在のリソースの状態を比較</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="CDK-Appの構成要素"><a href="#CDK-Appの構成要素" class="headerlink" title="CDK Appの構成要素"></a>CDK Appの構成要素</h2><h3 id="Construct"><a href="#Construct" class="headerlink" title="Construct"></a>Construct</h3><ul>
+<li>クラウドコンポーネントを表現する<ul>
+<li>単一のリソースだけでなく、複数のリソースを含んだConstructを定義可能</li>
+<li>AppやStackなどのクラスもConstructで実装している</li>
+</ul>
+</li>
+<li>AWS Construct Libraryが標準で提供されるほかユーザーが独自の Constructを定義・配布可能</li>
+<li>Construct Programming Model(CPM)の一部<ul>
+<li>クラウドアプリケーションなどの望ましい状態を定義して抽象化するためのプログラミングモデル</li>
+<li>CDKv2からConstructは独立したライブラリとなり、CDKTF,CDK8s,Prohenなどの他のツールでも使用される</li>
+</ul>
+</li>
+</ul>
+<p><strong>Constructのシグネチャ</strong></p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>仮引数</th>
+<th>型</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>scope</td>
+<td>Construct</td>
+<td>Constructツリーの親を指定。通常は現在のスコープを表す<code>this</code>になる。任意のConstructを渡す場合はIDの重複に注意</td>
+</tr>
+<tr>
+<td>2</td>
+<td>id</td>
+<td>string</td>
+<td>Construct IDと呼ばれる。Scope内で一位となる識別子を指定、リソース名や論理IDの一部になる</td>
+</tr>
+<tr>
+<td>3</td>
+<td>props</td>
+<td>Constructごとの固有の型</td>
+<td>Constructの初期状態を定義するプロパティ、適切なデフォルト値が用意されており、すべてのプロパティがオプションのこともある</td>
+</tr>
+</tbody></table>
+<p><strong>複数のConstructをまとめる（コンポジション）</strong></p>
+<ul>
+<li>Constructを継承したクラスを定義して複数のConstructをまとめる</li>
+<li>CDKでコンポーネトを構造化する最も一般的な方法<ul>
+<li>CloudFormationではStackとテンプレートが1:1対応だが、CDKではStackを複数のConstructから構成可能で、ファイルの分割も自由に行える</li>
+</ul>
+</li>
+<li>作成したハイレベルのConstructをライブラリとして共有する場合はProjenの利用を推奨</li>
+</ul>
+<p><strong>Construct IDと物理名</strong></p>
+<ul>
+<li>Construct IDはコンストラクトを初期化するときに第二引数に指定する文字列のこと<ul>
+<li>スタック名にはConstruct IDがそのまま使われる</li>
+<li>物理名には<code>&lt;Stack&gt;ー</code>が前置され、リソースまでのConstructのパスが統合して使われる</li>
+<li>StageでStackをまとめると<code>&lt;Stage&gt;-</code>が前置される</li>
+</ul>
+</li>
+</ul>
+<h3 id="App"><a href="#App" class="headerlink" title="App"></a>App</h3><ul>
+<li>エントリーポイント</li>
+<li>複数のAWSアカウント、リージョンをまたいでStackを一元管理</li>
+<li>Stackの依存関係からデプロイ順序を自動で管理</li>
+<li>CDK CLIから実行され、Cloud Assemblyを作成、CDK CLIによりCloud Assemblyのデプロイが行われる</li>
+</ul>
+<h3 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h3><ul>
+<li>CloudFormationスタックに対応するため、制約も同様に受ける</li>
+<li>StackごとにAWSアカウント、リージョンを指定可能</li>
+<li>tagsプロパティをｐ指定してStack自身と配下のタグ付け可能なリソースにタグ付けされる</li>
+</ul>
+<h3 id="Stage"><a href="#Stage" class="headerlink" title="Stage"></a>Stage</h3><ul>
+<li>複数のStackをまとめて論理的なアプリ(サービス)のかたまりを表現</li>
+<li>１つのStageを定義して環境ごとにインスタンスすることで複製が可能</li>
+<li>CDK Pipelines使用時には必須</li>
+</ul>
+<h3 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h3><ul>
+<li>StackやStageを初期化するときにデプロイ先のAWSアカウントとリージョンを指定</li>
+<li>env,account,regionいずれも指定はオプション<ul>
+<li>指定を省略すると、環境に依存しないスタックとみなされる(environment-agnostic)</li>
+<li>この場合<code>Vpc.fromLookup</code>や<code>stack.region</code>などの環境を特定する必要のあるコードは機能しない</li>
+</ul>
+</li>
+<li>環境変数<code>CDK_DEFAULT_ACCOUNT</code>と<code>CDK_DEFAULT_REGION</code>がCDK CLIにより提供</li>
+</ul>
+<h3 id="Asset"><a href="#Asset" class="headerlink" title="Asset"></a>Asset</h3><ul>
+<li>CDK Appと一緒にデプロイできるファイルやディレクトリ、Dockerイメージ</li>
+<li>zip圧縮またはdocker buildとアップロードはCDK CLIによって実行される</li>
+<li>バンドル時に任意のビルドコマンドを実行可能</li>
+</ul>
+<h3 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h3><ul>
+<li>CDK Appから参照できるKey-Valueペア</li>
+<li>cdk.jsonのcontextプロパティとCDK CLIの<code>-c</code>,<code>--context</code>で任意の値を渡せる</li>
+<li>CDK CLIは合成中に未解決の値がレポートされるとAWS SDKを使用して解決、<code>cdk.context.json</code>にキャッシュ</li>
+<li><code>cdk.context.json</code>は手で編集せず、Gitで管理することを推奨</li>
+<li><code>cdk context --reset</code>でリセット</li>
+</ul>
+<h3 id="Feature-Flag"><a href="#Feature-Flag" class="headerlink" title="Feature Flag"></a>Feature Flag</h3><ul>
+<li>後方互換性を保ちながらCDKを進化させたり、特定のクラスやメソッドの動作を変更できるようにする</li>
+<li>cdk.jsonにコンテキスト値として指定(<code>cdk context --reset</code>ではリセットされない)</li>
+<li>cdk initで新しいプロジェクトを作成した場合、推奨されるすべての機能フラグを有効にしたcdk.jsonを生成する</li>
+</ul>
+<h3 id="Bootstrapping"><a href="#Bootstrapping" class="headerlink" title="Bootstrapping"></a>Bootstrapping</h3><ul>
+<li>Appをデプロイする前に、ファイル保存するためのS3バケットやECRリポジトリ、IAM Roleなどを作成するプロセス</li>
+<li>AWSアカウントとリージョンごとにBootstrapが必要</li>
+<li>CDK pipelinesを使用する場合など、別のアカウントへのデプロイ許可は<code>--trust</code>オプションが使用可能</li>
+</ul>
+<h3 id="Token"><a href="#Token" class="headerlink" title="Token"></a>Token</h3><ul>
+<li>Appで未解決の値を扱うためのクラス</li>
+<li>合成中の後続のコードで決定される値<ul>
+<li>Lazy.stringなど</li>
+<li>produce関数で値を返す実装を行う必要がある</li>
+</ul>
+</li>
+<li>デプロイ時に決定される値<ul>
+<li>S3バケット名などのプロパティはTokenを返す</li>
+<li>合成後にCloudFormationのRef関数に変換される</li>
+</ul>
+</li>
+<li>Tokenを参照するとプレースホルダが返る<ul>
+<li>ほかのリソースに渡せるが、文字列結合以外の演算は不可</li>
+</ul>
+</li>
+</ul>
+<h3 id="Aspect"><a href="#Aspect" class="headerlink" title="Aspect"></a>Aspect</h3><ul>
+<li>指定されたスコープのすべてのConstructへの捜査を実装可能</li>
+<li>タグをつけたり、削除ポリシーを設定したり、暗号化の有無をチェックすることなどが可能</li>
+<li>Prepareフェーズでvisit関数が呼び出される</li>
+<li>Stageをまたいだ適用はできない</li>
+</ul>
+<h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><ul>
+<li>指定されたスコープのすべてのConstructに一括でタグ付け可能</li>
+<li>タグの捜査が競合した場合、priorityの高いものが採用される</li>
+<li>Aspectを使用しているため、Stageをまたいだ適用はできない</li>
+<li>タグ付け可能なリソースのみに付与される</li>
+</ul>
+<h2 id="リソースとパラメータの参照"><a href="#リソースとパラメータの参照" class="headerlink" title="リソースとパラメータの参照"></a>リソースとパラメータの参照</h2><h3 id="CDK-App内のリソース参照"><a href="#CDK-App内のリソース参照" class="headerlink" title="CDK App内のリソース参照"></a>CDK App内のリソース参照</h3><ul>
+<li>組み込み関数で値を解決可能</li>
+<li>CDKアプリのコード内でリソースを参照すると、CloudFormationの組み込み関数に変換される<ul>
+<li>CDK App内で値にアクセスするとTokenが返る</li>
+</ul>
+</li>
+</ul>
+<h3 id="参照するリソースの場所に応じてテンプレートを合成"><a href="#参照するリソースの場所に応じてテンプレートを合成" class="headerlink" title="参照するリソースの場所に応じてテンプレートを合成"></a>参照するリソースの場所に応じてテンプレートを合成</h3><ul>
+<li>同じStack内のリソース<ul>
+<li><code>!Ref</code>または<code>!GetAtt</code></li>
+</ul>
+</li>
+<li>別のStack内のリソース<ul>
+<li><code>Export</code>と<code>!ImportValue</code>のセット</li>
+</ul>
+</li>
+<li>別のリージョンのリソース<ul>
+<li><code>Export</code>とCustomResourceによって消費側のリージョンにSSMParameterを作成し<code>!GetAtt</code>で取得</li>
+</ul>
+</li>
+<li>別のStageのリソース<ul>
+<li>参照不可</li>
+</ul>
+</li>
+</ul>
+<h3 id="AWS-CDKのクロスリージョン参照-Preview"><a href="#AWS-CDKのクロスリージョン参照-Preview" class="headerlink" title="AWS CDKのクロスリージョン参照(Preview)"></a>AWS CDKのクロスリージョン参照(Preview)</h3><ul>
+<li>CDKが自動的にCustomResourceとSSM Parameter Store作成</li>
+<li>提供側と消費側の両方に指定<code>crossRegionReferences: true</code>(※v2.79.0現在)</li>
+</ul>
+<h3 id="パラメータ・スークレット参照の使い分け"><a href="#パラメータ・スークレット参照の使い分け" class="headerlink" title="パラメータ・スークレット参照の使い分け"></a>パラメータ・スークレット参照の使い分け</h3><ul>
+<li>シークレット値<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> secure1 = <span class="title class_">SecretValue</span>.<span class="title function_">ssmSecure</span>(<span class="string">&#x27;CdkConfSecret1&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> secure1 = <span class="title class_">SecretValue</span>.<span class="title function_">secretManager</span>(<span class="string">&#x27;CdkConfSecret2&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>平文パラメータ<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> param1 = <span class="title class_">StringParameter</span>.<span class="title function_">valueForStringParameter</span>(stack, <span class="string">&#x27;P1&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>Synth時に値を解決<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> param1 = <span class="title class_">StringParameter</span>.<span class="title function_">valueFromLookup</span>(stack, <span class="string">&#x27;P2&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+<li>パラメータ・シークレットのリソース<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> param1ref = </span><br><span class="line"><span class="title class_">StringParameter</span>.<span class="title function_">fromStringParameterName</span>(stack, <span class="string">&#x27;P1Ref&#x27;</span>, <span class="string">&#x27;P1&#x27;</span>);</span><br><span class="line"><span class="title class_">Tags</span>.<span class="title function_">of</span>(bucker).<span class="title function_">add</span>(<span class="string">&#x27;Param1&#x27;</span>, param1ref.<span class="property">stringValue</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="環境ごとにテンプレートを出しわける方法"><a href="#環境ごとにテンプレートを出しわける方法" class="headerlink" title="環境ごとにテンプレートを出しわける方法"></a>環境ごとにテンプレートを出しわける方法</h3><ul>
+<li>外部のパラメータを読み込む方法</li>
+<li>スタックを定義する方法</li>
+</ul>
+<h2 id="リソースのインポート"><a href="#リソースのインポート" class="headerlink" title="リソースのインポート"></a>リソースのインポート</h2><h3 id="CloudFormationへのリソースのインポート"><a href="#CloudFormationへのリソースのインポート" class="headerlink" title="CloudFormationへのリソースのインポート"></a>CloudFormationへのリソースのインポート</h3><p><code>cdk import</code></p>
+<ul>
+<li>前提条件：テンプレートとリソースの設定はセット</li>
+<li>現在のリソースの状態と一致するテンプレートを用意してインポートを実施(OSSのFormer2などを利用する)</li>
+</ul>
+<h3 id="インポート手順例"><a href="#インポート手順例" class="headerlink" title="インポート手順例"></a>インポート手順例</h3><ol>
+<li>Former2 で L1 Constructを生成</li>
+<li><code>cdk import</code></li>
+<li>ドリフトがないことを確認</li>
+<li>Snapshot testを作成</li>
+<li>L2 Constructにリファクタリング</li>
+</ol>
+<h2 id="CloudFormation資産の活用"><a href="#CloudFormation資産の活用" class="headerlink" title="CloudFormation資産の活用"></a>CloudFormation資産の活用</h2><h3 id="CloudFormationへのリソースのインクルード"><a href="#CloudFormationへのリソースのインクルード" class="headerlink" title="CloudFormationへのリソースのインクルード"></a>CloudFormationへのリソースのインクルード</h3><p><code>CfnInclude</code></p>
+<ul>
+<li>CloudFormationのテンプレートを再利用</li>
+<li><code>preserveLogicalIds: false</code>を指定することで論理IDの命名をCDKに任せられる(デフォルトtrue)</li>
+<li>インクルードした添付れーどで作成したリソースは<code>getResource()</code>などでアクセス可能</li>
+</ul>
+<h3 id="CloudFormationスタックをCDKに移行"><a href="#CloudFormationスタックをCDKに移行" class="headerlink" title="CloudFormationスタックをCDKに移行"></a>CloudFormationスタックをCDKに移行</h3><ul>
+<li><code>CfnInclude</code>を行うスコープのスタック名を合わせる<ul>
+<li>通常はConstruct ID(<code>new Stack()</code>の第2引数)</li>
+<li>Stage配下の場合は<code>stackName</code>プロパティを明示的に指定</li>
+</ul>
+</li>
+<li><code>cdk diff</code>でBootstrap関連のパラメータや条件のみが追加されていることを確認</li>
+</ul>
+<h3 id="CloudFormationからCDKへの移行方法"><a href="#CloudFormationからCDKへの移行方法" class="headerlink" title="CloudFormationからCDKへの移行方法"></a>CloudFormationからCDKへの移行方法</h3><ul>
+<li>デプロイ済みのスタックを維持して移行<ul>
+<li>デプロイ済みのスタックを変更しないため稼働中アプリへの影響を与えづらい</li>
+<li>スタック構成の変更やL2 Constructへのリファクタなどが段階的に行える</li>
+<li>リファクタ時にステート富楼那リソースの論理IDが変更される場合<code>overrideLogicakId()</code>で維持</li>
+<li>移行手順</li>
+</ul>
+<ol>
+<li><code>CfnInclude</code>で既存のスタック名と合わせてデプロイ</li>
+<li>Snapshot testを作成・実行</li>
+</ol>
+</li>
+<li>デプロイ済みのスタックを削除して移行<ul>
+<li>ステートフルなリソースのみインポート対象にする</li>
+<li>既存リソースの一部だけを利用したい場合に有効</li>
+<li>移行手順</li>
+</ul>
+<ol>
+<li>CloudFormationで<code>DeletionPolicy: Retain</code>を設定</li>
+<li>CloudFormationスタックを削除</li>
+<li>CDKでスタックを作成</li>
+<li>cdk import</li>
+</ol>
+</li>
+</ul>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/CDK/">CDK</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2024/05/05/CDK_3/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">AWS Cloud Development Kit(CDK) part3</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/04/29/CDK_1/"><span class="level-item">AWS Cloud Development Kit(CDK) part1</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">12</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">9</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ktamamu"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com/ktamamu"><i class="fab fa-twitter"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#CDKのライフサイクル"><span class="level-left"><span class="level-item">1</span><span class="level-item">CDKのライフサイクル</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#CDK-Appのライフサイクル"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">CDK Appのライフサイクル</span></span></a></li><li><a class="level is-mobile" href="#CDK-AppとCDK-Toolkit"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">CDK AppとCDK Toolkit</span></span></a></li><li><a class="level is-mobile" href="#差分の検出"><span class="level-left"><span class="level-item">1.3</span><span class="level-item">差分の検出</span></span></a></li></ul></li><li><a class="level is-mobile" href="#CDK-Appの構成要素"><span class="level-left"><span class="level-item">2</span><span class="level-item">CDK Appの構成要素</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Construct"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">Construct</span></span></a></li><li><a class="level is-mobile" href="#App"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">App</span></span></a></li><li><a class="level is-mobile" href="#Stack"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">Stack</span></span></a></li><li><a class="level is-mobile" href="#Stage"><span class="level-left"><span class="level-item">2.4</span><span class="level-item">Stage</span></span></a></li><li><a class="level is-mobile" href="#Environment"><span class="level-left"><span class="level-item">2.5</span><span class="level-item">Environment</span></span></a></li><li><a class="level is-mobile" href="#Asset"><span class="level-left"><span class="level-item">2.6</span><span class="level-item">Asset</span></span></a></li><li><a class="level is-mobile" href="#Context"><span class="level-left"><span class="level-item">2.7</span><span class="level-item">Context</span></span></a></li><li><a class="level is-mobile" href="#Feature-Flag"><span class="level-left"><span class="level-item">2.8</span><span class="level-item">Feature Flag</span></span></a></li><li><a class="level is-mobile" href="#Bootstrapping"><span class="level-left"><span class="level-item">2.9</span><span class="level-item">Bootstrapping</span></span></a></li><li><a class="level is-mobile" href="#Token"><span class="level-left"><span class="level-item">2.10</span><span class="level-item">Token</span></span></a></li><li><a class="level is-mobile" href="#Aspect"><span class="level-left"><span class="level-item">2.11</span><span class="level-item">Aspect</span></span></a></li><li><a class="level is-mobile" href="#Tags"><span class="level-left"><span class="level-item">2.12</span><span class="level-item">Tags</span></span></a></li></ul></li><li><a class="level is-mobile" href="#リソースとパラメータの参照"><span class="level-left"><span class="level-item">3</span><span class="level-item">リソースとパラメータの参照</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#CDK-App内のリソース参照"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">CDK App内のリソース参照</span></span></a></li><li><a class="level is-mobile" href="#参照するリソースの場所に応じてテンプレートを合成"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">参照するリソースの場所に応じてテンプレートを合成</span></span></a></li><li><a class="level is-mobile" href="#AWS-CDKのクロスリージョン参照-Preview"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">AWS CDKのクロスリージョン参照(Preview)</span></span></a></li><li><a class="level is-mobile" href="#パラメータ・スークレット参照の使い分け"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">パラメータ・スークレット参照の使い分け</span></span></a></li><li><a class="level is-mobile" href="#環境ごとにテンプレートを出しわける方法"><span class="level-left"><span class="level-item">3.5</span><span class="level-item">環境ごとにテンプレートを出しわける方法</span></span></a></li></ul></li><li><a class="level is-mobile" href="#リソースのインポート"><span class="level-left"><span class="level-item">4</span><span class="level-item">リソースのインポート</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#CloudFormationへのリソースのインポート"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">CloudFormationへのリソースのインポート</span></span></a></li><li><a class="level is-mobile" href="#インポート手順例"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">インポート手順例</span></span></a></li></ul></li><li><a class="level is-mobile" href="#CloudFormation資産の活用"><span class="level-left"><span class="level-item">5</span><span class="level-item">CloudFormation資産の活用</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#CloudFormationへのリソースのインクルード"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">CloudFormationへのリソースのインクルード</span></span></a></li><li><a class="level is-mobile" href="#CloudFormationスタックをCDKに移行"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">CloudFormationスタックをCDKに移行</span></span></a></li><li><a class="level is-mobile" href="#CloudFormationからCDKへの移行方法"><span class="level-left"><span class="level-item">5.3</span><span class="level-item">CloudFormationからCDKへの移行方法</span></span></a></li></ul></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/CDK/"><span class="tag">CDK</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/CloudWatch/"><span class="tag">CloudWatch</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/DynamoDB/"><span class="tag">DynamoDB</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EC2/"><span class="tag">EC2</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/ECS/"><span class="tag">ECS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/EventBridge/"><span class="tag">EventBridge</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/KMS/"><span class="tag">KMS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Redis/"><span class="tag">Redis</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/S3/"><span class="tag">S3</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Blackbelt/"><span class="level-start"><span class="level-item">Blackbelt</span></span><span class="level-end"><span class="level-item tag">11</span></span></a></li><li><a class="level is-mobile" href="/categories/Column/"><span class="level-start"><span class="level-item">Column</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-06-29T05:00:00.000Z">2024-06-29</time></p><p class="title"><a href="/2024/06/29/S3_expressonezone/">Amazon S3 Express One Zone</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-05-05T01:25:00.000Z">2024-05-05</time></p><p class="title"><a href="/2024/05/05/CDK_3/">AWS Cloud Development Kit(CDK) part3</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-05-02T01:30:00.000Z">2024-05-02</time></p><p class="title"><a href="/2024/05/02/CDK_2/">AWS Cloud Development Kit(CDK) part2</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-29T12:00:00.000Z">2024-04-29</time></p><p class="title"><a href="/2024/04/29/CDK_1/">AWS Cloud Development Kit(CDK) part1</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-28T14:55:00.000Z">2024-04-28</time></p><p class="title"><a href="/2024/04/28/ECS/">Amazon Elastic Container Service</a></p><p class="categories"><a href="/categories/Blackbelt/">Blackbelt</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/06/"><span class="level-start"><span class="level-item">June 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/05/"><span class="level-start"><span class="level-item">May 2024</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2024 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
