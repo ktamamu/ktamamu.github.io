@@ -1,1 +1,1 @@
-{"name":"Tamamu blog","short_name":null,"start_url":"/index.html","theme_color":null,"background_color":null,"display":"standalone","icons":[{"src":"","sizes":"","type":null}]}
+{"name":"Tamamu Blog","short_name":"Tamamu Blog","start_url":"/","theme_color":"#2c3e50","background_color":"#ffffff","display":"standalone","icons":[{"src":"/images/favicon.ico","sizes":"32x32","type":"image/x-icon"}]}
