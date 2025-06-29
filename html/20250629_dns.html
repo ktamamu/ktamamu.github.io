@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2c3e50"><meta name="application-name" content="Tamamu Blog"><meta name="msapplication-TileImage" content="/images/favicon.ico"><meta name="msapplication-TileColor" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" sizes="32x32" href="/images/favicon.ico"><meta name="description" content="Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較                               body {                 font-family: &amp;quot;Segoe UI&amp;quot;, Tahoma, Geneva, Verdana, sans-serif;"><meta property="og:type" content="blog"><meta property="og:title" content="Tamamu blog"><meta property="og:url" content="https://blog.tamamu.cc/html/20250629_dns.html"><meta property="og:site_name" content="Tamamu Blog"><meta property="og:description" content="Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較                               body {                 font-family: &amp;quot;Segoe UI&amp;quot;, Tahoma, Geneva, Verdana, sans-serif;"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="article:published_time" content="2025-06-29T08:19:24.406Z"><meta property="article:modified_time" content="2025-06-29T08:03:07.352Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="tech"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:image:src" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="twitter:creator" content="@ktamamu"><meta property="twitter:site" content="@ktamamu"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.tamamu.cc/html/20250629_dns.html"},"headline":"Tamamu blog","image":[],"datePublished":"2025-06-29T08:19:24.406Z","dateModified":"2025-06-29T08:03:07.352Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較                               body {                 font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;"}</script><link rel="canonical" href="https://blog.tamamu.cc/html/20250629_dns.html"><link rel="alternate" href="/atom.xml" title="Tamamu blog" type="application/atom+xml"><link rel="icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2c3e50"><meta name="application-name" content="Tamamu Blog"><meta name="msapplication-TileImage" content="/images/favicon.ico"><meta name="msapplication-TileColor" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" sizes="32x32" href="/images/favicon.ico"><meta name="description" content="Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較                               body {                 font-family: &amp;quot;Segoe UI&amp;quot;, Tahoma, Geneva, Verdana, sans-serif;"><meta property="og:type" content="blog"><meta property="og:title" content="Tamamu blog"><meta property="og:url" content="https://blog.tamamu.cc/html/20250629_dns.html"><meta property="og:site_name" content="Tamamu Blog"><meta property="og:description" content="Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較                               body {                 font-family: &amp;quot;Segoe UI&amp;quot;, Tahoma, Geneva, Verdana, sans-serif;"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="article:published_time" content="2025-06-29T08:26:54.119Z"><meta property="article:modified_time" content="2025-06-29T08:26:54.119Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="tech"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:image:src" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="twitter:creator" content="@ktamamu"><meta property="twitter:site" content="@ktamamu"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.tamamu.cc/html/20250629_dns.html"},"headline":"Tamamu blog","image":[],"datePublished":"2025-06-29T08:26:54.119Z","dateModified":"2025-06-29T08:26:54.119Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較                               body {                 font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;"}</script><link rel="canonical" href="https://blog.tamamu.cc/html/20250629_dns.html"><link rel="alternate" href="/atom.xml" title="Tamamu blog" type="application/atom+xml"><link rel="icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
   (function () {
       function switchTab() {
           if (!location.hash) {
@@ -42,21 +42,22 @@
                 font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
                 margin: 0;
                 padding: 20px;
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                background: #f8f9fa;
                 min-height: 100vh;
+                line-height: 1.6;
             }
 
             .container {
-                max-width: 1200px;
+                max-width: 600px;
                 margin: 0 auto;
                 background: white;
-                border-radius: 15px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
                 overflow: hidden;
             }
 
             .header {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                background: #0969da;
                 color: white;
                 padding: 20px;
                 text-align: center;
@@ -64,8 +65,8 @@
 
             .header h1 {
                 margin: 0;
-                font-size: 24px;
-                font-weight: 300;
+                font-size: 20px;
+                font-weight: 600;
             }
 
             .content {
@@ -259,13 +260,22 @@
                 background: #28a745;
             }
 
+            .diagram img {
+                border: 1px solid #dee2e6;
+                border-radius: 6px;
+            }
+            
             @media (max-width: 768px) {
                 .comparison {
                     grid-template-columns: 1fr;
                 }
 
                 .content {
-                    padding: 20px;
+                    padding: 15px;
+                }
+                
+                .container {
+                    margin: 10px;
                 }
             }
         </style>
@@ -286,73 +296,16 @@
                     </div>
 
                     <div class="diagram">
-                        <div
-                            style="
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: flex-start;
-                            "
-                        >
-                            <div class="network-box onprem" style="flex: 1">
-                                <div class="network-title">
-                                    🏢 オンプレミス環境
-                                </div>
-
-                                <div class="server-box client">
-                                    <strong>クライアント</strong><br />
-                                    <small>10.1.1.100</small>
-                                </div>
-
-                                <div class="arrow">↓</div>
-
-                                <div class="server-box dns-server">
-                                    <strong>リゾルバーDNSサーバー</strong><br />
-                                    <small>10.1.1.3</small><br />
-                                    <div class="highlight">
-                                        条件付きフォワーダー設定
-                                    </div>
-                                </div>
-
-                                <div class="config-box">
-                                    zone "intra.example.com" {<br />
-                                    &nbsp;&nbsp;forwarders { 10.1.1.2; };<br />
-                                    }<br />
-                                    zone "delegate-test.intra.example.com" {<br />
-                                    &nbsp;&nbsp;forwarders { 10.128.130.26;
-                                    };<br />
-                                    }
-                                </div>
-
-                                <div class="server-box dns-server">
-                                    <strong>権威DNSサーバー</strong><br />
-                                    <small>10.1.1.2</small><br />
-                                    <div class="highlight">
-                                        intra.example.com を管理
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="network-box aws" style="flex: 1">
-                                <div class="network-title">☁️ AWS VPC</div>
-
-                                <div class="server-box route53">
-                                    <strong
-                                        >Route 53 インバウンド<br />エンドポイント</strong
-                                    ><br />
-                                    <small>10.128.130.26</small>
-                                </div>
-
-                                <div class="arrow">↓</div>
-
-                                <div class="server-box route53">
-                                    <strong
-                                        >Route 53<br />プライベートホストゾーン</strong
-                                    ><br />
-                                    <div class="highlight">
-                                        delegate-test.intra.example.com
-                                    </div>
-                                </div>
-                            </div>
+                        <img src="images/dns_conditional_forwarder.svg" alt="条件付きフォワーダー構成図" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;" />
+                        
+                        <div class="config-box" style="margin-top: 20px;">
+                            <strong>リゾルバーDNS設定:</strong><br/>
+                            zone "intra.example.com" {<br />
+                            &nbsp;&nbsp;forwarders { 10.1.1.2; };<br />
+                            }<br />
+                            zone "delegate-test.intra.example.com" {<br />
+                            &nbsp;&nbsp;forwarders { 10.128.130.26; };<br />
+                            }
                         </div>
                     </div>
 
@@ -397,79 +350,19 @@
                     <div class="section-title">新しい構成：DNS委任</div>
 
                     <div class="diagram">
-                        <div
-                            style="
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: flex-start;
-                            "
-                        >
-                            <div class="network-box onprem" style="flex: 1">
-                                <div class="network-title">
-                                    🏢 オンプレミス環境
-                                </div>
-
-                                <div class="server-box client">
-                                    <strong>クライアント</strong><br />
-                                    <small>10.1.1.100</small>
-                                </div>
-
-                                <div class="arrow">↓</div>
-
-                                <div class="server-box dns-server">
-                                    <strong>リゾルバーDNSサーバー</strong><br />
-                                    <small>10.1.1.3</small><br />
-                                    <div class="highlight">
-                                        シンプルな転送設定
-                                    </div>
-                                </div>
-
-                                <div class="config-box">
-                                    zone "intra.example.com" {<br />
-                                    &nbsp;&nbsp;forwarders { 10.1.1.2; };<br />
-                                    }<br />
-                                    <span style="color: #28a745"
-                                        >// サブドメインの設定は不要！</span
-                                    >
-                                </div>
-
-                                <div class="server-box dns-server">
-                                    <strong>権威DNSサーバー</strong><br />
-                                    <small>10.1.1.2</small><br />
-                                    <div class="highlight">委任設定あり</div>
-                                </div>
-
-                                <div class="config-box">
-                                    delegate-test IN NS ns1.delegate-test<br />
-                                    ns1.delegate-test IN A 10.128.130.26<br />
-                                    <span style="color: #28a745"
-                                        >// 正式な委任関係</span
-                                    >
-                                </div>
-                            </div>
-
-                            <div class="network-box aws" style="flex: 1">
-                                <div class="network-title">☁️ AWS VPC</div>
-
-                                <div class="server-box route53">
-                                    <strong
-                                        >Route 53 インバウンド<br />エンドポイント</strong
-                                    ><br />
-                                    <small>10.128.130.26</small><br />
-                                    <div class="highlight">Delegation対応</div>
-                                </div>
-
-                                <div class="arrow">↓</div>
-
-                                <div class="server-box route53">
-                                    <strong
-                                        >Route 53<br />プライベートホストゾーン</strong
-                                    ><br />
-                                    <div class="highlight">
-                                        delegate-test.intra.example.com
-                                    </div>
-                                </div>
-                            </div>
+                        <img src="images/dns_delegation.svg" alt="DNS委任構成図" style="width: 100%; max-width: 500px; height: auto; display: block; margin: 0 auto;" />
+                        
+                        <div class="config-box" style="margin-top: 20px;">
+                            <strong>リゾルバーDNS設定:</strong><br/>
+                            zone "intra.example.com" {<br />
+                            &nbsp;&nbsp;forwarders { 10.1.1.2; };<br />
+                            }<br />
+                            <span style="color: #28a745">// サブドメインの設定は不要！</span>
+                            <br/><br/>
+                            <strong>権威DNS委任設定:</strong><br/>
+                            delegate-test IN NS ns1.delegate-test<br />
+                            ns1.delegate-test IN A 10.128.130.26<br />
+                            <span style="color: #28a745">// 正式な委任関係</span>
                         </div>
                     </div>
 
