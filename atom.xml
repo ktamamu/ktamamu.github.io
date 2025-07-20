@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Tamamu blog</title>
+  <icon>https://blog.tamamu.cc/icon.png</icon>
+  
+  <link href="https://blog.tamamu.cc/atom.xml" rel="self"/>
+  
+  <link href="https://blog.tamamu.cc/"/>
+  <updated>2025-06-29T14:57:36.468Z</updated>
+  <id>https://blog.tamamu.cc/</id>
+  
+  <author>
+    <name>ktamamu</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Route53とオンプレDNSにおける条件付きフォワーダーと委任の構成比較</title>
+    <link href="https://blog.tamamu.cc/2025/06/29/dns_forward/"/>
+    <id>https://blog.tamamu.cc/2025/06/29/dns_forward/</id>
+    <published>2025-06-29T09:10:00.000Z</published>
+    <updated>2025-06-29T14:57:36.468Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Route 53 リゾルバーのエンドポイントを使ったプライベートホストゾーンへのサブドメインの委任について、Qiita(※)で解説記事を拝見してその構成を条件付きフォワーダーと比べるとどうなるか構成図に表してみました。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="DNS" scheme="https://blog.tamamu.cc/categories/DNS/"/>
+    
+    
+    <category term="Route53" scheme="https://blog.tamamu.cc/tags/Route53/"/>
+    
+    <category term="DNS" scheme="https://blog.tamamu.cc/tags/DNS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SlackのIncoming Webhooksについて</title>
+    <link href="https://blog.tamamu.cc/2025/06/25/slack_webhooks/"/>
+    <id>https://blog.tamamu.cc/2025/06/25/slack_webhooks/</id>
+    <published>2025-06-25T14:55:00.000Z</published>
+    <updated>2025-06-29T14:44:08.301Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;自分の知っていたSlackのIncoming-WebhookはLegacyとしてかなり前に非推奨になっていた話。&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="Slack" scheme="https://blog.tamamu.cc/categories/Slack/"/>
+    
+    
+    <category term="Slack" scheme="https://blog.tamamu.cc/tags/Slack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sshdの接続元を日本のIPに限定する</title>
+    <link href="https://blog.tamamu.cc/2025/06/23/jp_allow/"/>
+    <id>https://blog.tamamu.cc/2025/06/23/jp_allow/</id>
+    <published>2025-06-22T15:16:00.000Z</published>
+    <updated>2025-06-29T14:41:19.308Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://ipv4.fetus.jp/&quot;&gt;fetus 国／地域別IPアドレス割り振り一覧&lt;/a&gt; のIPリストを取得し、SSHの接続元を日本のIPに限定&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="Linux" scheme="https://blog.tamamu.cc/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="https://blog.tamamu.cc/tags/Linux/"/>
+    
+    <category term="Python" scheme="https://blog.tamamu.cc/tags/Python/"/>
+    
+    <category term="sshd" scheme="https://blog.tamamu.cc/tags/sshd/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zed editorでのBedrock接続（Proxy経由）</title>
+    <link href="https://blog.tamamu.cc/2025/06/22/zed_bedrock/"/>
+    <id>https://blog.tamamu.cc/2025/06/22/zed_bedrock/</id>
+    <published>2025-06-22T06:10:00.000Z</published>
+    <updated>2025-06-22T14:29:21.522Z</updated>
+    
+    
+    <summary type="html">&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://zed.dev/&quot;&gt;zed&lt;/a&gt; でAmazon Bedrock接続（Proxy経由）の設定メモ&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    <category term="Zed" scheme="https://blog.tamamu.cc/categories/Zed/"/>
+    
+    
+    <category term="Zed" scheme="https://blog.tamamu.cc/tags/Zed/"/>
+    
+    <category term="Bedrock" scheme="https://blog.tamamu.cc/tags/Bedrock/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>miseでのNodeバージョン管理</title>
+    <link href="https://blog.tamamu.cc/2025/06/22/mise/"/>
+    <id>https://blog.tamamu.cc/2025/06/22/mise/</id>
+    <published>2025-06-22T05:46:00.000Z</published>
+    <updated>2025-06-22T14:29:56.591Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;i class=&quot;fa-brands fa-github&quot;&gt;&lt;/i&gt; &lt;a href=&quot;https://github.com/jdx/mise&quot;&gt;mise&lt;/a&gt; の設定メモ&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Node.js" scheme="https://blog.tamamu.cc/categories/Node-js/"/>
+    
+    
+    <category term="Node.js" scheme="https://blog.tamamu.cc/tags/Node-js/"/>
+    
+    <category term="mise" scheme="https://blog.tamamu.cc/tags/mise/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>uvでのpythonバージョン管理と仮想環境管理</title>
+    <link href="https://blog.tamamu.cc/2025/06/22/uv/"/>
+    <id>https://blog.tamamu.cc/2025/06/22/uv/</id>
+    <published>2025-06-22T05:22:00.000Z</published>
+    <updated>2025-06-22T14:29:46.964Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;i class=&quot;fa-brands fa-github&quot;&gt;&lt;/i&gt; &lt;a href=&quot;https://github.com/astral-sh/uv&quot;&gt;uv&lt;/a&gt; の設定メモ&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Python" scheme="https://blog.tamamu.cc/categories/Python/"/>
+    
+    
+    <category term="Python" scheme="https://blog.tamamu.cc/tags/Python/"/>
+    
+    <category term="uv" scheme="https://blog.tamamu.cc/tags/uv/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zshとbashは違う</title>
+    <link href="https://blog.tamamu.cc/2024/09/07/zsh_bash/"/>
+    <id>https://blog.tamamu.cc/2024/09/07/zsh_bash/</id>
+    <published>2024-09-06T16:45:00.000Z</published>
+    <updated>2025-06-29T14:44:48.384Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;jqを使った時に気づいた話&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Mac" scheme="https://blog.tamamu.cc/categories/Mac/"/>
+    
+    
+    <category term="zsh" scheme="https://blog.tamamu.cc/tags/zsh/"/>
+    
+    <category term="bash" scheme="https://blog.tamamu.cc/tags/bash/"/>
+    
+  </entry>
+  
+</feed>
