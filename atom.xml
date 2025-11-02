@@ -6,7 +6,7 @@
   <link href="https://blog.tamamu.cc/atom.xml" rel="self"/>
   
   <link href="https://blog.tamamu.cc/"/>
-  <updated>2025-11-02T15:05:06.420Z</updated>
+  <updated>2025-11-02T15:07:05.233Z</updated>
   <id>https://blog.tamamu.cc/</id>
   
   <author>
@@ -21,17 +21,14 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/</id>
     <published>2025-11-02T13:04:00.000Z</published>
-    <updated>2025-11-02T15:05:06.420Z</updated>
+    <updated>2025-11-02T15:07:05.233Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-01-principles/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 1. 環境構築における方針&quot;&gt;1. CI&amp;#x2F;CD環境構築における方針&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-02-components/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 2. 構成要素と役割&quot;&gt;2. 具体的な構成要素と役割&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-03-implementation/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 3. 実装ガイドライン&quot;&gt;3. 各構成要素の実装に関する留意点&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;ol start=&quot;4&quot;&gt;
-&lt;li&gt;メリットとデメリットとして認識すべきこと&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
+&lt;li&gt;→ 4. メリットとデメリットとして認識すべきこと&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;目次&quot;&gt;&lt;a href=&quot;#目次&quot; class=&quot;headerlink&quot; title=&quot;目次&quot;&gt;&lt;/a&gt;目次&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;#%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88&quot;&gt;アーキテクチャのメリット&lt;/a&gt;&lt;/li&gt;
@@ -72,16 +69,13 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-03-implementation/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-03-implementation/</id>
     <published>2025-11-02T13:03:00.000Z</published>
-    <updated>2025-11-02T15:04:53.560Z</updated>
+    <updated>2025-11-02T15:07:01.130Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-01-principles/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 1. 環境構築における方針&quot;&gt;1. CI&amp;#x2F;CD環境構築における方針&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-02-components/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 2. 構成要素と役割&quot;&gt;2. 具体的な構成要素と役割&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;ol start=&quot;3&quot;&gt;
-&lt;li&gt;各構成要素の実装に関する留意点&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
+&lt;li&gt;→ 3. 各構成要素の実装に関する留意点&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-04-tradeoffs/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 4. メリット・デメリット&quot;&gt;4. メリットとデメリットとして認識すべきこと&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&quot;目次&quot;&gt;&lt;a href=&quot;#目次&quot; class=&quot;headerlink&quot; title=&quot;目次&quot;&gt;&lt;/a&gt;目次&lt;/h2&gt;&lt;ol&gt;
@@ -123,15 +117,12 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-02-components/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-02-components/</id>
     <published>2025-11-02T13:02:00.000Z</published>
-    <updated>2025-11-02T15:04:30.288Z</updated>
+    <updated>2025-11-02T15:06:57.169Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-01-principles/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 1. 環境構築における方針&quot;&gt;1. CI&amp;#x2F;CD環境構築における方針&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;ol start=&quot;2&quot;&gt;
-&lt;li&gt;具体的な構成要素と役割&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
+&lt;li&gt;→ 2. 具体的な構成要素と役割&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-03-implementation/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 3. 実装ガイドライン&quot;&gt;3. 各構成要素の実装に関する留意点&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-04-tradeoffs/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 4. メリット・デメリット&quot;&gt;4. メリットとデメリットとして認識すべきこと&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -174,14 +165,11 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/</id>
     <published>2025-11-02T13:01:00.000Z</published>
-    <updated>2025-11-02T15:04:33.755Z</updated>
+    <updated>2025-11-02T15:06:48.043Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;ol&gt;
-&lt;li&gt;CI&amp;#x2F;CD環境構築における方針&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
+&lt;li&gt;→ 1. CI&amp;#x2F;CD環境構築における方針&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-02-components/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 2. 構成要素と役割&quot;&gt;2. 具体的な構成要素と役割&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-03-implementation/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 3. 実装ガイドライン&quot;&gt;3. 各構成要素の実装に関する留意点&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-04-tradeoffs/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 4. メリット・デメリット&quot;&gt;4. メリットとデメリットとして認識すべきこと&lt;/a&gt;&lt;/li&gt;
