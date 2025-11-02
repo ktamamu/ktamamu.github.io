@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Lambda CI/CD アーキテクチャ - 4. メリット・デメリット - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2c3e50"><meta name="application-name" content="Tamamu Blog"><meta name="msapplication-TileImage" content="/images/favicon.ico"><meta name="msapplication-TileColor" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" sizes="32x32" href="/images/favicon.ico"><meta name="description" content="目次 アーキテクチャのメリット デメリットと対策 代替アプローチとの比較 移行戦略 運用上の考慮事項 よくある質問（FAQ）   アーキテクチャのメリット"><meta property="og:type" content="blog"><meta property="og:title" content="Lambda CI/CD アーキテクチャ - 4. メリット・デメリット"><meta property="og:url" content="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"><meta property="og:site_name" content="Tamamu Blog"><meta property="og:description" content="目次 アーキテクチャのメリット デメリットと対策 代替アプローチとの比較 移行戦略 運用上の考慮事項 よくある質問（FAQ）   アーキテクチャのメリット"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="article:published_time" content="2025-11-02T13:04:00.000Z"><meta property="article:modified_time" content="2025-11-02T14:00:05.056Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="AWS Lambda"><meta property="article:tag" content="CI/CD"><meta property="article:tag" content="Terraform"><meta property="article:tag" content="SAM"><meta property="article:tag" content="GitHub Actions"><meta property="article:tag" content="アーキテクチャ"><meta property="article:tag" content="インフラ"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:image:src" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="twitter:creator" content="@ktamamu"><meta property="twitter:site" content="@ktamamu"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"},"headline":"Lambda CI/CD アーキテクチャ - 4. メリット・デメリット","image":[],"datePublished":"2025-11-02T13:04:00.000Z","dateModified":"2025-11-02T14:00:05.056Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"目次 アーキテクチャのメリット デメリットと対策 代替アプローチとの比較 移行戦略 運用上の考慮事項 よくある質問（FAQ）   アーキテクチャのメリット"}</script><link rel="canonical" href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"><link rel="alternate" href="/atom.xml" title="Tamamu blog" type="application/atom+xml"><link rel="icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Lambda CI/CD アーキテクチャ - 4. メリット・デメリット - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2c3e50"><meta name="application-name" content="Tamamu Blog"><meta name="msapplication-TileImage" content="/images/favicon.ico"><meta name="msapplication-TileColor" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" sizes="32x32" href="/images/favicon.ico"><meta name="description" content="目次 アーキテクチャのメリット デメリットと対策 代替アプローチとの比較 移行戦略 運用上の考慮事項 よくある質問（FAQ）   アーキテクチャのメリット"><meta property="og:type" content="blog"><meta property="og:title" content="Lambda CI/CD アーキテクチャ - 4. メリット・デメリット"><meta property="og:url" content="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"><meta property="og:site_name" content="Tamamu Blog"><meta property="og:description" content="目次 アーキテクチャのメリット デメリットと対策 代替アプローチとの比較 移行戦略 運用上の考慮事項 よくある質問（FAQ）   アーキテクチャのメリット"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="article:published_time" content="2025-11-02T13:04:00.000Z"><meta property="article:modified_time" content="2025-11-02T14:35:27.426Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="AWS Lambda"><meta property="article:tag" content="CI/CD"><meta property="article:tag" content="Terraform"><meta property="article:tag" content="SAM"><meta property="article:tag" content="GitHub Actions"><meta property="article:tag" content="アーキテクチャ"><meta property="article:tag" content="インフラ"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:image:src" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="twitter:creator" content="@ktamamu"><meta property="twitter:site" content="@ktamamu"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"},"headline":"Lambda CI/CD アーキテクチャ - 4. メリット・デメリット","image":[],"datePublished":"2025-11-02T13:04:00.000Z","dateModified":"2025-11-02T14:35:27.426Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"目次 アーキテクチャのメリット デメリットと対策 代替アプローチとの比較 移行戦略 運用上の考慮事項 よくある質問（FAQ）   アーキテクチャのメリット"}</script><link rel="canonical" href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"><link rel="alternate" href="/atom.xml" title="Tamamu blog" type="application/atom+xml"><link rel="icon" href="/images/favicon.ico"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
   (function () {
       function switchTab() {
           if (!location.hash) {
@@ -29,7 +29,7 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="カタログ" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-11-02T13:04:00.000Z" title="11/2/2025, 10:04:00 PM">2025-11-02</time>に投稿</span><span class="level-item"><time dateTime="2025-11-02T14:00:05.056Z" title="11/2/2025, 11:00:05 PM">2025-11-02</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/AWS/">AWS</a><span> / </span><a class="link-muted" href="/categories/AWS/DevOps/">DevOps</a></span><span class="level-item">43分で読む (約6376語)</span></div></div><h1 class="title is-3 is-size-4-mobile">Lambda CI/CD アーキテクチャ - 4. メリット・デメリット</h1><div class="content"><h2 id="目次"><a href="#目次" class="headerlink" title="目次"></a>目次</h2><ol>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="カタログ" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-11-02T13:04:00.000Z" title="11/2/2025, 10:04:00 PM">2025-11-02</time>に投稿</span><span class="level-item"><time dateTime="2025-11-02T14:35:27.426Z" title="11/2/2025, 11:35:27 PM">2025-11-02</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/AWS/">AWS</a><span> / </span><a class="link-muted" href="/categories/AWS/DevOps/">DevOps</a></span><span class="level-item">42分で読む (約6352語)</span></div></div><h1 class="title is-3 is-size-4-mobile">Lambda CI/CD アーキテクチャ - 4. メリット・デメリット</h1><div class="content"><h2 id="目次"><a href="#目次" class="headerlink" title="目次"></a>目次</h2><ol>
 <li><a href="#%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%AE%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88">アーキテクチャのメリット</a></li>
 <li><a href="#%E3%83%87%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88%E3%81%A8%E5%AF%BE%E7%AD%96">デメリットと対策</a></li>
 <li><a href="#%E4%BB%A3%E6%9B%BF%E3%82%A2%E3%83%97%E3%83%AD%E3%83%BC%E3%83%81%E3%81%A8%E3%81%AE%E6%AF%94%E8%BC%83">代替アプローチとの比較</a></li>
@@ -41,106 +41,800 @@
 <h2 id="アーキテクチャのメリット"><a href="#アーキテクチャのメリット" class="headerlink" title="アーキテクチャのメリット"></a>アーキテクチャのメリット</h2><span id="more"></span>
 
 
-<h3 id="1-デプロイとリリースの分離"><a href="#1-デプロイとリリースの分離" class="headerlink" title="1. デプロイとリリースの分離"></a>1. デプロイとリリースの分離</h3><h4 id="メリット"><a href="#メリット" class="headerlink" title="メリット"></a>メリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">状況:</span><br><span class="line">従来 → デプロイ = リリース（本番への影響が即座に発生）</span><br><span class="line">改善 → デプロイ ≠ リリース（影響を制御可能）</span><br><span class="line"></span><br><span class="line">具体的な効果:</span><br><span class="line">✓ 営業時間内にデプロイ、指定時刻にリリース可能</span><br><span class="line">✓ 段階的リリース（カナリア、ブルーグリーン）</span><br><span class="line">✓ ビジネス要件に合わせたタイミング制御</span><br><span class="line">✓ 瞬時のロールバック（秒単位）</span><br></pre></td></tr></table></figure>
+<h3 id="1-デプロイとリリースの分離"><a href="#1-デプロイとリリースの分離" class="headerlink" title="1. デプロイとリリースの分離"></a>1. デプロイとリリースの分離</h3><h4 id="メリット"><a href="#メリット" class="headerlink" title="メリット"></a>メリット</h4><p>状況:<br>従来 → デプロイ &#x3D; リリース（本番への影響が即座に発生）<br>改善 → デプロイ ≠ リリース（影響を制御可能）</p>
+<p>具体的な効果:<br>✓ 営業時間内にデプロイ、指定時刻にリリース可能<br>✓ 段階的リリース（カナリア、ブルーグリーン）<br>✓ ビジネス要件に合わせたタイミング制御<br>✓ 瞬時のロールバック（秒単位）</p>
+<h4 id="実例"><a href="#実例" class="headerlink" title="実例"></a>実例</h4><p>シナリオ1: キャンペーン開始に合わせた新機能リリース</p>
+<p>従来:</p>
+<ul>
+<li>0時にデプロイ作業（深夜作業必須）</li>
+<li>デプロイに5-10分</li>
+<li>問題発生時の対応が困難</li>
+</ul>
+<p>改善後:</p>
+<ul>
+<li>前日17時にデプロイ（営業時間内）</li>
+<li>staging環境で最終確認</li>
+<li>0時にエイリアス切り替え（自動化）</li>
+<li>問題発生時は即座にロールバック（数秒）</li>
+</ul>
+<p>結果:<br>✓ 深夜作業の削減<br>✓ リスクの最小化<br>✓ チームの負担軽減</p>
+<p>シナリオ2: 重要な機能の段階的リリース</p>
+<p>要件:</p>
+<ul>
+<li>まず10%のユーザーでテスト</li>
+<li>問題なければ徐々に拡大</li>
+</ul>
+<p>実装:</p>
+<ol>
+<li>新バージョンをデプロイ</li>
+<li>production エイリアスで10%トラフィック</li>
+<li>10分間監視（エラー率、レイテンシ）</li>
+<li>問題なし → 50% → 100%</li>
+<li>問題あり → 即座にロールバック</li>
+</ol>
+<p>結果:<br>✓ 全ユーザーへの影響を回避<br>✓ 問題の早期発見<br>✓ ビジネスリスクの最小化</p>
+<h3 id="2-明確な責任範囲"><a href="#2-明確な責任範囲" class="headerlink" title="2. 明確な責任範囲"></a>2. 明確な責任範囲</h3><h4 id="メリット-1"><a href="#メリット-1" class="headerlink" title="メリット"></a>メリット</h4><p>チーム構成:</p>
+<p>インフラチーム:<br>✓ 基盤の安定性に集中<br>✓ セキュリティ管理<br>✓ コスト最適化<br>✓ ガバナンス</p>
+<p>アプリケーションチーム:<br>✓ 機能開発に集中<br>✓ 高速なイテレーション<br>✓ ビジネス価値の提供<br>✓ 品質向上</p>
+<p>衝突の回避:<br>✓ 互いのデプロイが独立<br>✓ 変更の影響範囲が明確<br>✓ レビュープロセスの最適化</p>
+<h4 id="効果測定"><a href="#効果測定" class="headerlink" title="効果測定"></a>効果測定</h4><p>Before（Terraform一本化）:</p>
+<ul>
+<li>Lambda変更 → Terraform plan&#x2F;apply（10-15分）</li>
+<li>インフラチームのレビュー必須</li>
+<li>デプロイ待ち時間が長い</li>
+<li>デプロイ頻度: 週1-2回</li>
+</ul>
+<p>After（Terraform + SAM分離）:</p>
+<ul>
+<li>Lambda変更 → SAM deploy（1-2分）</li>
+<li>アプリチームで完結</li>
+<li>待ち時間最小</li>
+<li>デプロイ頻度: 日次複数回</li>
+</ul>
+<p>改善:<br>✓ デプロイ時間: 87%短縮<br>✓ デプロイ頻度: 10倍向上<br>✓ チーム間の依存: 90%削減</p>
+<h3 id="3-高速なイテレーション"><a href="#3-高速なイテレーション" class="headerlink" title="3. 高速なイテレーション"></a>3. 高速なイテレーション</h3><h4 id="メリット-2"><a href="#メリット-2" class="headerlink" title="メリット"></a>メリット</h4><p>開発サイクルの比較:</p>
+<p>従来（Terraformのみ）:</p>
+<ol>
+<li>コード変更</li>
+<li>ビルド（手動）</li>
+<li>Terraform plan（全体）</li>
+<li>レビュー待ち</li>
+<li>Terraform apply</li>
+<li>デプロイ完了<br>合計: 20-30分</li>
+</ol>
+<p>改善後（SAM）:</p>
+<ol>
+<li>コード変更</li>
+<li>sam build（自動）</li>
+<li>sam deploy</li>
+<li>デプロイ完了<br>合計: 2-3分</li>
+</ol>
+<p>効果:<br>✓ フィードバックループの高速化<br>✓ 試行錯誤が容易<br>✓ 生産性の向上</p>
+<h4 id="ローカル開発環境"><a href="#ローカル開発環境" class="headerlink" title="ローカル開発環境"></a>ローカル開発環境</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SAMの強力な機能</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ローカルでLambda実行</span></span><br><span class="line">$ sam <span class="built_in">local</span> invoke UserLoginFunction \</span><br><span class="line">    --event events/login-event.json</span><br><span class="line"></span><br><span class="line"><span class="comment"># ローカルでAPI Gateway起動</span></span><br><span class="line">$ sam <span class="built_in">local</span> start-api</span><br><span class="line"><span class="comment"># → http://localhost:3000 でテスト可能</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ローカルでLayerテスト</span></span><br><span class="line">$ sam <span class="built_in">local</span> invoke \</span><br><span class="line">    --layer-cache-basedir ./layer-cache</span><br></pre></td></tr></table></figure>
 
-<h4 id="実例"><a href="#実例" class="headerlink" title="実例"></a>実例</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">シナリオ1:</span> <span class="string">キャンペーン開始に合わせた新機能リリース</span></span><br><span class="line"></span><br><span class="line"><span class="string">従来:</span></span><br><span class="line"><span class="bullet">-</span> <span class="number">0</span><span class="string">時にデプロイ作業（深夜作業必須）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">デプロイに5-10分</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">問題発生時の対応が困難</span></span><br><span class="line"></span><br><span class="line"><span class="string">改善後:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">前日17時にデプロイ（営業時間内）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">staging環境で最終確認</span></span><br><span class="line"><span class="bullet">-</span> <span class="number">0</span><span class="string">時にエイリアス切り替え（自動化）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">問題発生時は即座にロールバック（数秒）</span></span><br><span class="line"></span><br><span class="line"><span class="string">結果:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">深夜作業の削減</span></span><br><span class="line"><span class="string">✓</span> <span class="string">リスクの最小化</span></span><br><span class="line"><span class="string">✓</span> <span class="string">チームの負担軽減</span></span><br><span class="line"></span><br><span class="line"><span class="string">シナリオ2:</span> <span class="string">重要な機能の段階的リリース</span></span><br><span class="line"></span><br><span class="line"><span class="string">要件:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">まず10%のユーザーでテスト</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">問題なければ徐々に拡大</span></span><br><span class="line"></span><br><span class="line"><span class="string">実装:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">新バージョンをデプロイ</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">production</span> <span class="string">エイリアスで10%トラフィック</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="number">10</span><span class="string">分間監視（エラー率、レイテンシ）</span></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">問題なし</span> <span class="string">→</span> <span class="number">50</span><span class="string">%</span> <span class="string">→</span> <span class="number">100</span><span class="string">%</span></span><br><span class="line"><span class="number">5</span><span class="string">.</span> <span class="string">問題あり</span> <span class="string">→</span> <span class="string">即座にロールバック</span></span><br><span class="line"></span><br><span class="line"><span class="string">結果:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">全ユーザーへの影響を回避</span></span><br><span class="line"><span class="string">✓</span> <span class="string">問題の早期発見</span></span><br><span class="line"><span class="string">✓</span> <span class="string">ビジネスリスクの最小化</span></span><br></pre></td></tr></table></figure>
+<p>メリット:<br>✓ AWSへのデプロイ不要<br>✓ 高速な動作確認<br>✓ デバッグが容易<br>✓ 開発コストの削減</p>
+<h3 id="4-Layer管理の自動化"><a href="#4-Layer管理の自動化" class="headerlink" title="4. Layer管理の自動化"></a>4. Layer管理の自動化</h3><h4 id="メリット-3"><a href="#メリット-3" class="headerlink" title="メリット"></a>メリット</h4><p>Before（Terraformのみ）:</p>
+<ol>
+<li>依存関係を手動インストール<br>$ pip install -r requirements.txt -t python&#x2F;</li>
+<li>手動でzip作成<br>$ zip -r layer.zip python&#x2F;</li>
+<li>Terraformで管理<br>source_code_hash &#x3D; filebase64sha256(“layer.zip”)</li>
+<li>変更検知が不完全</li>
+<li>デプロイが遅い</li>
+</ol>
+<p>After（SAM）:</p>
+<ol>
+<li>requirements.txt を更新</li>
+<li>sam build<br>→ 自動的にビルド<br>→ 自動的にLayer作成<br>→ 依存関係解決</li>
+<li>sam deploy<br>→ 自動的にアップロード<br>→ 自動的にバージョン管理</li>
+</ol>
+<p>効果:<br>✓ 作業時間: 80%削減<br>✓ ミスの防止<br>✓ 一貫性の確保</p>
+<h4 id="具体例"><a href="#具体例" class="headerlink" title="具体例"></a>具体例</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SAMテンプレート（シンプル）</span></span><br><span class="line"><span class="attr">Resources:</span></span><br><span class="line">  <span class="attr">DependenciesLayer:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">AWS::Serverless::LayerVersion</span></span><br><span class="line">    <span class="attr">Properties:</span></span><br><span class="line">      <span class="attr">ContentUri:</span> <span class="string">layers/dependencies/</span></span><br><span class="line">      <span class="attr">CompatibleRuntimes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">python3.11</span></span><br><span class="line">    <span class="attr">Metadata:</span></span><br><span class="line">      <span class="attr">BuildMethod:</span> <span class="string">python3.11</span></span><br><span class="line">      <span class="comment"># これだけで自動ビルド</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 複数関数で共有</span></span><br><span class="line">  <span class="attr">Function1:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">AWS::Serverless::Function</span></span><br><span class="line">    <span class="attr">Properties:</span></span><br><span class="line">      <span class="attr">Layers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="type">!Ref</span> <span class="string">DependenciesLayer</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">Function2:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">AWS::Serverless::Function</span></span><br><span class="line">    <span class="attr">Properties:</span></span><br><span class="line">      <span class="attr">Layers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="type">!Ref</span> <span class="string">DependenciesLayer</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="2-明確な責任範囲"><a href="#2-明確な責任範囲" class="headerlink" title="2. 明確な責任範囲"></a>2. 明確な責任範囲</h3><h4 id="メリット-1"><a href="#メリット-1" class="headerlink" title="メリット"></a>メリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">チーム構成:</span><br><span class="line"></span><br><span class="line">インフラチーム:</span><br><span class="line">✓ 基盤の安定性に集中</span><br><span class="line">✓ セキュリティ管理</span><br><span class="line">✓ コスト最適化</span><br><span class="line">✓ ガバナンス</span><br><span class="line"></span><br><span class="line">アプリケーションチーム:</span><br><span class="line">✓ 機能開発に集中</span><br><span class="line">✓ 高速なイテレーション</span><br><span class="line">✓ ビジネス価値の提供</span><br><span class="line">✓ 品質向上</span><br><span class="line"></span><br><span class="line">衝突の回避:</span><br><span class="line">✓ 互いのデプロイが独立</span><br><span class="line">✓ 変更の影響範囲が明確</span><br><span class="line">✓ レビュープロセスの最適化</span><br></pre></td></tr></table></figure>
-
-<h4 id="効果測定"><a href="#効果測定" class="headerlink" title="効果測定"></a>効果測定</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Before（Terraform一本化）:</span><br><span class="line">- Lambda変更 → Terraform plan/apply（10-15分）</span><br><span class="line">- インフラチームのレビュー必須</span><br><span class="line">- デプロイ待ち時間が長い</span><br><span class="line">- デプロイ頻度: 週1-2回</span><br><span class="line"></span><br><span class="line">After（Terraform + SAM分離）:</span><br><span class="line">- Lambda変更 → SAM deploy（1-2分）</span><br><span class="line">- アプリチームで完結</span><br><span class="line">- 待ち時間最小</span><br><span class="line">- デプロイ頻度: 日次複数回</span><br><span class="line"></span><br><span class="line">改善:</span><br><span class="line">✓ デプロイ時間: 87%短縮</span><br><span class="line">✓ デプロイ頻度: 10倍向上</span><br><span class="line">✓ チーム間の依存: 90%削減</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-高速なイテレーション"><a href="#3-高速なイテレーション" class="headerlink" title="3. 高速なイテレーション"></a>3. 高速なイテレーション</h3><h4 id="メリット-2"><a href="#メリット-2" class="headerlink" title="メリット"></a>メリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">開発サイクルの比較:</span><br><span class="line"></span><br><span class="line">従来（Terraformのみ）:</span><br><span class="line">1. コード変更</span><br><span class="line">2. ビルド（手動）</span><br><span class="line">3. Terraform plan（全体）</span><br><span class="line">4. レビュー待ち</span><br><span class="line">5. Terraform apply</span><br><span class="line">6. デプロイ完了</span><br><span class="line">合計: 20-30分</span><br><span class="line"></span><br><span class="line">改善後（SAM）:</span><br><span class="line">1. コード変更</span><br><span class="line">2. sam build（自動）</span><br><span class="line">3. sam deploy</span><br><span class="line">4. デプロイ完了</span><br><span class="line">合計: 2-3分</span><br><span class="line"></span><br><span class="line">効果:</span><br><span class="line">✓ フィードバックループの高速化</span><br><span class="line">✓ 試行錯誤が容易</span><br><span class="line">✓ 生産性の向上</span><br></pre></td></tr></table></figure>
-
-<h4 id="ローカル開発環境"><a href="#ローカル開発環境" class="headerlink" title="ローカル開発環境"></a>ローカル開発環境</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SAMの強力な機能</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ローカルでLambda実行</span></span><br><span class="line">$ sam <span class="built_in">local</span> invoke UserLoginFunction \</span><br><span class="line">    --event events/login-event.json</span><br><span class="line"></span><br><span class="line"><span class="comment"># ローカルでAPI Gateway起動</span></span><br><span class="line">$ sam <span class="built_in">local</span> start-api</span><br><span class="line"><span class="comment"># → http://localhost:3000 でテスト可能</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ローカルでLayerテスト</span></span><br><span class="line">$ sam <span class="built_in">local</span> invoke \</span><br><span class="line">    --layer-cache-basedir ./layer-cache</span><br><span class="line"></span><br><span class="line">メリット:</span><br><span class="line">✓ AWSへのデプロイ不要</span><br><span class="line">✓ 高速な動作確認</span><br><span class="line">✓ デバッグが容易</span><br><span class="line">✓ 開発コストの削減</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-Layer管理の自動化"><a href="#4-Layer管理の自動化" class="headerlink" title="4. Layer管理の自動化"></a>4. Layer管理の自動化</h3><h4 id="メリット-3"><a href="#メリット-3" class="headerlink" title="メリット"></a>メリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Before（Terraformのみ）:</span><br><span class="line">1. 依存関係を手動インストール</span><br><span class="line">   $ pip install -r requirements.txt -t python/</span><br><span class="line">2. 手動でzip作成</span><br><span class="line">   $ zip -r layer.zip python/</span><br><span class="line">3. Terraformで管理</span><br><span class="line">   source_code_hash = filebase64sha256(&quot;layer.zip&quot;)</span><br><span class="line">4. 変更検知が不完全</span><br><span class="line">5. デプロイが遅い</span><br><span class="line"></span><br><span class="line">After（SAM）:</span><br><span class="line">1. requirements.txt を更新</span><br><span class="line">2. sam build</span><br><span class="line">   → 自動的にビルド</span><br><span class="line">   → 自動的にLayer作成</span><br><span class="line">   → 依存関係解決</span><br><span class="line">3. sam deploy</span><br><span class="line">   → 自動的にアップロード</span><br><span class="line">   → 自動的にバージョン管理</span><br><span class="line"></span><br><span class="line">効果:</span><br><span class="line">✓ 作業時間: 80%削減</span><br><span class="line">✓ ミスの防止</span><br><span class="line">✓ 一貫性の確保</span><br></pre></td></tr></table></figure>
-
-<h4 id="具体例"><a href="#具体例" class="headerlink" title="具体例"></a>具体例</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SAMテンプレート（シンプル）</span></span><br><span class="line"><span class="attr">Resources:</span></span><br><span class="line">  <span class="attr">DependenciesLayer:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">AWS::Serverless::LayerVersion</span></span><br><span class="line">    <span class="attr">Properties:</span></span><br><span class="line">      <span class="attr">ContentUri:</span> <span class="string">layers/dependencies/</span></span><br><span class="line">      <span class="attr">CompatibleRuntimes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">python3.11</span></span><br><span class="line">    <span class="attr">Metadata:</span></span><br><span class="line">      <span class="attr">BuildMethod:</span> <span class="string">python3.11</span></span><br><span class="line">      <span class="comment"># これだけで自動ビルド</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 複数関数で共有</span></span><br><span class="line">  <span class="attr">Function1:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">AWS::Serverless::Function</span></span><br><span class="line">    <span class="attr">Properties:</span></span><br><span class="line">      <span class="attr">Layers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="type">!Ref</span> <span class="string">DependenciesLayer</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">Function2:</span></span><br><span class="line">    <span class="attr">Type:</span> <span class="string">AWS::Serverless::Function</span></span><br><span class="line">    <span class="attr">Properties:</span></span><br><span class="line">      <span class="attr">Layers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="type">!Ref</span> <span class="string">DependenciesLayer</span></span><br><span class="line"></span><br><span class="line"><span class="string">メリット:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">Layer更新時、全関数に自動反映</span></span><br><span class="line"><span class="string">✓</span> <span class="string">バージョン管理が自動</span></span><br><span class="line"><span class="string">✓</span> <span class="string">設定ミスの防止</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="5-ガバナンスの確保"><a href="#5-ガバナンスの確保" class="headerlink" title="5. ガバナンスの確保"></a>5. ガバナンスの確保</h3><h4 id="メリット-4"><a href="#メリット-4" class="headerlink" title="メリット"></a>メリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">承認フロー:</span><br><span class="line"></span><br><span class="line">Staging（自動）:</span><br><span class="line">- Pull Request承認</span><br><span class="line">- 自動デプロイ</span><br><span class="line">- QA確認</span><br><span class="line"></span><br><span class="line">Production（手動承認）:</span><br><span class="line">- リリース申請</span><br><span class="line">- インフラチーム承認</span><br><span class="line">- メトリクス確認</span><br><span class="line">- 承認後リリース</span><br><span class="line"></span><br><span class="line">効果:</span><br><span class="line">✓ 変更の可視化</span><br><span class="line">✓ リスク管理</span><br><span class="line">✓ コンプライアンス対応</span><br><span class="line">✓ 監査証跡の確保</span><br></pre></td></tr></table></figure>
-
-<h4 id="監査証跡"><a href="#監査証跡" class="headerlink" title="監査証跡"></a>監査証跡</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">記録される情報:</span><br><span class="line"></span><br><span class="line">1. コード変更:</span><br><span class="line">   - Git commit履歴</span><br><span class="line">   - Pull Request</span><br><span class="line">   - レビューコメント</span><br><span class="line">   - 承認者</span><br><span class="line"></span><br><span class="line">2. デプロイ履歴:</span><br><span class="line">   - GitHub Actions実行ログ</span><br><span class="line">   - デプロイ日時</span><br><span class="line">   - 実行者</span><br><span class="line">   - 成功/失敗</span><br><span class="line"></span><br><span class="line">3. バージョン情報:</span><br><span class="line">   - Lambda Version番号</span><br><span class="line">   - SSM Parameter Store</span><br><span class="line">   - メタデータ（commit、日時、実行者）</span><br><span class="line"></span><br><span class="line">4. リリース履歴:</span><br><span class="line">   - エイリアス切り替え履歴</span><br><span class="line">   - CloudTrail</span><br><span class="line">   - 承認者</span><br><span class="line">   - ロールバック履歴</span><br><span class="line"></span><br><span class="line">用途:</span><br><span class="line">✓ 障害調査</span><br><span class="line">✓ セキュリティ監査</span><br><span class="line">✓ コンプライアンス報告</span><br></pre></td></tr></table></figure>
-
+<p>メリット:<br>✓ Layer更新時、全関数に自動反映<br>✓ バージョン管理が自動<br>✓ 設定ミスの防止</p>
+<h3 id="5-ガバナンスの確保"><a href="#5-ガバナンスの確保" class="headerlink" title="5. ガバナンスの確保"></a>5. ガバナンスの確保</h3><h4 id="メリット-4"><a href="#メリット-4" class="headerlink" title="メリット"></a>メリット</h4><p>承認フロー:</p>
+<p>Staging（自動）:</p>
+<ul>
+<li>Pull Request承認</li>
+<li>自動デプロイ</li>
+<li>QA確認</li>
+</ul>
+<p>Production（手動承認）:</p>
+<ul>
+<li>リリース申請</li>
+<li>インフラチーム承認</li>
+<li>メトリクス確認</li>
+<li>承認後リリース</li>
+</ul>
+<p>効果:<br>✓ 変更の可視化<br>✓ リスク管理<br>✓ コンプライアンス対応<br>✓ 監査証跡の確保</p>
+<h4 id="監査証跡"><a href="#監査証跡" class="headerlink" title="監査証跡"></a>監査証跡</h4><p>記録される情報:</p>
+<ol>
+<li><p>コード変更:</p>
+<ul>
+<li>Git commit履歴</li>
+<li>Pull Request</li>
+<li>レビューコメント</li>
+<li>承認者</li>
+</ul>
+</li>
+<li><p>デプロイ履歴:</p>
+<ul>
+<li>GitHub Actions実行ログ</li>
+<li>デプロイ日時</li>
+<li>実行者</li>
+<li>成功&#x2F;失敗</li>
+</ul>
+</li>
+<li><p>バージョン情報:</p>
+<ul>
+<li>Lambda Version番号</li>
+<li>SSM Parameter Store</li>
+<li>メタデータ（commit、日時、実行者）</li>
+</ul>
+</li>
+<li><p>リリース履歴:</p>
+<ul>
+<li>エイリアス切り替え履歴</li>
+<li>CloudTrail</li>
+<li>承認者</li>
+<li>ロールバック履歴</li>
+</ul>
+</li>
+</ol>
+<p>用途:<br>✓ 障害調査<br>✓ セキュリティ監査<br>✓ コンプライアンス報告</p>
 <hr>
-<h2 id="デメリットと対策"><a href="#デメリットと対策" class="headerlink" title="デメリットと対策"></a>デメリットと対策</h2><h3 id="1-複雑性の増加"><a href="#1-複雑性の増加" class="headerlink" title="1. 複雑性の増加"></a>1. 複雑性の増加</h3><h4 id="デメリット"><a href="#デメリット" class="headerlink" title="デメリット"></a>デメリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">問題:</span><br><span class="line">- 2つのリポジトリ管理</span><br><span class="line">- 2つのツール（Terraform、SAM）習得</span><br><span class="line">- 連携メカニズムの理解必要</span><br><span class="line">- 新規メンバーのオンボーディング時間増加</span><br><span class="line"></span><br><span class="line">影響:</span><br><span class="line">- 学習コスト</span><br><span class="line">- ドキュメント整備の必要性</span><br><span class="line">- トラブルシューティングの難易度上昇</span><br></pre></td></tr></table></figure>
-
-<h4 id="対策"><a href="#対策" class="headerlink" title="対策"></a>対策</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">対策1:</span> <span class="string">ドキュメント整備</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">アーキテクチャ設計書（本ドキュメント）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">運用手順書</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">トラブルシューティングガイド</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">FAQ</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策2:</span> <span class="string">テンプレート・サンプル提供</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">新規Lambda関数のテンプレート</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">よくあるパターンのサンプル</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">GitHub</span> <span class="string">Actionsのテンプレート</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策3:</span> <span class="string">オンボーディングプログラム</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">新規メンバー向けトレーニング</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ペアプログラミング</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">メンター制度</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策4:</span> <span class="string">ツールの標準化</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">CLIツール（sam,</span> <span class="string">terraform）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">VS</span> <span class="string">Code拡張機能</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">プリコミットフック</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="2-リリース待ち時間"><a href="#2-リリース待ち時間" class="headerlink" title="2. リリース待ち時間"></a>2. リリース待ち時間</h3><h4 id="デメリット-1"><a href="#デメリット-1" class="headerlink" title="デメリット"></a>デメリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">問題:</span><br><span class="line">stagingデプロイ後、production承認待ち</span><br><span class="line"></span><br><span class="line">フロー:</span><br><span class="line">1. コミット</span><br><span class="line">2. staging自動デプロイ（2分）</span><br><span class="line">3. QA確認（30分-数時間）</span><br><span class="line">4. リリース申請</span><br><span class="line">5. インフラチーム承認待ち（状況により数時間）</span><br><span class="line">6. production リリース</span><br><span class="line"></span><br><span class="line">懸念:</span><br><span class="line">- 緊急時の対応遅延</span><br><span class="line">- ビジネス機会の損失</span><br></pre></td></tr></table></figure>
-
-<h4 id="対策-1"><a href="#対策-1" class="headerlink" title="対策"></a>対策</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">対策1:</span> <span class="string">承認プロセスの最適化</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">緊急リリース用の特別フロー</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">オンコール体制</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Slack通知</span> <span class="string">+</span> <span class="string">ワンクリック承認</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">営業時間外の対応ルール明確化</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策2:</span> <span class="string">自動承認の条件定義</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">低リスク変更は自動承認</span></span><br><span class="line">  <span class="string">例:</span> <span class="string">ログレベル変更、タイムアウト調整</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">重要度による分類</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">Critical:</span> <span class="string">手動承認必須</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">High:</span> <span class="string">インフラチーム承認</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">Medium:</span> <span class="string">リードエンジニア承認</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">Low:</span> <span class="string">自動承認</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策3:</span> <span class="string">ホットフィックスフロー</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="string">緊急時（本番障害等）:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">ホットフィックスブランチ作成</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">最小限の修正</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">即座にproduction直接デプロイ</span></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">事後レビュー</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策4:</span> <span class="string">時間帯によるフロー変更</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="string">営業時間内:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">通常の承認フロー</span></span><br><span class="line"><span class="string">営業時間外・休日:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">自動承認（監視強化）</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">翌営業日に事後レビュー</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="3-管理コスト"><a href="#3-管理コスト" class="headerlink" title="3. 管理コスト"></a>3. 管理コスト</h3><h4 id="デメリット-2"><a href="#デメリット-2" class="headerlink" title="デメリット"></a>デメリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">問題:</span><br><span class="line">- 2つのリポジトリの管理</span><br><span class="line">- CI/CDパイプラインの維持</span><br><span class="line">- SSM Parameter Storeの管理</span><br><span class="line">- 依存関係の同期</span><br><span class="line"></span><br><span class="line">コスト:</span><br><span class="line">- インフラチームの作業時間増加</span><br><span class="line">- メンテナンス工数</span><br></pre></td></tr></table></figure>
-
-<h4 id="対策-2"><a href="#対策-2" class="headerlink" title="対策"></a>対策</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">対策1:</span> <span class="string">自動化の徹底</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Renovate/Dependabotで依存関係自動更新</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Terraformのモジュール化</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">SAMテンプレートの再利用</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">GitHub</span> <span class="string">Actionsの共通化</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策2:</span> <span class="string">モニタリング・アラート</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">デプロイ失敗の自動検知</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Slackへの自動通知</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ダッシュボードの整備</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">異常検知の自動化</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策3:</span> <span class="string">ツール統合</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">terraform-docsで自動ドキュメント生成</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">SAM</span> <span class="string">CLIのCI/CD統合</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">共通スクリプトの整備</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="4-エイリアス管理の手動操作"><a href="#4-エイリアス管理の手動操作" class="headerlink" title="4. エイリアス管理の手動操作"></a>4. エイリアス管理の手動操作</h3><h4 id="デメリット-3"><a href="#デメリット-3" class="headerlink" title="デメリット"></a>デメリット</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">問題:</span><br><span class="line">production エイリアスの手動切り替え</span><br><span class="line"></span><br><span class="line">リスク:</span><br><span class="line">- 人的ミス（間違ったバージョン指定）</span><br><span class="line">- 手順の抜け漏れ</span><br><span class="line">- ロールバック手順の失敗</span><br></pre></td></tr></table></figure>
-
-<h4 id="対策-3"><a href="#対策-3" class="headerlink" title="対策"></a>対策</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">対策1:</span> <span class="string">スクリプト化・自動化</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">リリーススクリプトの整備</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ロールバックスクリプトの整備</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">バージョン検証の自動化</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">チェックリストの自動化</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策2:</span> <span class="string">GitHub</span> <span class="string">Actionsワークフロー</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">workflow_dispatch（手動トリガー）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">バージョン選択のドロップダウン</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">自動検証</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ロールバック機能</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策3:</span> <span class="string">多段階確認</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">バージョン存在確認</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">メタデータ表示</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">承認（GitHub</span> <span class="string">Environment）</span></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">リリース実行</span></span><br><span class="line"><span class="number">5</span><span class="string">.</span> <span class="string">検証</span></span><br><span class="line"><span class="number">6</span><span class="string">.</span> <span class="string">通知</span></span><br><span class="line"></span><br><span class="line"><span class="string">対策4:</span> <span class="string">ドライラン機能</span></span><br><span class="line"><span class="string">実施:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">実行前に影響確認</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">変更内容の表示</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">--dry-run</span> <span class="string">オプション</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="デメリットと対策"><a href="#デメリットと対策" class="headerlink" title="デメリットと対策"></a>デメリットと対策</h2><h3 id="1-複雑性の増加"><a href="#1-複雑性の増加" class="headerlink" title="1. 複雑性の増加"></a>1. 複雑性の増加</h3><h4 id="デメリット"><a href="#デメリット" class="headerlink" title="デメリット"></a>デメリット</h4><p>問題:</p>
+<ul>
+<li>2つのリポジトリ管理</li>
+<li>2つのツール（Terraform、SAM）習得</li>
+<li>連携メカニズムの理解必要</li>
+<li>新規メンバーのオンボーディング時間増加</li>
+</ul>
+<p>影響:</p>
+<ul>
+<li>学習コスト</li>
+<li>ドキュメント整備の必要性</li>
+<li>トラブルシューティングの難易度上昇</li>
+</ul>
+<h4 id="対策"><a href="#対策" class="headerlink" title="対策"></a>対策</h4><p>対策1: ドキュメント整備<br>実施:</p>
+<ul>
+<li>アーキテクチャ設計書（本ドキュメント）</li>
+<li>運用手順書</li>
+<li>トラブルシューティングガイド</li>
+<li>FAQ</li>
+</ul>
+<p>対策2: テンプレート・サンプル提供<br>実施:</p>
+<ul>
+<li>新規Lambda関数のテンプレート</li>
+<li>よくあるパターンのサンプル</li>
+<li>GitHub Actionsのテンプレート</li>
+</ul>
+<p>対策3: オンボーディングプログラム<br>実施:</p>
+<ul>
+<li>新規メンバー向けトレーニング</li>
+<li>ペアプログラミング</li>
+<li>メンター制度</li>
+</ul>
+<p>対策4: ツールの標準化<br>実施:</p>
+<ul>
+<li>CLIツール（sam, terraform）</li>
+<li>VS Code拡張機能</li>
+<li>プリコミットフック</li>
+</ul>
+<h3 id="2-リリース待ち時間"><a href="#2-リリース待ち時間" class="headerlink" title="2. リリース待ち時間"></a>2. リリース待ち時間</h3><h4 id="デメリット-1"><a href="#デメリット-1" class="headerlink" title="デメリット"></a>デメリット</h4><p>問題:<br>stagingデプロイ後、production承認待ち</p>
+<p>フロー:</p>
+<ol>
+<li>コミット</li>
+<li>staging自動デプロイ（2分）</li>
+<li>QA確認（30分-数時間）</li>
+<li>リリース申請</li>
+<li>インフラチーム承認待ち（状況により数時間）</li>
+<li>production リリース</li>
+</ol>
+<p>懸念:</p>
+<ul>
+<li>緊急時の対応遅延</li>
+<li>ビジネス機会の損失</li>
+</ul>
+<h4 id="対策-1"><a href="#対策-1" class="headerlink" title="対策"></a>対策</h4><p>対策1: 承認プロセスの最適化<br>実施:</p>
+<ul>
+<li>緊急リリース用の特別フロー</li>
+<li>オンコール体制</li>
+<li>Slack通知 + ワンクリック承認</li>
+<li>営業時間外の対応ルール明確化</li>
+</ul>
+<p>対策2: 自動承認の条件定義<br>実施:</p>
+<ul>
+<li>低リスク変更は自動承認<br>例: ログレベル変更、タイムアウト調整</li>
+<li>重要度による分類<ul>
+<li>Critical: 手動承認必須</li>
+<li>High: インフラチーム承認</li>
+<li>Medium: リードエンジニア承認</li>
+<li>Low: 自動承認</li>
+</ul>
+</li>
+</ul>
+<p>対策3: ホットフィックスフロー<br>実施:<br>緊急時（本番障害等）:</p>
+<ol>
+<li>ホットフィックスブランチ作成</li>
+<li>最小限の修正</li>
+<li>即座にproduction直接デプロイ</li>
+<li>事後レビュー</li>
+</ol>
+<p>対策4: 時間帯によるフロー変更<br>実施:<br>営業時間内:</p>
+<ul>
+<li>通常の承認フロー<br>営業時間外・休日:</li>
+<li>自動承認（監視強化）</li>
+<li>翌営業日に事後レビュー</li>
+</ul>
+<h3 id="3-管理コスト"><a href="#3-管理コスト" class="headerlink" title="3. 管理コスト"></a>3. 管理コスト</h3><h4 id="デメリット-2"><a href="#デメリット-2" class="headerlink" title="デメリット"></a>デメリット</h4><p>問題:</p>
+<ul>
+<li>2つのリポジトリの管理</li>
+<li>CI&#x2F;CDパイプラインの維持</li>
+<li>SSM Parameter Storeの管理</li>
+<li>依存関係の同期</li>
+</ul>
+<p>コスト:</p>
+<ul>
+<li>インフラチームの作業時間増加</li>
+<li>メンテナンス工数</li>
+</ul>
+<h4 id="対策-2"><a href="#対策-2" class="headerlink" title="対策"></a>対策</h4><p>対策1: 自動化の徹底<br>実施:</p>
+<ul>
+<li>Renovate&#x2F;Dependabotで依存関係自動更新</li>
+<li>Terraformのモジュール化</li>
+<li>SAMテンプレートの再利用</li>
+<li>GitHub Actionsの共通化</li>
+</ul>
+<p>対策2: モニタリング・アラート<br>実施:</p>
+<ul>
+<li>デプロイ失敗の自動検知</li>
+<li>Slackへの自動通知</li>
+<li>ダッシュボードの整備</li>
+<li>異常検知の自動化</li>
+</ul>
+<p>対策3: ツール統合<br>実施:</p>
+<ul>
+<li>terraform-docsで自動ドキュメント生成</li>
+<li>SAM CLIのCI&#x2F;CD統合</li>
+<li>共通スクリプトの整備</li>
+</ul>
+<h3 id="4-エイリアス管理の手動操作"><a href="#4-エイリアス管理の手動操作" class="headerlink" title="4. エイリアス管理の手動操作"></a>4. エイリアス管理の手動操作</h3><h4 id="デメリット-3"><a href="#デメリット-3" class="headerlink" title="デメリット"></a>デメリット</h4><p>問題:<br>production エイリアスの手動切り替え</p>
+<p>リスク:</p>
+<ul>
+<li>人的ミス（間違ったバージョン指定）</li>
+<li>手順の抜け漏れ</li>
+<li>ロールバック手順の失敗</li>
+</ul>
+<h4 id="対策-3"><a href="#対策-3" class="headerlink" title="対策"></a>対策</h4><p>対策1: スクリプト化・自動化<br>実施:</p>
+<ul>
+<li>リリーススクリプトの整備</li>
+<li>ロールバックスクリプトの整備</li>
+<li>バージョン検証の自動化</li>
+<li>チェックリストの自動化</li>
+</ul>
+<p>対策2: GitHub Actionsワークフロー<br>実施:</p>
+<ul>
+<li>workflow_dispatch（手動トリガー）</li>
+<li>バージョン選択のドロップダウン</li>
+<li>自動検証</li>
+<li>ロールバック機能</li>
+</ul>
+<p>対策3: 多段階確認<br>実施:</p>
+<ol>
+<li>バージョン存在確認</li>
+<li>メタデータ表示</li>
+<li>承認（GitHub Environment）</li>
+<li>リリース実行</li>
+<li>検証</li>
+<li>通知</li>
+</ol>
+<p>対策4: ドライラン機能<br>実施:</p>
+<ul>
+<li>実行前に影響確認</li>
+<li>変更内容の表示</li>
+<li>–dry-run オプション</li>
+</ul>
 <hr>
-<h2 id="代替アプローチとの比較"><a href="#代替アプローチとの比較" class="headerlink" title="代替アプローチとの比較"></a>代替アプローチとの比較</h2><h3 id="アプローチ1-Terraform完全管理"><a href="#アプローチ1-Terraform完全管理" class="headerlink" title="アプローチ1: Terraform完全管理"></a>アプローチ1: Terraform完全管理</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">構成:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">全てTerraformで管理</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Lambda関数もTerraform</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">エイリアスもTerraform</span></span><br><span class="line"></span><br><span class="line"><span class="string">メリット:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">ツールが1つ（学習コスト低）</span></span><br><span class="line"><span class="string">✓</span> <span class="string">状態管理が統一</span></span><br><span class="line"><span class="string">✓</span> <span class="string">一貫性</span></span><br><span class="line"></span><br><span class="line"><span class="string">デメリット:</span></span><br><span class="line"><span class="string">✗</span> <span class="string">Lambda開発体験が悪い</span></span><br><span class="line"><span class="string">✗</span> <span class="string">デプロイが遅い（10-15分）</span></span><br><span class="line"><span class="string">✗</span> <span class="string">ローカルテストが困難</span></span><br><span class="line"><span class="string">✗</span> <span class="string">Layer管理が煩雑</span></span><br><span class="line"><span class="string">✗</span> <span class="string">ビルドプロセスが複雑</span></span><br><span class="line"></span><br><span class="line"><span class="string">評価:</span></span><br><span class="line"><span class="string">小規模（Lambda</span> <span class="number">10</span><span class="string">個未満）:</span> <span class="string">⭐⭐⭐</span></span><br><span class="line"><span class="string">中規模（10-50個）:</span> <span class="string">⭐⭐</span></span><br><span class="line"><span class="string">大規模（50個以上）:</span> <span class="string">⭐</span> <span class="string">非推奨</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="アプローチ2-SAM完全管理"><a href="#アプローチ2-SAM完全管理" class="headerlink" title="アプローチ2: SAM完全管理"></a>アプローチ2: SAM完全管理</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">構成:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">全てSAMで管理</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">インフラもSAM（CloudFormation）</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">エイリアスもSAM</span></span><br><span class="line"></span><br><span class="line"><span class="string">メリット:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">ツールが1つ</span></span><br><span class="line"><span class="string">✓</span> <span class="string">Lambda最適化</span></span><br><span class="line"><span class="string">✓</span> <span class="string">デプロイが高速</span></span><br><span class="line"><span class="string">✓</span> <span class="string">開発体験が良い</span></span><br><span class="line"></span><br><span class="line"><span class="string">デメリット:</span></span><br><span class="line"><span class="string">✗</span> <span class="string">既存Terraform資産を活用できない</span></span><br><span class="line"><span class="string">✗</span> <span class="string">CloudFormationの制約</span></span><br><span class="line"><span class="string">✗</span> <span class="string">複雑なインフラ管理が困難</span></span><br><span class="line"><span class="string">✗</span> <span class="string">組織標準と異なる可能性</span></span><br><span class="line"></span><br><span class="line"><span class="string">評価:</span></span><br><span class="line"><span class="string">既存Terraform資産なし:</span> <span class="string">⭐⭐⭐⭐</span></span><br><span class="line"><span class="string">既存Terraform資産あり:</span> <span class="string">⭐⭐</span></span><br><span class="line"><span class="string">大規模インフラ:</span> <span class="string">⭐</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="アプローチ3-Serverless-Framework"><a href="#アプローチ3-Serverless-Framework" class="headerlink" title="アプローチ3: Serverless Framework"></a>アプローチ3: Serverless Framework</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">構成:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Serverless</span> <span class="string">Frameworkで管理</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">プラグインで拡張</span></span><br><span class="line"></span><br><span class="line"><span class="string">メリット:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">Lambda特化</span></span><br><span class="line"><span class="string">✓</span> <span class="string">豊富なプラグイン</span></span><br><span class="line"><span class="string">✓</span> <span class="string">コミュニティが大きい</span></span><br><span class="line"><span class="string">✓</span> <span class="string">マルチクラウド対応</span></span><br><span class="line"></span><br><span class="line"><span class="string">デメリット:</span></span><br><span class="line"><span class="string">✗</span> <span class="string">既存Terraform資産を活用できない</span></span><br><span class="line"><span class="string">✗</span> <span class="string">組織標準と異なる</span></span><br><span class="line"><span class="string">✗</span> <span class="string">AWS外の学習も必要</span></span><br><span class="line"><span class="string">✗</span> <span class="string">不変性の管理が弱い</span></span><br><span class="line"></span><br><span class="line"><span class="string">評価:</span></span><br><span class="line"><span class="string">新規プロジェクト:</span> <span class="string">⭐⭐⭐</span></span><br><span class="line"><span class="string">既存Terraform環境:</span> <span class="string">⭐⭐</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="アプローチ4-Terraform-SAM（推奨）"><a href="#アプローチ4-Terraform-SAM（推奨）" class="headerlink" title="アプローチ4: Terraform + SAM（推奨）"></a>アプローチ4: Terraform + SAM（推奨）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">構成:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">インフラ:</span> <span class="string">Terraform</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">Lambda:</span> <span class="string">SAM</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">連携:</span> <span class="string">SSM</span> <span class="string">Parameter</span> <span class="string">Store</span></span><br><span class="line"></span><br><span class="line"><span class="string">メリット:</span></span><br><span class="line"><span class="string">✓</span> <span class="string">既存資産活用</span></span><br><span class="line"><span class="string">✓</span> <span class="string">適材適所のツール選択</span></span><br><span class="line"><span class="string">✓</span> <span class="string">責任範囲が明確</span></span><br><span class="line"><span class="string">✓</span> <span class="string">Lambda開発体験が良い</span></span><br><span class="line"><span class="string">✓</span> <span class="string">高速なイテレーション</span></span><br><span class="line"></span><br><span class="line"><span class="string">デメリット:</span></span><br><span class="line"><span class="string">✗</span> <span class="string">複雑性の増加</span></span><br><span class="line"><span class="string">✗</span> <span class="string">学習コストが高い</span></span><br><span class="line"><span class="string">✗</span> <span class="string">管理コスト</span></span><br><span class="line"></span><br><span class="line"><span class="string">評価:</span></span><br><span class="line"><span class="string">小規模:</span> <span class="string">⭐⭐⭐</span></span><br><span class="line"><span class="string">中規模:</span> <span class="string">⭐⭐⭐⭐⭐</span> <span class="string">推奨</span></span><br><span class="line"><span class="string">大規模:</span> <span class="string">⭐⭐⭐⭐⭐</span> <span class="string">推奨</span></span><br><span class="line"><span class="string">既存Terraform環境:</span> <span class="string">⭐⭐⭐⭐⭐</span> <span class="string">最適</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="代替アプローチとの比較"><a href="#代替アプローチとの比較" class="headerlink" title="代替アプローチとの比較"></a>代替アプローチとの比較</h2><h3 id="アプローチ1-Terraform完全管理"><a href="#アプローチ1-Terraform完全管理" class="headerlink" title="アプローチ1: Terraform完全管理"></a>アプローチ1: Terraform完全管理</h3><p>構成:</p>
+<ul>
+<li>全てTerraformで管理</li>
+<li>Lambda関数もTerraform</li>
+<li>エイリアスもTerraform</li>
+</ul>
+<p>メリット:<br>✓ ツールが1つ（学習コスト低）<br>✓ 状態管理が統一<br>✓ 一貫性</p>
+<p>デメリット:<br>✗ Lambda開発体験が悪い<br>✗ デプロイが遅い（10-15分）<br>✗ ローカルテストが困難<br>✗ Layer管理が煩雑<br>✗ ビルドプロセスが複雑</p>
+<p>評価:<br>小規模（Lambda 10個未満）: ⭐⭐⭐<br>中規模（10-50個）: ⭐⭐<br>大規模（50個以上）: ⭐ 非推奨</p>
+<h3 id="アプローチ2-SAM完全管理"><a href="#アプローチ2-SAM完全管理" class="headerlink" title="アプローチ2: SAM完全管理"></a>アプローチ2: SAM完全管理</h3><p>構成:</p>
+<ul>
+<li>全てSAMで管理</li>
+<li>インフラもSAM（CloudFormation）</li>
+<li>エイリアスもSAM</li>
+</ul>
+<p>メリット:<br>✓ ツールが1つ<br>✓ Lambda最適化<br>✓ デプロイが高速<br>✓ 開発体験が良い</p>
+<p>デメリット:<br>✗ 既存Terraform資産を活用できない<br>✗ CloudFormationの制約<br>✗ 複雑なインフラ管理が困難<br>✗ 組織標準と異なる可能性</p>
+<p>評価:<br>既存Terraform資産なし: ⭐⭐⭐⭐<br>既存Terraform資産あり: ⭐⭐<br>大規模インフラ: ⭐</p>
+<h3 id="アプローチ3-Serverless-Framework"><a href="#アプローチ3-Serverless-Framework" class="headerlink" title="アプローチ3: Serverless Framework"></a>アプローチ3: Serverless Framework</h3><p>構成:</p>
+<ul>
+<li>Serverless Frameworkで管理</li>
+<li>プラグインで拡張</li>
+</ul>
+<p>メリット:<br>✓ Lambda特化<br>✓ 豊富なプラグイン<br>✓ コミュニティが大きい<br>✓ マルチクラウド対応</p>
+<p>デメリット:<br>✗ 既存Terraform資産を活用できない<br>✗ 組織標準と異なる<br>✗ AWS外の学習も必要<br>✗ 不変性の管理が弱い</p>
+<p>評価:<br>新規プロジェクト: ⭐⭐⭐<br>既存Terraform環境: ⭐⭐</p>
+<h3 id="アプローチ4-Terraform-SAM（推奨）"><a href="#アプローチ4-Terraform-SAM（推奨）" class="headerlink" title="アプローチ4: Terraform + SAM（推奨）"></a>アプローチ4: Terraform + SAM（推奨）</h3><p>構成:</p>
+<ul>
+<li>インフラ: Terraform</li>
+<li>Lambda: SAM</li>
+<li>連携: SSM Parameter Store</li>
+</ul>
+<p>メリット:<br>✓ 既存資産活用<br>✓ 適材適所のツール選択<br>✓ 責任範囲が明確<br>✓ Lambda開発体験が良い<br>✓ 高速なイテレーション</p>
+<p>デメリット:<br>✗ 複雑性の増加<br>✗ 学習コストが高い<br>✗ 管理コスト</p>
+<p>評価:<br>小規模: ⭐⭐⭐<br>中規模: ⭐⭐⭐⭐⭐ 推奨<br>大規模: ⭐⭐⭐⭐⭐ 推奨<br>既存Terraform環境: ⭐⭐⭐⭐⭐ 最適</p>
 <hr>
-<h2 id="移行戦略"><a href="#移行戦略" class="headerlink" title="移行戦略"></a>移行戦略</h2><h3 id="フェーズ1-準備（1-2週間）"><a href="#フェーズ1-準備（1-2週間）" class="headerlink" title="フェーズ1: 準備（1-2週間）"></a>フェーズ1: 準備（1-2週間）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">目標:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">環境準備</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">チーム教育</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">パイロットプロジェクト選定</span></span><br><span class="line"></span><br><span class="line"><span class="string">タスク:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">ドキュメント整備:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">アーキテクチャ設計書</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">移行計画書</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">運用手順書</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">環境構築:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">リポジトリ作成</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">CI/CDパイプライン基盤</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">SSM</span> <span class="string">Parameter</span> <span class="string">Store設計</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">チーム教育:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">SAM基礎トレーニング</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">ハンズオン</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">Q&amp;Aセッション</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">パイロット選定:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">低リスクなLambda関数選定</span></span><br><span class="line">   <span class="bullet">-</span> <span class="number">3</span><span class="number">-5</span><span class="string">個程度</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">頻繁に変更されるもの優先</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="フェーズ2-パイロット実施（2-4週間）"><a href="#フェーズ2-パイロット実施（2-4週間）" class="headerlink" title="フェーズ2: パイロット実施（2-4週間）"></a>フェーズ2: パイロット実施（2-4週間）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">目標:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">小規模で実証</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">問題点の洗い出し</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">プロセスの改善</span></span><br><span class="line"></span><br><span class="line"><span class="string">手順:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">Terraform側準備:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">SSM</span> <span class="string">Parameter</span> <span class="string">Store出力</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">IAMロール整備</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">SAM側実装:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">選定した関数をSAM化</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">Layerの移行</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">エイリアス設定</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">CI/CD構築:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">GitHub</span> <span class="string">Actionsワークフロー</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">staging自動デプロイ</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">production手動リリース</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">検証:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">デプロイ時間測定</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">問題点の記録</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">フィードバック収集</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span><span class="string">.</span> <span class="string">改善:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">ドキュメント更新</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">プロセス改善</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">ツール改善</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="フェーズ3-段階的展開（2-3ヶ月）"><a href="#フェーズ3-段階的展開（2-3ヶ月）" class="headerlink" title="フェーズ3: 段階的展開（2-3ヶ月）"></a>フェーズ3: 段階的展開（2-3ヶ月）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">目標:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">全Lambda関数の移行</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">チーム全体への展開</span></span><br><span class="line"></span><br><span class="line"><span class="string">優先順位:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">高頻度変更の関数</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">毎週変更されるもの</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">ビジネスロジック中心</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">Layer管理が必要な関数</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">依存関係が多い</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">共通コード使用</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">その他の関数</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">低頻度変更</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">シンプルな関数</span></span><br><span class="line"></span><br><span class="line"><span class="string">ペース:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">Week 1-2:</span> <span class="number">10</span><span class="string">関数</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">Week 3-4:</span> <span class="number">20</span><span class="string">関数</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">Week 5-6:</span> <span class="number">30</span><span class="string">関数</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">...</span></span><br><span class="line"></span><br><span class="line"><span class="string">注意点:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">無理に全て移行しない</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">問題が出たら立ち止まる</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">フィードバックを反映</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="フェーズ4-安定化（1ヶ月）"><a href="#フェーズ4-安定化（1ヶ月）" class="headerlink" title="フェーズ4: 安定化（1ヶ月）"></a>フェーズ4: 安定化（1ヶ月）</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">目標:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">運用の定着</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ドキュメント完成</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">KPI確認</span></span><br><span class="line"></span><br><span class="line"><span class="string">タスク:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">運用監視:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">デプロイ頻度</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">デプロイ時間</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">失敗率</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">ロールバック回数</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">チームフィードバック:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">開発者満足度</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">問題点収集</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">改善要望</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">ドキュメント完成:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">トラブルシューティング</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">ベストプラクティス</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">FAQ</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">KPI評価:</span></span><br><span class="line">   <span class="attr">Before vs After:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">デプロイ時間</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">デプロイ頻度</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">生産性</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">障害対応時間</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="移行戦略"><a href="#移行戦略" class="headerlink" title="移行戦略"></a>移行戦略</h2><h3 id="フェーズ1-準備（1-2週間）"><a href="#フェーズ1-準備（1-2週間）" class="headerlink" title="フェーズ1: 準備（1-2週間）"></a>フェーズ1: 準備（1-2週間）</h3><p>目標:</p>
+<ul>
+<li>環境準備</li>
+<li>チーム教育</li>
+<li>パイロットプロジェクト選定</li>
+</ul>
+<p>タスク:</p>
+<ol>
+<li><p>ドキュメント整備:</p>
+<ul>
+<li>アーキテクチャ設計書</li>
+<li>移行計画書</li>
+<li>運用手順書</li>
+</ul>
+</li>
+<li><p>環境構築:</p>
+<ul>
+<li>リポジトリ作成</li>
+<li>CI&#x2F;CDパイプライン基盤</li>
+<li>SSM Parameter Store設計</li>
+</ul>
+</li>
+<li><p>チーム教育:</p>
+<ul>
+<li>SAM基礎トレーニング</li>
+<li>ハンズオン</li>
+<li>Q&amp;Aセッション</li>
+</ul>
+</li>
+<li><p>パイロット選定:</p>
+<ul>
+<li>低リスクなLambda関数選定</li>
+<li>3-5個程度</li>
+<li>頻繁に変更されるもの優先</li>
+</ul>
+</li>
+</ol>
+<h3 id="フェーズ2-パイロット実施（2-4週間）"><a href="#フェーズ2-パイロット実施（2-4週間）" class="headerlink" title="フェーズ2: パイロット実施（2-4週間）"></a>フェーズ2: パイロット実施（2-4週間）</h3><p>目標:</p>
+<ul>
+<li>小規模で実証</li>
+<li>問題点の洗い出し</li>
+<li>プロセスの改善</li>
+</ul>
+<p>手順:</p>
+<ol>
+<li><p>Terraform側準備:</p>
+<ul>
+<li>SSM Parameter Store出力</li>
+<li>IAMロール整備</li>
+</ul>
+</li>
+<li><p>SAM側実装:</p>
+<ul>
+<li>選定した関数をSAM化</li>
+<li>Layerの移行</li>
+<li>エイリアス設定</li>
+</ul>
+</li>
+<li><p>CI&#x2F;CD構築:</p>
+<ul>
+<li>GitHub Actionsワークフロー</li>
+<li>staging自動デプロイ</li>
+<li>production手動リリース</li>
+</ul>
+</li>
+<li><p>検証:</p>
+<ul>
+<li>デプロイ時間測定</li>
+<li>問題点の記録</li>
+<li>フィードバック収集</li>
+</ul>
+</li>
+<li><p>改善:</p>
+<ul>
+<li>ドキュメント更新</li>
+<li>プロセス改善</li>
+<li>ツール改善</li>
+</ul>
+</li>
+</ol>
+<h3 id="フェーズ3-段階的展開（2-3ヶ月）"><a href="#フェーズ3-段階的展開（2-3ヶ月）" class="headerlink" title="フェーズ3: 段階的展開（2-3ヶ月）"></a>フェーズ3: 段階的展開（2-3ヶ月）</h3><p>目標:</p>
+<ul>
+<li>全Lambda関数の移行</li>
+<li>チーム全体への展開</li>
+</ul>
+<p>優先順位:</p>
+<ol>
+<li><p>高頻度変更の関数</p>
+<ul>
+<li>毎週変更されるもの</li>
+<li>ビジネスロジック中心</li>
+</ul>
+</li>
+<li><p>Layer管理が必要な関数</p>
+<ul>
+<li>依存関係が多い</li>
+<li>共通コード使用</li>
+</ul>
+</li>
+<li><p>その他の関数</p>
+<ul>
+<li>低頻度変更</li>
+<li>シンプルな関数</li>
+</ul>
+</li>
+</ol>
+<p>ペース:</p>
+<ul>
+<li>Week 1-2: 10関数</li>
+<li>Week 3-4: 20関数</li>
+<li>Week 5-6: 30関数</li>
+<li>…</li>
+</ul>
+<p>注意点:</p>
+<ul>
+<li>無理に全て移行しない</li>
+<li>問題が出たら立ち止まる</li>
+<li>フィードバックを反映</li>
+</ul>
+<h3 id="フェーズ4-安定化（1ヶ月）"><a href="#フェーズ4-安定化（1ヶ月）" class="headerlink" title="フェーズ4: 安定化（1ヶ月）"></a>フェーズ4: 安定化（1ヶ月）</h3><p>目標:</p>
+<ul>
+<li>運用の定着</li>
+<li>ドキュメント完成</li>
+<li>KPI確認</li>
+</ul>
+<p>タスク:</p>
+<ol>
+<li><p>運用監視:</p>
+<ul>
+<li>デプロイ頻度</li>
+<li>デプロイ時間</li>
+<li>失敗率</li>
+<li>ロールバック回数</li>
+</ul>
+</li>
+<li><p>チームフィードバック:</p>
+<ul>
+<li>開発者満足度</li>
+<li>問題点収集</li>
+<li>改善要望</li>
+</ul>
+</li>
+<li><p>ドキュメント完成:</p>
+<ul>
+<li>トラブルシューティング</li>
+<li>ベストプラクティス</li>
+<li>FAQ</li>
+</ul>
+</li>
+<li><p>KPI評価:<br>Before vs After:</p>
+<ul>
+<li>デプロイ時間</li>
+<li>デプロイ頻度</li>
+<li>生産性</li>
+<li>障害対応時間</li>
+</ul>
+</li>
+</ol>
 <hr>
-<h2 id="運用上の考慮事項"><a href="#運用上の考慮事項" class="headerlink" title="運用上の考慮事項"></a>運用上の考慮事項</h2><h3 id="日常運用"><a href="#日常運用" class="headerlink" title="日常運用"></a>日常運用</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">週次作業:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">デプロイ状況レビュー</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">エラー率確認</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">コスト確認</span></span><br><span class="line"></span><br><span class="line"><span class="string">月次作業:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Lambda関数のレビュー</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Layer使用状況確認</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">不要なバージョン削除</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">IAMロール・ポリシーレビュー</span></span><br><span class="line"></span><br><span class="line"><span class="string">四半期作業:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">アーキテクチャレビュー</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">セキュリティ監査</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">コスト最適化</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ドキュメント更新</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="トラブルシューティング"><a href="#トラブルシューティング" class="headerlink" title="トラブルシューティング"></a>トラブルシューティング</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">よくある問題と対処:</span></span><br><span class="line"></span><br><span class="line"><span class="string">問題1:</span> <span class="string">SAMデプロイ失敗</span></span><br><span class="line"><span class="string">原因:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">IAM権限不足</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">SSMパラメータが存在しない</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ビルド失敗</span></span><br><span class="line"></span><br><span class="line"><span class="string">対処:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">CloudFormationスタックのイベント確認</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">エラーメッセージから原因特定</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">ロールバック（sam</span> <span class="string">deploy</span> <span class="string">--no-execute-changeset）</span></span><br><span class="line"></span><br><span class="line"><span class="string">問題2:</span> <span class="string">エイリアス切り替え失敗</span></span><br><span class="line"><span class="string">原因:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">バージョンが存在しない</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">権限不足</span></span><br><span class="line"></span><br><span class="line"><span class="string">対処:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">バージョン存在確認</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">エイリアス現在値確認</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">手動でAWS</span> <span class="string">CLIから切り替え</span></span><br><span class="line"></span><br><span class="line"><span class="string">問題3:</span> <span class="string">Layer読み込み失敗</span></span><br><span class="line"><span class="string">原因:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Layerのディレクトリ構造が間違い</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">CompatibleRuntimesが一致しない</span></span><br><span class="line"></span><br><span class="line"><span class="string">対処:</span></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">Layerの構造確認（/opt/python/）</span></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">ランタイムバージョン確認</span></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">ローカルでテスト（sam</span> <span class="string">local）</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="コスト管理"><a href="#コスト管理" class="headerlink" title="コスト管理"></a>コスト管理</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">コスト要因:</span></span><br><span class="line"></span><br><span class="line"><span class="string">Lambda実行:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">リクエスト数</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">実行時間</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">メモリサイズ</span></span><br><span class="line"></span><br><span class="line"><span class="string">最適化:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">不要なログ削減</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">メモリサイズの適正化</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">実行時間の最適化</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">Provisioned</span> <span class="string">Concurrency（必要時のみ）</span></span><br><span class="line"></span><br><span class="line"><span class="attr">NAT Gateway:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">AZごとに$0.045/hour</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">データ転送費</span></span><br><span class="line"></span><br><span class="line"><span class="string">最適化:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">VPC</span> <span class="string">Endpoint活用</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">開発環境はNAT不要</span></span><br><span class="line"></span><br><span class="line"><span class="string">S3（アーティファクト保存）:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ストレージ費用</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">リクエスト費用</span></span><br><span class="line"></span><br><span class="line"><span class="string">最適化:</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">ライフサイクルポリシー</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">古いバージョン削除</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="運用上の考慮事項"><a href="#運用上の考慮事項" class="headerlink" title="運用上の考慮事項"></a>運用上の考慮事項</h2><h3 id="日常運用"><a href="#日常運用" class="headerlink" title="日常運用"></a>日常運用</h3><p>週次作業:</p>
+<ul>
+<li>デプロイ状況レビュー</li>
+<li>エラー率確認</li>
+<li>コスト確認</li>
+</ul>
+<p>月次作業:</p>
+<ul>
+<li>Lambda関数のレビュー</li>
+<li>Layer使用状況確認</li>
+<li>不要なバージョン削除</li>
+<li>IAMロール・ポリシーレビュー</li>
+</ul>
+<p>四半期作業:</p>
+<ul>
+<li>アーキテクチャレビュー</li>
+<li>セキュリティ監査</li>
+<li>コスト最適化</li>
+<li>ドキュメント更新</li>
+</ul>
+<h3 id="トラブルシューティング"><a href="#トラブルシューティング" class="headerlink" title="トラブルシューティング"></a>トラブルシューティング</h3><p>よくある問題と対処:</p>
+<p>問題1: SAMデプロイ失敗<br>原因:</p>
+<ul>
+<li>IAM権限不足</li>
+<li>SSMパラメータが存在しない</li>
+<li>ビルド失敗</li>
+</ul>
+<p>対処:</p>
+<ol>
+<li>CloudFormationスタックのイベント確認</li>
+<li>エラーメッセージから原因特定</li>
+<li>ロールバック（sam deploy –no-execute-changeset）</li>
+</ol>
+<p>問題2: エイリアス切り替え失敗<br>原因:</p>
+<ul>
+<li>バージョンが存在しない</li>
+<li>権限不足</li>
+</ul>
+<p>対処:</p>
+<ol>
+<li>バージョン存在確認</li>
+<li>エイリアス現在値確認</li>
+<li>手動でAWS CLIから切り替え</li>
+</ol>
+<p>問題3: Layer読み込み失敗<br>原因:</p>
+<ul>
+<li>Layerのディレクトリ構造が間違い</li>
+<li>CompatibleRuntimesが一致しない</li>
+</ul>
+<p>対処:</p>
+<ol>
+<li>Layerの構造確認（&#x2F;opt&#x2F;python&#x2F;）</li>
+<li>ランタイムバージョン確認</li>
+<li>ローカルでテスト（sam local）</li>
+</ol>
+<h3 id="コスト管理"><a href="#コスト管理" class="headerlink" title="コスト管理"></a>コスト管理</h3><p>コスト要因:</p>
+<p>Lambda実行:</p>
+<ul>
+<li>リクエスト数</li>
+<li>実行時間</li>
+<li>メモリサイズ</li>
+</ul>
+<p>最適化:</p>
+<ul>
+<li>不要なログ削減</li>
+<li>メモリサイズの適正化</li>
+<li>実行時間の最適化</li>
+<li>Provisioned Concurrency（必要時のみ）</li>
+</ul>
+<p>NAT Gateway:</p>
+<ul>
+<li>AZごとに$0.045&#x2F;hour</li>
+<li>データ転送費</li>
+</ul>
+<p>最適化:</p>
+<ul>
+<li>VPC Endpoint活用</li>
+<li>開発環境はNAT不要</li>
+</ul>
+<p>S3（アーティファクト保存）:</p>
+<ul>
+<li>ストレージ費用</li>
+<li>リクエスト費用</li>
+</ul>
+<p>最適化:</p>
+<ul>
+<li>ライフサイクルポリシー</li>
+<li>古いバージョン削除</li>
+</ul>
 <hr>
-<h2 id="よくある質問（FAQ）"><a href="#よくある質問（FAQ）" class="headerlink" title="よくある質問（FAQ）"></a>よくある質問（FAQ）</h2><h3 id="Q1-なぜTerraformとSAMの両方を使うのか？"><a href="#Q1-なぜTerraformとSAMの両方を使うのか？" class="headerlink" title="Q1: なぜTerraformとSAMの両方を使うのか？"></a>Q1: なぜTerraformとSAMの両方を使うのか？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">A: 適材適所のツール選択です。</span><br><span class="line"></span><br><span class="line">理由:</span><br><span class="line">- Terraform: インフラ全般の管理に優れる</span><br><span class="line">  既存資産があり、チームが習熟している</span><br><span class="line"></span><br><span class="line">- SAM: Lambda専用に最適化されている</span><br><span class="line">  開発体験、デプロイ速度、Layer管理が優秀</span><br><span class="line"></span><br><span class="line">両方使うことで:</span><br><span class="line">✓ 既存資産を活用</span><br><span class="line">✓ Lambda開発の生産性向上</span><br><span class="line">✓ 責任範囲の明確化</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q2-デプロイとリリースを分離する必要性は？"><a href="#Q2-デプロイとリリースを分離する必要性は？" class="headerlink" title="Q2: デプロイとリリースを分離する必要性は？"></a>Q2: デプロイとリリースを分離する必要性は？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A: ビジネス要件とリスク管理のためです。</span><br><span class="line"></span><br><span class="line">必要なケース:</span><br><span class="line">- 特定時刻にリリースしたい（キャンペーン等）</span><br><span class="line">- 段階的リリース（カナリア）したい</span><br><span class="line">- 本番リスクを最小化したい</span><br><span class="line">- ロールバックを高速化したい</span><br><span class="line"></span><br><span class="line">不要なケース:</span><br><span class="line">- 小規模プロジェクト</span><br><span class="line">- リリースタイミングが自由</span><br><span class="line">- 開発スピード最優先</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q3-既存のTerraform管理Lambdaはどうする？"><a href="#Q3-既存のTerraform管理Lambdaはどうする？" class="headerlink" title="Q3: 既存のTerraform管理Lambdaはどうする？"></a>Q3: 既存のTerraform管理Lambdaはどうする？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A: 段階的に移行を推奨します。</span><br><span class="line"></span><br><span class="line">移行優先順位:</span><br><span class="line">1. 頻繁に変更される関数</span><br><span class="line">2. Layer管理が必要な関数</span><br><span class="line">3. 新規関数（最初からSAM）</span><br><span class="line">4. その他の関数</span><br><span class="line"></span><br><span class="line">移行不要:</span><br><span class="line">- インフラ系Lambda（認証、監視）</span><br><span class="line">- ほぼ変更されない関数</span><br><span class="line">- Terraformで問題ない関数</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q4-エイリアス管理は必須？"><a href="#Q4-エイリアス管理は必須？" class="headerlink" title="Q4: エイリアス管理は必須？"></a>Q4: エイリアス管理は必須？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A: 推奨しますが、必須ではありません。</span><br><span class="line"></span><br><span class="line">エイリアスなしの場合:</span><br><span class="line">- $LATESTや特定バージョンを直接使用</span><br><span class="line">- シンプルだが柔軟性がない</span><br><span class="line">- ロールバックが面倒</span><br><span class="line"></span><br><span class="line">エイリアスありの場合:</span><br><span class="line">- 環境の明確な分離</span><br><span class="line">- 瞬時のロールバック</span><br><span class="line">- トラフィック制御</span><br><span class="line">- 推奨</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q5-SAMとServerless-Frameworkの違いは？"><a href="#Q5-SAMとServerless-Frameworkの違いは？" class="headerlink" title="Q5: SAMとServerless Frameworkの違いは？"></a>Q5: SAMとServerless Frameworkの違いは？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">A: どちらもLambda管理ツールですが...</span><br><span class="line"></span><br><span class="line">SAMの特徴:</span><br><span class="line">✓ AWS公式</span><br><span class="line">✓ CloudFormationベース</span><br><span class="line">✓ AWS統合が強い</span><br><span class="line">✓ 学習コスト低</span><br><span class="line">✓ 本アーキテクチャで推奨</span><br><span class="line"></span><br><span class="line">Serverless Frameworkの特徴:</span><br><span class="line">✓ マルチクラウド</span><br><span class="line">✓ プラグインが豊富</span><br><span class="line">✓ コミュニティが大きい</span><br><span class="line">✓ AWS以外も視野に入れるなら候補</span><br><span class="line"></span><br><span class="line">選択基準:</span><br><span class="line">- AWS専用 → SAM</span><br><span class="line">- マルチクラウド → Serverless Framework</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q6-コスト増加は？"><a href="#Q6-コスト増加は？" class="headerlink" title="Q6: コスト増加は？"></a>Q6: コスト増加は？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">A: わずかに増加しますが、効果が上回ります。</span><br><span class="line"></span><br><span class="line">増加要因:</span><br><span class="line">- SSM Parameter Store（わずか）</span><br><span class="line">- Lambda バージョン保持（わずか）</span><br><span class="line">- GitHub Actions実行時間（増加）</span><br><span class="line"></span><br><span class="line">削減要因:</span><br><span class="line">- デプロイ時間短縮 → 人件費削減</span><br><span class="line">- 障害対応時間短縮 → 機会損失削減</span><br><span class="line">- 開発速度向上 → 生産性向上</span><br><span class="line"></span><br><span class="line">結論:</span><br><span class="line">全体としてはコスト削減効果の方が大きい</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q7-小規模プロジェクトでも有効？"><a href="#Q7-小規模プロジェクトでも有効？" class="headerlink" title="Q7: 小規模プロジェクトでも有効？"></a>Q7: 小規模プロジェクトでも有効？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">A: プロジェクト規模より、要件で判断してください。</span><br><span class="line"></span><br><span class="line">有効なケース:</span><br><span class="line">- Lambda関数が10個以上</span><br><span class="line">- 頻繁にデプロイする</span><br><span class="line">- 複数チームで開発</span><br><span class="line">- Layer管理が必要</span><br><span class="line">- ガバナンスが重要</span><br><span class="line"></span><br><span class="line">不要なケース:</span><br><span class="line">- Lambda関数が5個未満</span><br><span class="line">- 月1回程度のデプロイ</span><br><span class="line">- 単一チーム</span><br><span class="line">- シンプルな構成</span><br><span class="line"></span><br><span class="line">推奨:</span><br><span class="line">Lambda 10個以上 → 本アーキテクチャ</span><br><span class="line">Lambda 10個未満 → シンプルな構成も検討</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q8-セキュリティ上のリスクは？"><a href="#Q8-セキュリティ上のリスクは？" class="headerlink" title="Q8: セキュリティ上のリスクは？"></a>Q8: セキュリティ上のリスクは？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">A: 適切に設定すれば、むしろ向上します。</span><br><span class="line"></span><br><span class="line">懸念点:</span><br><span class="line">- 2つのリポジトリ管理</span><br><span class="line">- CI/CDでの認証情報</span><br><span class="line"></span><br><span class="line">対策:</span><br><span class="line">✓ OIDC認証（長期認証情報不要）</span><br><span class="line">✓ 最小権限の原則</span><br><span class="line">✓ Secrets Manager活用</span><br><span class="line">✓ 監査ログ（CloudTrail）</span><br><span class="line">✓ 定期的なレビュー</span><br><span class="line"></span><br><span class="line">結論:</span><br><span class="line">適切に実装すればセキュリティは向上</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q9-ロックイン（ベンダーロック）のリスクは？"><a href="#Q9-ロックイン（ベンダーロック）のリスクは？" class="headerlink" title="Q9: ロックイン（ベンダーロック）のリスクは？"></a>Q9: ロックイン（ベンダーロック）のリスクは？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">A: AWS特化ですが、メリットが上回ります。</span><br><span class="line"></span><br><span class="line">ロックインの程度:</span><br><span class="line">- Terraform: 比較的移行しやすい</span><br><span class="line">- SAM: AWS CloudFormation依存</span><br><span class="line">- Lambda自体: AWS固有</span><br><span class="line"></span><br><span class="line">緩和策:</span><br><span class="line">- ビジネスロジックは疎結合に</span><br><span class="line">- インターフェースを明確に</span><br><span class="line">- テストコードの充実</span><br><span class="line"></span><br><span class="line">実際:</span><br><span class="line">- 他クラウドへの移行は稀</span><br><span class="line">- AWSエコシステムの恩恵が大きい</span><br><span class="line">- ロックインを過度に恐れる必要なし</span><br></pre></td></tr></table></figure>
-
-<h3 id="Q10-学習コストはどのくらい？"><a href="#Q10-学習コストはどのくらい？" class="headerlink" title="Q10: 学習コストはどのくらい？"></a>Q10: 学習コストはどのくらい？</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">A: 経験にもよりますが...</span><br><span class="line"></span><br><span class="line">前提知識:</span><br><span class="line">- Lambda基礎: 必須</span><br><span class="line">- Terraform基礎: あると良い</span><br><span class="line">- GitHub Actions基礎: あると良い</span><br><span class="line"></span><br><span class="line">学習時間（目安）:</span><br><span class="line">- SAM基礎: 2-3日</span><br><span class="line">- 本アーキテクチャ理解: 1週間</span><br><span class="line">- 実装習得: 2-4週間</span><br><span class="line"></span><br><span class="line">サポート:</span><br><span class="line">- 本ドキュメント</span><br><span class="line">- ハンズオン</span><br><span class="line">- サンプルコード</span><br><span class="line">- メンター制度</span><br><span class="line"></span><br><span class="line">結論:</span><br><span class="line">1ヶ月あれば習得可能</span><br></pre></td></tr></table></figure>
-
+<h2 id="よくある質問（FAQ）"><a href="#よくある質問（FAQ）" class="headerlink" title="よくある質問（FAQ）"></a>よくある質問（FAQ）</h2><h3 id="Q1-なぜTerraformとSAMの両方を使うのか？"><a href="#Q1-なぜTerraformとSAMの両方を使うのか？" class="headerlink" title="Q1: なぜTerraformとSAMの両方を使うのか？"></a>Q1: なぜTerraformとSAMの両方を使うのか？</h3><p>A: 適材適所のツール選択です。</p>
+<p>理由:</p>
+<ul>
+<li><p>Terraform: インフラ全般の管理に優れる<br>既存資産があり、チームが習熟している</p>
+</li>
+<li><p>SAM: Lambda専用に最適化されている<br>開発体験、デプロイ速度、Layer管理が優秀</p>
+</li>
+</ul>
+<p>両方使うことで:<br>✓ 既存資産を活用<br>✓ Lambda開発の生産性向上<br>✓ 責任範囲の明確化</p>
+<h3 id="Q2-デプロイとリリースを分離する必要性は？"><a href="#Q2-デプロイとリリースを分離する必要性は？" class="headerlink" title="Q2: デプロイとリリースを分離する必要性は？"></a>Q2: デプロイとリリースを分離する必要性は？</h3><p>A: ビジネス要件とリスク管理のためです。</p>
+<p>必要なケース:</p>
+<ul>
+<li>特定時刻にリリースしたい（キャンペーン等）</li>
+<li>段階的リリース（カナリア）したい</li>
+<li>本番リスクを最小化したい</li>
+<li>ロールバックを高速化したい</li>
+</ul>
+<p>不要なケース:</p>
+<ul>
+<li>小規模プロジェクト</li>
+<li>リリースタイミングが自由</li>
+<li>開発スピード最優先</li>
+</ul>
+<h3 id="Q3-既存のTerraform管理Lambdaはどうする？"><a href="#Q3-既存のTerraform管理Lambdaはどうする？" class="headerlink" title="Q3: 既存のTerraform管理Lambdaはどうする？"></a>Q3: 既存のTerraform管理Lambdaはどうする？</h3><p>A: 段階的に移行を推奨します。</p>
+<p>移行優先順位:</p>
+<ol>
+<li>頻繁に変更される関数</li>
+<li>Layer管理が必要な関数</li>
+<li>新規関数（最初からSAM）</li>
+<li>その他の関数</li>
+</ol>
+<p>移行不要:</p>
+<ul>
+<li>インフラ系Lambda（認証、監視）</li>
+<li>ほぼ変更されない関数</li>
+<li>Terraformで問題ない関数</li>
+</ul>
+<h3 id="Q4-エイリアス管理は必須？"><a href="#Q4-エイリアス管理は必須？" class="headerlink" title="Q4: エイリアス管理は必須？"></a>Q4: エイリアス管理は必須？</h3><p>A: 推奨しますが、必須ではありません。</p>
+<p>エイリアスなしの場合:</p>
+<ul>
+<li>$LATESTや特定バージョンを直接使用</li>
+<li>シンプルだが柔軟性がない</li>
+<li>ロールバックが面倒</li>
+</ul>
+<p>エイリアスありの場合:</p>
+<ul>
+<li>環境の明確な分離</li>
+<li>瞬時のロールバック</li>
+<li>トラフィック制御</li>
+<li>推奨</li>
+</ul>
+<h3 id="Q5-SAMとServerless-Frameworkの違いは？"><a href="#Q5-SAMとServerless-Frameworkの違いは？" class="headerlink" title="Q5: SAMとServerless Frameworkの違いは？"></a>Q5: SAMとServerless Frameworkの違いは？</h3><p>A: どちらもLambda管理ツールですが…</p>
+<p>SAMの特徴:<br>✓ AWS公式<br>✓ CloudFormationベース<br>✓ AWS統合が強い<br>✓ 学習コスト低<br>✓ 本アーキテクチャで推奨</p>
+<p>Serverless Frameworkの特徴:<br>✓ マルチクラウド<br>✓ プラグインが豊富<br>✓ コミュニティが大きい<br>✓ AWS以外も視野に入れるなら候補</p>
+<p>選択基準:</p>
+<ul>
+<li>AWS専用 → SAM</li>
+<li>マルチクラウド → Serverless Framework</li>
+</ul>
+<h3 id="Q6-コスト増加は？"><a href="#Q6-コスト増加は？" class="headerlink" title="Q6: コスト増加は？"></a>Q6: コスト増加は？</h3><p>A: わずかに増加しますが、効果が上回ります。</p>
+<p>増加要因:</p>
+<ul>
+<li>SSM Parameter Store（わずか）</li>
+<li>Lambda バージョン保持（わずか）</li>
+<li>GitHub Actions実行時間（増加）</li>
+</ul>
+<p>削減要因:</p>
+<ul>
+<li>デプロイ時間短縮 → 人件費削減</li>
+<li>障害対応時間短縮 → 機会損失削減</li>
+<li>開発速度向上 → 生産性向上</li>
+</ul>
+<p>結論:<br>全体としてはコスト削減効果の方が大きい</p>
+<h3 id="Q7-小規模プロジェクトでも有効？"><a href="#Q7-小規模プロジェクトでも有効？" class="headerlink" title="Q7: 小規模プロジェクトでも有効？"></a>Q7: 小規模プロジェクトでも有効？</h3><p>A: プロジェクト規模より、要件で判断してください。</p>
+<p>有効なケース:</p>
+<ul>
+<li>Lambda関数が10個以上</li>
+<li>頻繁にデプロイする</li>
+<li>複数チームで開発</li>
+<li>Layer管理が必要</li>
+<li>ガバナンスが重要</li>
+</ul>
+<p>不要なケース:</p>
+<ul>
+<li>Lambda関数が5個未満</li>
+<li>月1回程度のデプロイ</li>
+<li>単一チーム</li>
+<li>シンプルな構成</li>
+</ul>
+<p>推奨:<br>Lambda 10個以上 → 本アーキテクチャ<br>Lambda 10個未満 → シンプルな構成も検討</p>
+<h3 id="Q8-セキュリティ上のリスクは？"><a href="#Q8-セキュリティ上のリスクは？" class="headerlink" title="Q8: セキュリティ上のリスクは？"></a>Q8: セキュリティ上のリスクは？</h3><p>A: 適切に設定すれば、むしろ向上します。</p>
+<p>懸念点:</p>
+<ul>
+<li>2つのリポジトリ管理</li>
+<li>CI&#x2F;CDでの認証情報</li>
+</ul>
+<p>対策:<br>✓ OIDC認証（長期認証情報不要）<br>✓ 最小権限の原則<br>✓ Secrets Manager活用<br>✓ 監査ログ（CloudTrail）<br>✓ 定期的なレビュー</p>
+<p>結論:<br>適切に実装すればセキュリティは向上</p>
+<h3 id="Q9-ロックイン（ベンダーロック）のリスクは？"><a href="#Q9-ロックイン（ベンダーロック）のリスクは？" class="headerlink" title="Q9: ロックイン（ベンダーロック）のリスクは？"></a>Q9: ロックイン（ベンダーロック）のリスクは？</h3><p>A: AWS特化ですが、メリットが上回ります。</p>
+<p>ロックインの程度:</p>
+<ul>
+<li>Terraform: 比較的移行しやすい</li>
+<li>SAM: AWS CloudFormation依存</li>
+<li>Lambda自体: AWS固有</li>
+</ul>
+<p>緩和策:</p>
+<ul>
+<li>ビジネスロジックは疎結合に</li>
+<li>インターフェースを明確に</li>
+<li>テストコードの充実</li>
+</ul>
+<p>実際:</p>
+<ul>
+<li>他クラウドへの移行は稀</li>
+<li>AWSエコシステムの恩恵が大きい</li>
+<li>ロックインを過度に恐れる必要なし</li>
+</ul>
+<h3 id="Q10-学習コストはどのくらい？"><a href="#Q10-学習コストはどのくらい？" class="headerlink" title="Q10: 学習コストはどのくらい？"></a>Q10: 学習コストはどのくらい？</h3><p>A: 経験にもよりますが…</p>
+<p>前提知識:</p>
+<ul>
+<li>Lambda基礎: 必須</li>
+<li>Terraform基礎: あると良い</li>
+<li>GitHub Actions基礎: あると良い</li>
+</ul>
+<p>学習時間（目安）:</p>
+<ul>
+<li>SAM基礎: 2-3日</li>
+<li>本アーキテクチャ理解: 1週間</li>
+<li>実装習得: 2-4週間</li>
+</ul>
+<p>サポート:</p>
+<ul>
+<li>本ドキュメント</li>
+<li>ハンズオン</li>
+<li>サンプルコード</li>
+<li>メンター制度</li>
+</ul>
+<p>結論:<br>1ヶ月あれば習得可能</p>
 <hr>
-<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h3 id="メリット（再掲）"><a href="#メリット（再掲）" class="headerlink" title="メリット（再掲）"></a>メリット（再掲）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">✓ デプロイとリリースの分離</span><br><span class="line">✓ 明確な責任範囲</span><br><span class="line">✓ 高速なイテレーション</span><br><span class="line">✓ Layer管理の自動化</span><br><span class="line">✓ ガバナンスの確保</span><br><span class="line">✓ 開発体験の向上</span><br><span class="line">✓ 瞬時のロールバック</span><br></pre></td></tr></table></figure>
-
-<h3 id="デメリット（再掲）と対策"><a href="#デメリット（再掲）と対策" class="headerlink" title="デメリット（再掲）と対策"></a>デメリット（再掲）と対策</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">✗ 複雑性の増加</span><br><span class="line">  → ドキュメント整備、教育</span><br><span class="line"></span><br><span class="line">✗ リリース待ち時間</span><br><span class="line">  → 承認プロセス最適化、緊急フロー</span><br><span class="line"></span><br><span class="line">✗ 管理コスト</span><br><span class="line">  → 自動化、モニタリング</span><br><span class="line"></span><br><span class="line">✗ エイリアス手動管理</span><br><span class="line">  → スクリプト化、ワークフロー化</span><br></pre></td></tr></table></figure>
-
-<h3 id="推奨する組織"><a href="#推奨する組織" class="headerlink" title="推奨する組織"></a>推奨する組織</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">最適:</span><br><span class="line">- Lambda関数 30個以上</span><br><span class="line">- 複数チーム</span><br><span class="line">- 既存Terraform資産あり</span><br><span class="line">- ガバナンス重視</span><br><span class="line">- 高頻度デプロイ</span><br><span class="line"></span><br><span class="line">適用可能:</span><br><span class="line">- Lambda関数 10-30個</span><br><span class="line">- 単一チーム</span><br><span class="line">- デプロイ頻度 中程度</span><br><span class="line"></span><br><span class="line">要検討:</span><br><span class="line">- Lambda関数 10個未満</span><br><span class="line">- 超シンプルな要件</span><br><span class="line">- リソース制約が厳しい</span><br></pre></td></tr></table></figure>
-
-<h3 id="最終的な判断"><a href="#最終的な判断" class="headerlink" title="最終的な判断"></a>最終的な判断</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">このアーキテクチャを採用すべきか？</span><br><span class="line"></span><br><span class="line">YES の場合:</span><br><span class="line">✓ スケーラビリティが重要</span><br><span class="line">✓ 開発速度を上げたい</span><br><span class="line">✓ ガバナンスが必要</span><br><span class="line">✓ 既にTerraformを使用</span><br><span class="line">✓ Lambda関数が多い（10個以上）</span><br><span class="line"></span><br><span class="line">NO の場合（代替案検討）:</span><br><span class="line">- Lambda関数が少ない（5個未満）</span><br><span class="line">- 超シンプルな要件</span><br><span class="line">- 学習リソースが限られる</span><br><span class="line"></span><br><span class="line">→ 要件と制約を総合的に判断</span><br></pre></td></tr></table></figure>
-
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h3 id="メリット（再掲）"><a href="#メリット（再掲）" class="headerlink" title="メリット（再掲）"></a>メリット（再掲）</h3><p>✓ デプロイとリリースの分離<br>✓ 明確な責任範囲<br>✓ 高速なイテレーション<br>✓ Layer管理の自動化<br>✓ ガバナンスの確保<br>✓ 開発体験の向上<br>✓ 瞬時のロールバック</p>
+<h3 id="デメリット（再掲）と対策"><a href="#デメリット（再掲）と対策" class="headerlink" title="デメリット（再掲）と対策"></a>デメリット（再掲）と対策</h3><p>✗ 複雑性の増加<br>  → ドキュメント整備、教育</p>
+<p>✗ リリース待ち時間<br>  → 承認プロセス最適化、緊急フロー</p>
+<p>✗ 管理コスト<br>  → 自動化、モニタリング</p>
+<p>✗ エイリアス手動管理<br>  → スクリプト化、ワークフロー化</p>
+<h3 id="推奨する組織"><a href="#推奨する組織" class="headerlink" title="推奨する組織"></a>推奨する組織</h3><p>最適:</p>
+<ul>
+<li>Lambda関数 30個以上</li>
+<li>複数チーム</li>
+<li>既存Terraform資産あり</li>
+<li>ガバナンス重視</li>
+<li>高頻度デプロイ</li>
+</ul>
+<p>適用可能:</p>
+<ul>
+<li>Lambda関数 10-30個</li>
+<li>単一チーム</li>
+<li>デプロイ頻度 中程度</li>
+</ul>
+<p>要検討:</p>
+<ul>
+<li>Lambda関数 10個未満</li>
+<li>超シンプルな要件</li>
+<li>リソース制約が厳しい</li>
+</ul>
+<h3 id="最終的な判断"><a href="#最終的な判断" class="headerlink" title="最終的な判断"></a>最終的な判断</h3><p>このアーキテクチャを採用すべきか？</p>
+<p>YES の場合:<br>✓ スケーラビリティが重要<br>✓ 開発速度を上げたい<br>✓ ガバナンスが必要<br>✓ 既にTerraformを使用<br>✓ Lambda関数が多い（10個以上）</p>
+<p>NO の場合（代替案検討）:</p>
+<ul>
+<li>Lambda関数が少ない（5個未満）</li>
+<li>超シンプルな要件</li>
+<li>学習リソースが限られる</li>
+</ul>
+<p>→ 要件と制約を総合的に判断</p>
 <hr>
 <h2 id="全体のまとめ"><a href="#全体のまとめ" class="headerlink" title="全体のまとめ"></a>全体のまとめ</h2><p>本設計書では、大規模Lambda環境におけるCI&#x2F;CDアーキテクチャを提示しました。</p>
-<h3 id="核心的な価値"><a href="#核心的な価値" class="headerlink" title="核心的な価値"></a>核心的な価値</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1. 適材適所のツール選択</span><br><span class="line">   - Terraform: インフラ</span><br><span class="line">   - SAM: Lambda</span><br><span class="line">   </span><br><span class="line">2. デプロイとリリースの分離</span><br><span class="line">   - リスク管理</span><br><span class="line">   - ビジネス要件への対応</span><br><span class="line"></span><br><span class="line">3. 責任範囲の明確化</span><br><span class="line">   - インフラチーム</span><br><span class="line">   - アプリケーションチーム</span><br><span class="line"></span><br><span class="line">4. スケーラビリティ</span><br><span class="line">   - 関数数の増加</span><br><span class="line">   - チーム数の増加</span><br><span class="line"></span><br><span class="line">5. ガバナンス</span><br><span class="line">   - 承認フロー</span><br><span class="line">   - 監査証跡</span><br></pre></td></tr></table></figure>
-
-<h3 id="成功の鍵"><a href="#成功の鍵" class="headerlink" title="成功の鍵"></a>成功の鍵</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">✓ 段階的な導入</span><br><span class="line">✓ ドキュメント整備</span><br><span class="line">✓ チーム教育</span><br><span class="line">✓ 継続的な改善</span><br><span class="line">✓ フィードバックループ</span><br></pre></td></tr></table></figure>
-
-<h3 id="次のアクション"><a href="#次のアクション" class="headerlink" title="次のアクション"></a>次のアクション</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 本ドキュメントのレビュー</span><br><span class="line">2. パイロットプロジェクト選定</span><br><span class="line">3. チーム教育の計画</span><br><span class="line">4. 移行計画の策定</span><br><span class="line">5. 実行</span><br><span class="line"></span><br><span class="line">成功を祈ります！</span><br></pre></td></tr></table></figure>
-
+<h3 id="核心的な価値"><a href="#核心的な価値" class="headerlink" title="核心的な価値"></a>核心的な価値</h3><ol>
+<li><p>適材適所のツール選択</p>
+<ul>
+<li>Terraform: インフラ</li>
+<li>SAM: Lambda</li>
+</ul>
+</li>
+<li><p>デプロイとリリースの分離</p>
+<ul>
+<li>リスク管理</li>
+<li>ビジネス要件への対応</li>
+</ul>
+</li>
+<li><p>責任範囲の明確化</p>
+<ul>
+<li>インフラチーム</li>
+<li>アプリケーションチーム</li>
+</ul>
+</li>
+<li><p>スケーラビリティ</p>
+<ul>
+<li>関数数の増加</li>
+<li>チーム数の増加</li>
+</ul>
+</li>
+<li><p>ガバナンス</p>
+<ul>
+<li>承認フロー</li>
+<li>監査証跡</li>
+</ul>
+</li>
+</ol>
+<h3 id="成功の鍵"><a href="#成功の鍵" class="headerlink" title="成功の鍵"></a>成功の鍵</h3><p>✓ 段階的な導入<br>✓ ドキュメント整備<br>✓ チーム教育<br>✓ 継続的な改善<br>✓ フィードバックループ</p>
+<h3 id="次のアクション"><a href="#次のアクション" class="headerlink" title="次のアクション"></a>次のアクション</h3><ol>
+<li>本ドキュメントのレビュー</li>
+<li>パイロットプロジェクト選定</li>
+<li>チーム教育の計画</li>
+<li>移行計画の策定</li>
+<li>実行</li>
+</ol>
 <hr>
 <h2 id="参考リンク"><a href="#参考リンク" class="headerlink" title="参考リンク"></a>参考リンク</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">AWS SAM:</span><br><span class="line">https://docs.aws.amazon.com/serverless-application-model/</span><br><span class="line"></span><br><span class="line">Terraform:</span><br><span class="line">https://www.terraform.io/docs</span><br><span class="line"></span><br><span class="line">GitHub Actions:</span><br><span class="line">https://docs.github.com/actions</span><br><span class="line"></span><br><span class="line">Lambda Best Practices:</span><br><span class="line">https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html</span><br></pre></td></tr></table></figure>
 
