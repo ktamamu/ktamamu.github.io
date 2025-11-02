@@ -1,323 +1,112 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
-  <!-- 定義 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600">
+  <style>
+    .title { font: bold 20px sans-serif; fill: #333; }
+    .section-title { font: bold 16px sans-serif; fill: #1976d2; }
+    .box-title { font: bold 14px sans-serif; fill: #01579b; }
+    .text { font: 12px sans-serif; fill: #333; }
+    .small-text { font: 10px sans-serif; fill: #666; }
+    .github-box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; }
+    .aws-box { fill: #fff8e1; stroke: #ff9800; stroke-width: 2; }
+    .component-box { fill: #fff; stroke: #666; stroke-width: 1; }
+    .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+  </style>
+  
   <defs>
-    <!-- グラデーション -->
-    <linearGradient id="githubGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#f0f0ff;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#e0e0ff;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="awsGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#fff8e1;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ffecb3;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="lambdaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#e8f5e9;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#c8e6c9;stop-opacity:1" />
-    </linearGradient>
-    
-    <!-- 影 -->
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-      <feOffset dx="2" dy="2" result="offsetblur"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.3"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    
-    <!-- 矢印マーカー -->
     <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
       <polygon points="0 0, 10 3, 0 6" fill="#666" />
     </marker>
-    <marker id="arrowheadDashed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <polygon points="0 0, 10 3, 0 6" fill="#999" />
-    </marker>
   </defs>
   
-  <!-- 背景 -->
-  <rect width="1200" height="800" fill="#fafafa"/>
+  <!-- Title -->
+  <text x="500" y="30" class="title" text-anchor="middle">Lambda CI/CD Architecture</text>
   
-  <!-- タイトル -->
-  <text x="600" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">
-    Lambda CI/CD アーキテクチャ - システム構成図
-  </text>
+  <!-- GitHub Organization -->
+  <rect x="50" y="60" width="900" height="150" rx="8" class="github-box"/>
+  <text x="70" y="85" class="section-title">GitHub Organization</text>
   
-  <!-- GitHub Organization エリア -->
-  <rect x="50" y="60" width="1100" height="200" rx="10" fill="url(#githubGrad)" stroke="#6366f1" stroke-width="3" filter="url(#shadow)"/>
-  <text x="70" y="85" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
-    GitHub Organization
-  </text>
+  <!-- terraform-infrastructure -->
+  <rect x="100" y="100" width="350" height="90" rx="5" class="component-box"/>
+  <text x="275" y="120" class="box-title" text-anchor="middle">terraform-infrastructure</text>
+  <text x="120" y="140" class="text">- VPC, RDS, S3, IAM Roles</text>
+  <text x="120" y="160" class="text">- Shared Values to SSM</text>
+  <text x="120" y="180" class="small-text">(Managed by: Infra Team)</text>
   
-  <!-- terraform-infrastructure リポジトリ -->
-  <g id="terraform-repo">
-    <rect x="100" y="100" width="400" height="130" rx="8" fill="#e1f5ff" stroke="#0288d1" stroke-width="2" filter="url(#shadow)"/>
-    <text x="300" y="125" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#01579b">
-      terraform-infrastructure
-    </text>
-    <line x1="110" y1="135" x2="490" y2="135" stroke="#0288d1" stroke-width="1"/>
-    <text x="120" y="155" font-family="Arial, sans-serif" font-size="13" fill="#333">
-      • VPC, RDS, S3
-    </text>
-    <text x="120" y="175" font-family="Arial, sans-serif" font-size="13" fill="#333">
-      • IAM ロール
-    </text>
-    <text x="120" y="195" font-family="Arial, sans-serif" font-size="13" fill="#333">
-      • 共有値のSSM出力
-    </text>
-    <text x="120" y="215" font-family="Arial, sans-serif" font-size="12" fill="#666" font-style="italic">
-      (Managed by: インフラチーム)
-    </text>
-  </g>
+  <!-- lambda-applications -->
+  <rect x="500" y="100" width="350" height="90" rx="5" class="component-box"/>
+  <text x="675" y="120" class="box-title" text-anchor="middle">lambda-applications</text>
+  <text x="520" y="140" class="text">- Lambda Functions</text>
+  <text x="520" y="160" class="text">- Layers, Aliases</text>
+  <text x="520" y="180" class="small-text">(Managed by: App Team)</text>
   
-  <!-- lambda-applications リポジトリ -->
-  <g id="lambda-repo">
-    <rect x="650" y="100" width="400" height="130" rx="8" fill="#e1f5ff" stroke="#0288d1" stroke-width="2" filter="url(#shadow)"/>
-    <text x="850" y="125" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#01579b">
-      lambda-applications
-    </text>
-    <line x1="660" y1="135" x2="1040" y2="135" stroke="#0288d1" stroke-width="1"/>
-    <text x="670" y="155" font-family="Arial, sans-serif" font-size="13" fill="#333">
-      • Lambda関数
-    </text>
-    <text x="670" y="175" font-family="Arial, sans-serif" font-size="13" fill="#333">
-      • Layer
-    </text>
-    <text x="670" y="195" font-family="Arial, sans-serif" font-size="13" fill="#333">
-      • エイリアス定義
-    </text>
-    <text x="670" y="215" font-family="Arial, sans-serif" font-size="12" fill="#666" font-style="italic">
-      (Managed by: アプリチーム)
-    </text>
-  </g>
-  
-  <!-- AWS Account エリア -->
-  <rect x="50" y="300" width="1100" height="450" rx="10" fill="url(#awsGrad)" stroke="#ff9800" stroke-width="3" filter="url(#shadow)"/>
-  <text x="70" y="325" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#333">
-    AWS Account
-  </text>
+  <!-- AWS Account -->
+  <rect x="50" y="250" width="900" height="300" rx="8" class="aws-box"/>
+  <text x="70" y="275" class="section-title">AWS Account</text>
   
   <!-- SSM Parameter Store -->
-  <g id="ssm">
-    <rect x="100" y="350" width="300" height="180" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2" filter="url(#shadow)"/>
-    <text x="250" y="375" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#e65100">
-      SSM Parameter Store
-    </text>
-    <line x1="110" y1="385" x2="390" y2="385" stroke="#f57c00" stroke-width="1"/>
-    
-    <text x="120" y="405" font-family="monospace" font-size="12" fill="#333" font-weight="bold">
-      /shared/
-    </text>
-    <text x="140" y="425" font-family="monospace" font-size="11" fill="#555">
-      ├─ iam/role-arn
-    </text>
-    <text x="140" y="440" font-family="monospace" font-size="11" fill="#555">
-      ├─ vpc/subnet-ids
-    </text>
-    <text x="140" y="455" font-family="monospace" font-size="11" fill="#555">
-      └─ rds/endpoint
-    </text>
-    
-    <text x="120" y="480" font-family="monospace" font-size="12" fill="#333" font-weight="bold">
-      /apps/
-    </text>
-    <text x="140" y="500" font-family="monospace" font-size="11" fill="#555">
-      └─ function-name/
-    </text>
-    <text x="160" y="515" font-family="monospace" font-size="11" fill="#555">
-      └─ latest-version
-    </text>
-  </g>
+  <rect x="100" y="300" width="250" height="120" rx="5" class="component-box"/>
+  <text x="225" y="320" class="box-title" text-anchor="middle">SSM Parameter Store</text>
+  <text x="120" y="345" class="text">/shared/</text>
+  <text x="140" y="365" class="small-text">- iam/role-arn</text>
+  <text x="140" y="380" class="small-text">- vpc/subnet-ids</text>
+  <text x="140" y="395" class="small-text">- rds/endpoint</text>
+  <text x="120" y="415" class="text">/apps/function-name/latest-version</text>
   
   <!-- Lambda Functions -->
-  <g id="lambda-functions">
-    <rect x="450" y="350" width="280" height="180" rx="8" fill="url(#lambdaGrad)" stroke="#388e3c" stroke-width="2" filter="url(#shadow)"/>
-    <text x="590" y="375" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#1b5e20">
-      Lambda Functions
-    </text>
-    <line x1="460" y1="385" x2="720" y2="385" stroke="#388e3c" stroke-width="1"/>
-    
-    <text x="470" y="405" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • user-auth-function
-    </text>
-    <text x="470" y="425" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • order-processing
-    </text>
-    <text x="470" y="445" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • payment-service
-    </text>
-    
-    <rect x="460" y="460" width="260" height="60" rx="5" fill="#c8e6c9" stroke="#66bb6a" stroke-width="1"/>
-    <text x="470" y="477" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2e7d32">
-      Versions:
-    </text>
-    <text x="480" y="492" font-family="monospace" font-size="10" fill="#333">
-      $LATEST, v14, v15, v16
-    </text>
-    <text x="470" y="510" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#2e7d32">
-      Aliases:
-    </text>
-  </g>
+  <rect x="400" y="300" width="250" height="120" rx="5" class="component-box"/>
+  <text x="525" y="320" class="box-title" text-anchor="middle">Lambda Functions</text>
+  <text x="420" y="345" class="text">Functions:</text>
+  <text x="430" y="365" class="small-text">- user-auth-function</text>
+  <text x="430" y="380" class="small-text">- order-processing</text>
+  <text x="430" y="395" class="small-text">- payment-service</text>
   
-  <!-- Aliases 詳細 -->
-  <g id="aliases">
-    <rect x="770" y="350" width="280" height="180" rx="8" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
-    <text x="910" y="375" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#4a148c">
-      Aliases
-    </text>
-    <line x1="780" y1="385" x2="1040" y2="385" stroke="#7b1fa2" stroke-width="1"/>
-    
-    <!-- development -->
-    <rect x="790" y="400" width="240" height="30" rx="5" fill="#e1bee7" stroke="#9c27b0" stroke-width="1"/>
-    <text x="800" y="420" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4a148c">
-      development
-    </text>
-    <text x="950" y="420" font-family="monospace" font-size="11" fill="#333">
-      → $LATEST
-    </text>
-    
-    <!-- staging -->
-    <rect x="790" y="440" width="240" height="30" rx="5" fill="#ce93d8" stroke="#9c27b0" stroke-width="1"/>
-    <text x="800" y="460" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4a148c">
-      staging
-    </text>
-    <text x="950" y="460" font-family="monospace" font-size="11" fill="#333">
-      → v16
-    </text>
-    
-    <!-- production -->
-    <rect x="790" y="480" width="240" height="30" rx="5" fill="#ba68c8" stroke="#9c27b0" stroke-width="2"/>
-    <text x="800" y="500" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#fff">
-      production
-    </text>
-    <text x="950" y="500" font-family="monospace" font-size="11" fill="#fff">
-      → v15
-    </text>
-  </g>
+  <!-- Aliases -->
+  <rect x="700" y="300" width="200" height="120" rx="5" class="component-box"/>
+  <text x="800" y="320" class="box-title" text-anchor="middle">Aliases</text>
+  <rect x="720" y="335" width="160" height="20" rx="3" fill="#e1bee7" stroke="#9c27b0"/>
+  <text x="730" y="350" class="small-text">development → $LATEST</text>
+  <rect x="720" y="360" width="160" height="20" rx="3" fill="#ce93d8" stroke="#9c27b0"/>
+  <text x="730" y="375" class="small-text">staging → v16</text>
+  <rect x="720" y="385" width="160" height="20" rx="3" fill="#ba68c8" stroke="#9c27b0"/>
+  <text x="730" y="400" class="small-text" fill="#fff">production → v15</text>
   
-  <!-- Infrastructure Resources -->
-  <g id="infrastructure">
-    <rect x="100" y="560" width="280" height="160" rx="8" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" filter="url(#shadow)"/>
-    <text x="240" y="585" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#0d47a1">
-      Infrastructure
-    </text>
-    <line x1="110" y1="595" x2="370" y2="595" stroke="#1976d2" stroke-width="1"/>
-    
-    <text x="120" y="615" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • VPC (Subnets, Security Groups)
-    </text>
-    <text x="120" y="635" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • RDS (PostgreSQL/MySQL)
-    </text>
-    <text x="120" y="655" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • S3 Buckets
-    </text>
-    <text x="120" y="675" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • IAM Roles & Policies
-    </text>
-    <text x="120" y="695" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      • CloudWatch Logs
-    </text>
-  </g>
+  <!-- Infrastructure -->
+  <rect x="100" y="450" width="200" height="80" rx="5" class="component-box"/>
+  <text x="200" y="470" class="box-title" text-anchor="middle">Infrastructure</text>
+  <text x="120" y="490" class="small-text">VPC, Subnets, Security Groups</text>
+  <text x="120" y="505" class="small-text">RDS, S3, IAM Roles</text>
+  <text x="120" y="520" class="small-text">CloudWatch Logs</text>
   
   <!-- Lambda Layers -->
-  <g id="layers">
-    <rect x="450" y="560" width="280" height="160" rx="8" fill="#fce4ec" stroke="#c2185b" stroke-width="2" filter="url(#shadow)"/>
-    <text x="590" y="585" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#880e4f">
-      Lambda Layers
-    </text>
-    <line x1="460" y1="595" x2="720" y2="595" stroke="#c2185b" stroke-width="1"/>
-    
-    <text x="470" y="620" font-family="Arial, sans-serif" font-size="13" fill="#333" font-weight="bold">
-      dependencies-layer
-    </text>
-    <text x="480" y="638" font-family="Arial, sans-serif" font-size="11" fill="#666">
-      • boto3, requests, pandas
-    </text>
-    <text x="480" y="652" font-family="Arial, sans-serif" font-size="11" fill="#666">
-      • 外部ライブラリ
-    </text>
-    
-    <text x="470" y="680" font-family="Arial, sans-serif" font-size="13" fill="#333" font-weight="bold">
-      company-utils-layer
-    </text>
-    <text x="480" y="698" font-family="Arial, sans-serif" font-size="11" fill="#666">
-      • 自社共通コード
-    </text>
-  </g>
+  <rect x="350" y="450" width="200" height="80" rx="5" class="component-box"/>
+  <text x="450" y="470" class="box-title" text-anchor="middle">Lambda Layers</text>
+  <text x="370" y="490" class="small-text">- dependencies-layer</text>
+  <text x="370" y="505" class="small-text">- company-utils-layer</text>
   
-  <!-- GitHub Actions ラベル -->
-  <g id="github-actions-labels">
-    <rect x="770" y="560" width="280" height="80" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" filter="url(#shadow)"/>
-    <text x="910" y="585" font-family="Arial, sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#1a237e">
-      GitHub Actions
-    </text>
-    <line x1="780" y1="595" x2="1040" y2="595" stroke="#3f51b5" stroke-width="1"/>
-    
-    <text x="790" y="615" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      <tspan font-weight="bold">Staging:</tspan> 自動デプロイ
-    </text>
-    <text x="790" y="630" font-family="Arial, sans-serif" font-size="12" fill="#333">
-      <tspan font-weight="bold">Production:</tspan> 手動承認
-    </text>
-  </g>
+  <!-- Arrows -->
+  <!-- terraform to Infrastructure -->
+  <path d="M 275 190 L 200 450" class="arrow"/>
+  <text x="220" y="320" class="small-text" fill="#1976d2">terraform apply</text>
   
-  <!-- 矢印: terraform → Infrastructure -->
-  <path d="M 300 230 L 240 560" stroke="#0288d1" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
-  <text x="260" y="390" font-family="Arial, sans-serif" font-size="11" fill="#0288d1" font-weight="bold">
-    terraform apply
-  </text>
+  <!-- terraform to SSM -->
+  <path d="M 275 190 L 225 300" class="arrow"/>
+  <text x="240" y="240" class="small-text" fill="#1976d2">SSM output</text>
   
-  <!-- 矢印: terraform → SSM -->
-  <path d="M 300 230 L 250 350" stroke="#0288d1" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
-  <text x="260" y="290" font-family="Arial, sans-serif" font-size="11" fill="#0288d1" font-weight="bold">
-    SSM出力
-  </text>
+  <!-- lambda-app to Lambda Functions -->
+  <path d="M 675 190 L 525 300" class="arrow"/>
+  <text x="580" y="240" class="small-text" fill="#1976d2">sam deploy</text>
   
-  <!-- 矢印: lambda-applications → Lambda Functions -->
-  <path d="M 850 230 L 590 350" stroke="#0288d1" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
-  <text x="700" y="290" font-family="Arial, sans-serif" font-size="11" fill="#0288d1" font-weight="bold">
-    sam deploy
-  </text>
+  <!-- SSM to Lambda (bidirectional) -->
+  <path d="M 350 360 L 400 360" class="arrow"/>
+  <text x="355" y="355" class="small-text" fill="#ff9800">reference</text>
   
-  <!-- 双方向矢印: SSM ↔ Lambda Functions -->
-  <path d="M 400 440 L 450 440" stroke="#f57c00" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)"/>
-  <path d="M 450 450 L 400 450" stroke="#f57c00" stroke-width="2.5" fill="none" marker-end="url(#arrowhead)"/>
-  <text x="405" y="435" font-family="Arial, sans-serif" font-size="10" fill="#f57c00" font-weight="bold">
-    参照
-  </text>
+  <!-- Lambda to Aliases -->
+  <line x1="650" y1="360" x2="700" y2="360" stroke="#7b1fa2" stroke-width="2"/>
   
-  <!-- 点線矢印: Infrastructure → Lambda Functions -->
-  <path d="M 240 560 L 550 530" stroke="#999" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowheadDashed)"/>
-  <text x="350" y="540" font-family="Arial, sans-serif" font-size="10" fill="#999">
-    VPC, IAM提供
-  </text>
-  
-  <!-- 点線矢印: Layers → Lambda Functions -->
-  <path d="M 590 560 L 590 530" stroke="#999" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowheadDashed)"/>
-  <text x="600" y="545" font-family="Arial, sans-serif" font-size="10" fill="#999">
-    アタッチ
-  </text>
-  
-  <!-- 接続: Lambda Functions → Aliases -->
-  <line x1="730" y1="440" x2="770" y2="440" stroke="#7b1fa2" stroke-width="2"/>
-  
-  <!-- 凡例 -->
-  <g id="legend">
-    <rect x="770" y="660" width="280" height="60" rx="5" fill="#fff" stroke="#ccc" stroke-width="1"/>
-    <text x="780" y="678" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">
-      凡例
-    </text>
-    <line x1="780" y1="685" x2="850" y2="685" stroke="#0288d1" stroke-width="3" marker-end="url(#arrowhead)"/>
-    <text x="860" y="690" font-family="Arial, sans-serif" font-size="10" fill="#333">
-      デプロイフロー
-    </text>
-    <line x1="780" y1="705" x2="850" y2="705" stroke="#999" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowheadDashed)"/>
-    <text x="860" y="710" font-family="Arial, sans-serif" font-size="10" fill="#333">
-      依存関係
-    </text>
-  </g>
-  
+  <!-- Legend -->
+  <rect x="600" y="480" width="300" height="50" rx="5" fill="#f5f5f5" stroke="#ccc"/>
+  <text x="615" y="500" class="text" font-weight="bold">Legend:</text>
+  <line x1="615" y1="510" x2="670" y2="510" class="arrow"/>
+  <text x="680" y="515" class="small-text">Deploy Flow</text>
+  <line x1="615" y1="525" x2="670" y2="525" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="680" y="530" class="small-text">Dependency</text>
 </svg>
