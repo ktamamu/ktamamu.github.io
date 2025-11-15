@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Lambda CI/CD アーキテクチャ - 1. 環境構築における方針 - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2c3e50"><meta name="application-name" content="Tamamu Blog"><meta name="msapplication-TileImage" content="/images/favicon.ico"><meta name="msapplication-TileColor" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" sizes="32x32" href="/images/favicon.ico"><meta name="description" content="ドキュメント構成 → 1. CI&amp;#x2F;CD環境構築における方針 2. 具体的な構成要素と役割 3. 各構成要素の実装に関する留意点 4. メリットとデメリットとして認識すべきこと  目次 設計の背景と課題 アーキテクチャの基本方針 デプロイとリリースの分離戦略 ツール選定の理由 スケーラビリティとガバナンス   設計の背景と課題"><meta property="og:type" content="blog"><meta property="og:title" content="Lambda CI/CD アーキテクチャ - 1. 環境構築における方針"><meta property="og:url" content="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"><meta property="og:site_name" content="Tamamu Blog"><meta property="og:description" content="ドキュメント構成 → 1. CI&amp;#x2F;CD環境構築における方針 2. 具体的な構成要素と役割 3. 各構成要素の実装に関する留意点 4. メリットとデメリットとして認識すべきこと  目次 設計の背景と課題 アーキテクチャの基本方針 デプロイとリリースの分離戦略 ツール選定の理由 スケーラビリティとガバナンス   設計の背景と課題"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="article:published_time" content="2025-11-02T13:01:00.000Z"><meta property="article:modified_time" content="2025-11-02T15:06:48.043Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="AWS Lambda"><meta property="article:tag" content="CI/CD"><meta property="article:tag" content="Terraform"><meta property="article:tag" content="SAM"><meta property="article:tag" content="GitHub Actions"><meta property="article:tag" content="アーキテクチャ"><meta property="article:tag" content="インフラ"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:image:src" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="twitter:creator" content="@ktamamu"><meta property="twitter:site" content="@ktamamu"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"},"headline":"Lambda CI/CD アーキテクチャ - 1. 環境構築における方針","image":[],"datePublished":"2025-11-02T13:01:00.000Z","dateModified":"2025-11-02T15:06:48.043Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"ドキュメント構成 → 1. CI&#x2F;CD環境構築における方針 2. 具体的な構成要素と役割 3. 各構成要素の実装に関する留意点 4. メリットとデメリットとして認識すべきこと  目次 設計の背景と課題 アーキテクチャの基本方針 デプロイとリリースの分離戦略 ツール選定の理由 スケーラビリティとガバナンス   設計の背景と課題"}</script><link rel="canonical" href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"><link rel="alternate" href="/atom.xml" title="Tamamu blog" type="application/atom+xml"><link rel="icon" href="/images/favicon.ico"><link rel="stylesheet" href="cdnjs"><link data-pjax rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css"><link rel="stylesheet" href="cdnjs"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.8.1/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="theme-color" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><title>Lambda CI/CD アーキテクチャ - 1. CI/CD環境構築における方針 - Tamamu blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#2c3e50"><meta name="application-name" content="Tamamu Blog"><meta name="msapplication-TileImage" content="/images/favicon.ico"><meta name="msapplication-TileColor" content="#2c3e50"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Tamamu Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" sizes="32x32" href="/images/favicon.ico"><meta name="description" content="ドキュメント構成 → 1. CI&amp;#x2F;CD環境構築における方針 2. 構成要素と役割 3. 実装ガイドライン 4. トレードオフと運用上の考慮点   この章で理解することなぜこの設計なのか？ の答えがここにあります。  デプロイとリリースの分離 TerraformとLambrollの使い分けの本質 エイリアス戦略が全ての鍵 設計の3つの原則"><meta property="og:type" content="blog"><meta property="og:title" content="Lambda CI/CD アーキテクチャ - 1. CI/CD環境構築における方針"><meta property="og:url" content="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"><meta property="og:site_name" content="Tamamu Blog"><meta property="og:description" content="ドキュメント構成 → 1. CI&amp;#x2F;CD環境構築における方針 2. 構成要素と役割 3. 実装ガイドライン 4. トレードオフと運用上の考慮点   この章で理解することなぜこの設計なのか？ の答えがここにあります。  デプロイとリリースの分離 TerraformとLambrollの使い分けの本質 エイリアス戦略が全ての鍵 設計の3つの原則"><meta property="og:locale" content="ja_JP"><meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="article:published_time" content="2025-11-02T13:01:00.000Z"><meta property="article:modified_time" content="2025-11-15T17:33:54.664Z"><meta property="article:author" content="ktamamu"><meta property="article:tag" content="AWS Lambda"><meta property="article:tag" content="CI/CD"><meta property="article:tag" content="Terraform"><meta property="article:tag" content="Lambroll"><meta property="article:tag" content="アーキテクチャ"><meta property="article:tag" content="エイリアス"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:image:src" content="https://blog.tamamu.cc/images/twcard.jpeg"><meta property="twitter:creator" content="@ktamamu"><meta property="twitter:site" content="@ktamamu"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"},"headline":"Lambda CI/CD アーキテクチャ - 1. CI/CD環境構築における方針","image":[],"datePublished":"2025-11-02T13:01:00.000Z","dateModified":"2025-11-15T17:33:54.664Z","author":{"@type":"Person","name":"ktamamu"},"publisher":{"@type":"Organization","name":"Tamamu blog","logo":{"@type":"ImageObject","url":null}},"description":"ドキュメント構成 → 1. CI&#x2F;CD環境構築における方針 2. 構成要素と役割 3. 実装ガイドライン 4. トレードオフと運用上の考慮点   この章で理解することなぜこの設計なのか？ の答えがここにあります。  デプロイとリリースの分離 TerraformとLambrollの使い分けの本質 エイリアス戦略が全ての鍵 設計の3つの原則"}</script><link rel="canonical" href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"><link rel="alternate" href="/atom.xml" title="Tamamu blog" type="application/atom+xml"><link rel="icon" href="/images/favicon.ico"><link rel="stylesheet" href="cdnjs"><link data-pjax rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css"><link rel="stylesheet" href="cdnjs"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.10.0/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.8.1/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
   (function () {
       function switchTab() {
           if (!location.hash) {
@@ -29,439 +29,193 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="カタログ" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-11-02T13:01:00.000Z" title="2025/11/2 22:01:00">2025-11-02</time>に投稿</span><span class="level-item"><time dateTime="2025-11-02T15:06:48.043Z" title="2025/11/3 0:06:48">2025-11-03</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/AWS/">AWS</a><span> / </span><a class="link-muted" href="/categories/AWS/DevOps/">DevOps</a></span><span class="level-item">22分で読む (約3230語)</span></div></div><h1 class="title is-3 is-size-4-mobile">Lambda CI/CD アーキテクチャ - 1. 環境構築における方針</h1><div class="content"><h2 id="ドキュメント構成"><a href="#ドキュメント構成" class="headerlink" title="ドキュメント構成"></a>ドキュメント構成</h2><ul>
+  </script><!-- hexo injector head_end end --></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">Tamamu blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item is-hidden-tablet catalogue" title="カタログ" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="検索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2025-11-02T13:01:00.000Z" title="11/2/2025, 10:01:00 PM">2025-11-02</time>に投稿</span><span class="level-item"><time dateTime="2025-11-15T17:33:54.664Z" title="11/16/2025, 2:33:54 AM">2025-11-16</time>に更新</span><span class="level-item"><a class="link-muted" href="/categories/AWS/">AWS</a><span> / </span><a class="link-muted" href="/categories/AWS/DevOps/">DevOps</a></span><span class="level-item">13分で読む (約1901語)</span></div></div><h1 class="title is-3 is-size-4-mobile">Lambda CI/CD アーキテクチャ - 1. CI/CD環境構築における方針</h1><div class="content"><h2 id="ドキュメント構成"><a href="#ドキュメント構成" class="headerlink" title="ドキュメント構成"></a>ドキュメント構成</h2><ul>
 <li>→ 1. CI&#x2F;CD環境構築における方針</li>
-<li><a href="/2025/11/02/lambda-cicd-02-components/" title="Lambda CI&#x2F;CD アーキテクチャ - 2. 構成要素と役割">2. 具体的な構成要素と役割</a></li>
-<li><a href="/2025/11/02/lambda-cicd-03-implementation/" title="Lambda CI&#x2F;CD アーキテクチャ - 3. 実装ガイドライン">3. 各構成要素の実装に関する留意点</a></li>
-<li><a href="/2025/11/02/lambda-cicd-04-tradeoffs/" title="Lambda CI&#x2F;CD アーキテクチャ - 4. メリット・デメリット">4. メリットとデメリットとして認識すべきこと</a></li>
+<li><a href="/2025/11/02/lambda-cicd-02-components/" title="Lambda CI&#x2F;CD アーキテクチャ - 2. 構成要素と役割">2. 構成要素と役割</a></li>
+<li><a href="/2025/11/02/lambda-cicd-03-implementation/" title="Lambda CI&#x2F;CD アーキテクチャ - 3. 実装ガイドライン">3. 実装ガイドライン</a></li>
+<li><a href="/2025/11/02/lambda-cicd-04-tradeoffs/" title="Lambda CI&#x2F;CD アーキテクチャ - 4. トレードオフと運用上の考慮点">4. トレードオフと運用上の考慮点</a></li>
 </ul>
-<h2 id="目次"><a href="#目次" class="headerlink" title="目次"></a>目次</h2><ol>
-<li><a href="#%E8%A8%AD%E8%A8%88%E3%81%AE%E8%83%8C%E6%99%AF%E3%81%A8%E8%AA%B2%E9%A1%8C">設計の背景と課題</a></li>
-<li><a href="#%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E3%81%AE%E5%9F%BA%E6%9C%AC%E6%96%B9%E9%87%9D">アーキテクチャの基本方針</a></li>
-<li><a href="#%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%A8%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9%E3%81%AE%E5%88%86%E9%9B%A2%E6%88%A6%E7%95%A5">デプロイとリリースの分離戦略</a></li>
-<li><a href="#%E3%83%84%E3%83%BC%E3%83%AB%E9%81%B8%E5%AE%9A%E3%81%AE%E7%90%86%E7%94%B1">ツール選定の理由</a></li>
-<li><a href="#%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%A9%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%81%A8%E3%82%AC%E3%83%90%E3%83%8A%E3%83%B3%E3%82%B9">スケーラビリティとガバナンス</a></li>
-</ol>
 <hr>
-<h2 id="設計の背景と課題"><a href="#設計の背景と課題" class="headerlink" title="設計の背景と課題"></a>設計の背景と課題</h2><span id="more"></span>
+<h2 id="この章で理解すること"><a href="#この章で理解すること" class="headerlink" title="この章で理解すること"></a>この章で理解すること</h2><p><strong>なぜこの設計なのか？</strong> の答えがここにあります。</p>
+<ul>
+<li>デプロイとリリースの分離</li>
+<li>TerraformとLambrollの使い分けの本質</li>
+<li>エイリアス戦略が全ての鍵</li>
+<li>設計の3つの原則</li>
+</ul>
+<span id="more"></span>
 
+<hr>
+<h2 id="デプロイとリリースの分離"><a href="#デプロイとリリースの分離" class="headerlink" title="デプロイとリリースの分離"></a>デプロイとリリースの分離</h2><h3 id="従来の課題"><a href="#従来の課題" class="headerlink" title="従来の課題"></a>従来の課題</h3><p>多くのLambda環境では、<strong>デプロイ &#x3D; リリース</strong> となっています。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">コード変更 → デプロイ → 即座に本番反映</span><br><span class="line">                      ↑</span><br><span class="line">                   危険！</span><br></pre></td></tr></table></figure>
 
-<h3 id="現状の課題認識"><a href="#現状の課題認識" class="headerlink" title="現状の課題認識"></a>現状の課題認識</h3><p>大規模Lambda環境における典型的な課題：</p>
-<h4 id="1-管理の複雑性"><a href="#1-管理の複雑性" class="headerlink" title="1. 管理の複雑性"></a>1. 管理の複雑性</h4><p>課題:</p>
+<p><strong>問題点:</strong></p>
 <ul>
-<li>数十〜数百のLambda関数が存在</li>
-<li>各関数の依存関係管理が煩雑</li>
-<li>Layer管理が属人化</li>
-<li>デプロイプロセスが統一されていない</li>
+<li>本番環境でいきなりコードが実行される</li>
+<li>問題発見時のロールバックに時間がかかる</li>
+<li>テスト環境と本番環境の切り替えが曖昧</li>
 </ul>
-<p>影響:</p>
+<h3 id="解決策-エイリアスによる分離"><a href="#解決策-エイリアスによる分離" class="headerlink" title="解決策: エイリアスによる分離"></a>解決策: エイリアスによる分離</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">デプロイ: Lambda関数にコードをアップロード</span><br><span class="line">    ↓</span><br><span class="line">   （バージョン16が作成される）</span><br><span class="line">    ↓</span><br><span class="line">stagingエイリアス → v16 に自動更新</span><br><span class="line">productionエイリアス → v15 のまま（手動まで待機）</span><br><span class="line">    ↓</span><br><span class="line">   （QA・検証）</span><br><span class="line">    ↓</span><br><span class="line">手動承認 → productionエイリアス → v16 に更新</span><br></pre></td></tr></table></figure>
+
+<p><strong>メリット:</strong></p>
 <ul>
-<li>デプロイ時間の増大</li>
-<li>本番障害のリスク増加</li>
-<li>新規メンバーのオンボーディング困難</li>
-</ul>
-<h4 id="2-デプロイとリリースの混同"><a href="#2-デプロイとリリースの混同" class="headerlink" title="2. デプロイとリリースの混同"></a>2. デプロイとリリースの混同</h4><p>課題:</p>
-<ul>
-<li>コードのデプロイ &#x3D; 本番リリース</li>
-<li>リリースタイミングを制御できない</li>
-<li>段階的リリースが困難</li>
-<li>ロールバックに時間がかかる</li>
-</ul>
-<p>影響:</p>
-<ul>
-<li>本番環境への影響リスク</li>
-<li>夜間・休日デプロイの増加</li>
-<li>ビジネス要件との不整合</li>
-</ul>
-<h4 id="3-組織的な課題"><a href="#3-組織的な課題" class="headerlink" title="3. 組織的な課題"></a>3. 組織的な課題</h4><p>課題:</p>
-<ul>
-<li>インフラチームとアプリチームの責任範囲が曖昧</li>
-<li>承認フローが不明確</li>
-<li>ガバナンスが効いていない</li>
-</ul>
-<p>影響:</p>
-<ul>
-<li>デプロイの遅延</li>
-<li>セキュリティリスク</li>
-<li>コンプライアンス問題</li>
-</ul>
-<h4 id="4-既存環境の制約"><a href="#4-既存環境の制約" class="headerlink" title="4. 既存環境の制約"></a>4. 既存環境の制約</h4><p>状況:</p>
-<ul>
-<li>既にTerraformで大部分のインフラを管理</li>
-<li>GitHub ActionsでCI&#x2F;CD構築済み</li>
-<li>全てを刷新するのは現実的でない</li>
-</ul>
-<p>要件:</p>
-<ul>
-<li>既存資産を活用</li>
-<li>段階的な移行</li>
-<li>チームへの負荷を最小化</li>
+<li>デプロイしても本番に影響なし</li>
+<li>staging環境で十分に検証</li>
+<li>リリースは承認後に即座に実行（エイリアス切替のみ）</li>
+<li>ロールバックも瞬時（エイリアスを戻すだけ）</li>
 </ul>
 <hr>
-<h2 id="アーキテクチャの基本方針"><a href="#アーキテクチャの基本方針" class="headerlink" title="アーキテクチャの基本方針"></a>アーキテクチャの基本方針</h2><h3 id="1-関心の分離（Separation-of-Concerns）"><a href="#1-関心の分離（Separation-of-Concerns）" class="headerlink" title="1. 関心の分離（Separation of Concerns）"></a>1. 関心の分離（Separation of Concerns）</h3><p>原則:<br>異なるライフサイクルを持つものは、異なるツールで管理する</p>
-<p>実装:</p>
-<p> Terraform（インフラ）                   </p>
+<h2 id="TerraformとLambrollの使い分け"><a href="#TerraformとLambrollの使い分け" class="headerlink" title="TerraformとLambrollの使い分け"></a>TerraformとLambrollの使い分け</h2><h3 id="なぜ2つのツールを使うのか？"><a href="#なぜ2つのツールを使うのか？" class="headerlink" title="なぜ2つのツールを使うのか？"></a>なぜ2つのツールを使うのか？</h3><p><strong>核心: 変更頻度とライフサイクルの違い</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Terraform</th>
+<th>Lambroll</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>変更頻度</strong></td>
+<td>低い（月1回以下）</td>
+<td>高い（日5回以上）</td>
+</tr>
+<tr>
+<td><strong>管理対象</strong></td>
+<td>インフラ全般</td>
+<td>Lambda関数のみ</td>
+</tr>
+<tr>
+<td><strong>実行時間</strong></td>
+<td>長い（10-30分）</td>
+<td>短い（1-3分）</td>
+</tr>
+<tr>
+<td><strong>影響範囲</strong></td>
+<td>広い（全体）</td>
+<td>狭い（特定関数）</td>
+</tr>
+</tbody></table>
+<h3 id="Terraform-インフラの真実の源泉"><a href="#Terraform-インフラの真実の源泉" class="headerlink" title="Terraform: インフラの真実の源泉"></a>Terraform: インフラの真実の源泉</h3><p><strong>責任範囲:</strong></p>
 <ul>
-<li>IAM、VPC、RDS等                       </li>
-<li>変更頻度: 低（月1回以下）             </li>
-<li>管理者: インフラチーム</li>
+<li>VPC、Subnet、Security Group</li>
+<li>IAM Role、Policy</li>
+<li>RDS、DynamoDB（共有）</li>
+<li>S3 Bucket</li>
+<li>EventBridge、SQS&#x2F;SNS（共有）</li>
+<li>Lambda Layer（ARNのみ）</li>
 </ul>
-<p> SAM（アプリケーション）                 </p>
-<ul>
-<li>Lambda関数、Layer                     </li>
-<li>変更頻度: 高（週1回以上）             </li>
-<li>管理者: アプリケーションチーム</li>
-</ul>
-<p>メリット:<br>✓ デプロイの独立性（互いに影響しない）<br>✓ チーム間の責任範囲が明確<br>✓ 適切なツールで適切な管理</p>
-<h3 id="2-デプロイとリリースの分離"><a href="#2-デプロイとリリースの分離" class="headerlink" title="2. デプロイとリリースの分離"></a>2. デプロイとリリースの分離</h3><p>定義:<br>デプロイ (Deploy):</p>
-<ul>
-<li>コードをAWSにアップロードする行為</li>
-<li>新しいバージョンを作成</li>
-<li>本番環境には影響しない</li>
-</ul>
-<p>リリース (Release):</p>
-<ul>
-<li>ユーザーに公開する行為</li>
-<li>エイリアスを切り替える</li>
-<li>本番トラフィックが新バージョンに流れる</li>
-</ul>
-<p>重要な原則:<br>デプロイ ≠ リリース</p>
-<p>実装:</p>
+<p><strong>なぜTerraformで管理？</strong></p>
 <ol>
-<li>アプリチーム: コードをデプロイ（staging自動）</li>
-<li>QA: staging環境で検証</li>
-<li>インフラチーム: 承認後にproductionリリース</li>
-<li>監視: メトリクス確認</li>
-<li>問題あれば: 瞬時にロールバック（エイリアス切り替え）</li>
+<li><strong>変更が稀</strong> → 慎重な変更管理が必要</li>
+<li><strong>複数サービスで共有</strong> → 一元管理</li>
+<li><strong>セキュリティ重要</strong> → インフラチームが管理</li>
 </ol>
-<h3 id="3-Infrastructure-as-Code-の徹底"><a href="#3-Infrastructure-as-Code-の徹底" class="headerlink" title="3. Infrastructure as Code の徹底"></a>3. Infrastructure as Code の徹底</h3><p>原則:<br>全ての設定をコードで管理し、Gitで追跡可能にする</p>
-<p>実装:</p>
+<h3 id="Lambroll-Lambda関数に特化"><a href="#Lambroll-Lambda関数に特化" class="headerlink" title="Lambroll: Lambda関数に特化"></a>Lambroll: Lambda関数に特化</h3><p><strong>責任範囲:</strong></p>
 <ul>
-<li>Terraform: インフラリソース</li>
-<li>SAM: Lambda関数とその設定</li>
-<li>GitHub Actions: CI&#x2F;CDパイプライン</li>
-<li>SSM Parameter Store: 環境間の共有値</li>
+<li>Lambda関数のコード</li>
+<li>関数設定（function.jsonl）</li>
+<li>エイリアス管理</li>
 </ul>
-<p>メリット:<br>✓ 変更履歴の追跡<br>✓ レビュープロセス（Pull Request）<br>✓ 環境の再現性<br>✓ ロールバックの容易性</p>
-<h3 id="4-段階的な環境構成"><a href="#4-段階的な環境構成" class="headerlink" title="4. 段階的な環境構成"></a>4. 段階的な環境構成</h3><p>環境構成:</p>
-<p>Development（開発）:</p>
+<p><strong>なぜLambrollを選んだのか？</strong></p>
+<p>SAMではなくLambrollを採用した理由：</p>
+<ol>
+<li><p><strong>インフラリソースを管理しない</strong></p>
 <ul>
-<li>Lambda: $LATEST（常に最新）</li>
-<li>用途: 開発者の動作確認</li>
-<li>デプロイ: プッシュ時に自動</li>
+<li>SAM: IAM、VPC等も管理 → Terraformと重複</li>
+<li>Lambroll: Lambda関数のみ → 責任が明確</li>
 </ul>
-<p>Staging（検証）:</p>
+</li>
+<li><p><strong>Terraform stateを直接参照</strong></p>
 <ul>
-<li>Lambda: 最新バージョン（自動更新）</li>
-<li>用途: QA、統合テスト</li>
-<li>デプロイ: main mergе時に自動</li>
+<li>SAM: SSM Parameter Store経由で連携</li>
+<li>Lambroll: <code>terraform output</code>を環境変数で参照 → シンプル</li>
 </ul>
-<p>Production（本番）:</p>
+</li>
+<li><p><strong>軽量で高速</strong></p>
 <ul>
-<li>Lambda: 承認されたバージョン</li>
-<li>用途: エンドユーザー向け</li>
-<li>デプロイ: 手動承認後にリリース</li>
+<li>SAM: CloudFormation経由（遅い）</li>
+<li>Lambroll: AWS API直接（速い）</li>
 </ul>
-<p>利点:<br>✓ 段階的な検証<br>✓ 本番リスクの最小化<br>✓ ロールバック戦略の明確化</p>
+</li>
+</ol>
+<p><strong>例: function.jsonl</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;FunctionName&quot;</span><span class="punctuation">:</span> <span class="string">&quot;user-auth-function&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Runtime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;python3.11&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Role&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;&#123; must_env `TF_ROLE_ARN` &#125;&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;VpcConfig&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;SubnetIds&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#123;</span> env `TF_SUBNET_IDS` | json_array <span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;SecurityGroupIds&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#123;</span> env `TF_SG_IDS` | json_array <span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;Environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Variables&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;DB_ENDPOINT&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;&#123; must_env `TF_RDS_ENDPOINT` &#125;&#125;&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>Terraform outputsを環境変数として直接参照できます。</p>
 <hr>
-<h2 id="デプロイとリリースの分離戦略"><a href="#デプロイとリリースの分離戦略" class="headerlink" title="デプロイとリリースの分離戦略"></a>デプロイとリリースの分離戦略</h2><h3 id="なぜ分離が必要か"><a href="#なぜ分離が必要か" class="headerlink" title="なぜ分離が必要か"></a>なぜ分離が必要か</h3><h4 id="ビジネス要件との整合"><a href="#ビジネス要件との整合" class="headerlink" title="ビジネス要件との整合"></a>ビジネス要件との整合</h4><p>ケース1: タイムセンシティブな機能<br>シナリオ:</p>
+<h2 id="エイリアス戦略の核心"><a href="#エイリアス戦略の核心" class="headerlink" title="エイリアス戦略の核心"></a>エイリアス戦略の核心</h2><h3 id="エイリアスとは"><a href="#エイリアスとは" class="headerlink" title="エイリアスとは"></a>エイリアスとは</h3><p>Lambda関数の特定バージョンへの<strong>名前付きポインタ</strong>です。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Lambda関数: user-auth-function</span><br><span class="line">├── $LATEST（常に最新コード）</span><br><span class="line">├── Version 1</span><br><span class="line">├── Version 2</span><br><span class="line">...</span><br><span class="line">├── Version 15（現在の本番）</span><br><span class="line">├── Version 16（新バージョン）</span><br><span class="line">└── Aliases（ポインタ）</span><br><span class="line">    ├── development → $LATEST</span><br><span class="line">    ├── staging → Version 16</span><br><span class="line">    └── production → Version 15</span><br></pre></td></tr></table></figure>
+
+<h3 id="3環境の戦略"><a href="#3環境の戦略" class="headerlink" title="3環境の戦略"></a>3環境の戦略</h3><h4 id="Development環境"><a href="#Development環境" class="headerlink" title="Development環境"></a>Development環境</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">development エイリアス → $LATEST</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>新機能を事前にデプロイ</li>
-<li>キャンペーン開始時刻にリリース（例: 0時）</li>
+<li>常に最新コードを参照</li>
+<li>開発者の動作確認用</li>
+<li>不安定でも問題なし</li>
 </ul>
-<p>従来の問題:<br>デプロイ &#x3D; リリース<br>→ 0時に作業が必要<br>→ 深夜・休日作業</p>
-<p>分離後:</p>
+<h4 id="Staging環境"><a href="#Staging環境" class="headerlink" title="Staging環境"></a>Staging環境</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">staging エイリアス → 最新Version（自動更新）</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>事前にデプロイ（営業時間内）</li>
-<li>0時にエイリアス切り替え（自動化可能）<br>→ 深夜作業不要</li>
+<li>mainブランチにmerge → 自動デプロイ → Version発行 → staging更新</li>
+<li>QA・統合テスト用</li>
+<li>本番リリース前の最終確認</li>
 </ul>
-<h4 id="リスク管理"><a href="#リスク管理" class="headerlink" title="リスク管理"></a>リスク管理</h4><p>ケース2: 段階的リリース<br>要件:</p>
+<h4 id="Production環境"><a href="#Production環境" class="headerlink" title="Production環境"></a>Production環境</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">production エイリアス → 承認されたVersion（手動更新）</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>まず10%のユーザーでテスト</li>
-<li>問題なければ100%に拡大</li>
+<li>staging検証完了 → 手動承認 → production更新</li>
+<li>エンドユーザー向け</li>
+<li>最も慎重に管理</li>
 </ul>
-<p>実装:</p>
-<ol>
-<li>デプロイ: 新バージョンをアップロード</li>
-<li>カナリアリリース: 10%トラフィック</li>
-<li>監視: エラー率、レイテンシ確認（10分）</li>
-<li>問題なし: 100%に切り替え</li>
-<li>問題あり: 即座にロールバック</li>
-</ol>
-<p>メリット:<br>✓ 本番影響の最小化<br>✓ 問題の早期発見<br>✓ 迅速なロールバック</p>
-<h3 id="実装メカニズム"><a href="#実装メカニズム" class="headerlink" title="実装メカニズム"></a>実装メカニズム</h3><h4 id="Lambda-バージョンとエイリアス"><a href="#Lambda-バージョンとエイリアス" class="headerlink" title="Lambda バージョンとエイリアス"></a>Lambda バージョンとエイリアス</h4><p>コンセプト:</p>
-<p>Lambda関数<br>├── $LATEST（最新コード）<br>├── Version 14（不変）<br>├── Version 15（不変）<br>└── Version 16（不変）← 最新デプロイ</p>
-<p>エイリアス（ポインタ）<br>├── development → $LATEST<br>├── staging → Version 16<br>└── production → Version 15 ← 本番はまだ旧版</p>
-<p>デプロイ時:</p>
-<ol>
-<li>コードをアップロード（$LATEST更新）</li>
-<li>publish-version（Version 16作成）</li>
-<li>staging エイリアスを更新</li>
-<li>production は変更なし ← 影響なし</li>
-</ol>
-<p>リリース時:</p>
-<ol>
-<li>production エイリアスを Version 16 に切り替え</li>
-<li>本番トラフィックが新バージョンに流れる</li>
-<li>数秒で完了</li>
-</ol>
-<p>ロールバック時:</p>
-<ol>
-<li>production エイリアスを Version 15 に戻す</li>
-<li>数秒で旧バージョンに復帰</li>
-</ol>
-<hr>
-<h2 id="ツール選定の理由"><a href="#ツール選定の理由" class="headerlink" title="ツール選定の理由"></a>ツール選定の理由</h2><h3 id="Terraform（インフラ管理）"><a href="#Terraform（インフラ管理）" class="headerlink" title="Terraform（インフラ管理）"></a>Terraform（インフラ管理）</h3><h4 id="選定理由"><a href="#選定理由" class="headerlink" title="選定理由"></a>選定理由</h4><p>✓ 既存資産</p>
+<h3 id="なぜこの戦略なのか？"><a href="#なぜこの戦略なのか？" class="headerlink" title="なぜこの戦略なのか？"></a>なぜこの戦略なのか？</h3><p><strong>開発速度 × 本番安全性 の両立</strong></p>
 <ul>
-<li>既に大部分のインフラで使用中</li>
-<li>チームの習熟度が高い</li>
-<li>実績とナレッジの蓄積</li>
-</ul>
-<p>✓ マルチリソース対応</p>
-<ul>
-<li>VPC、RDS、S3等を統合管理</li>
-<li>Lambdaだけでなく全体を俯瞰</li>
-</ul>
-<p>✓ 状態管理</p>
-<ul>
-<li>terraform.tfstate で現状を把握</li>
-<li>plan で変更影響を事前確認</li>
-</ul>
-<p>✓ モジュール化</p>
-<ul>
-<li>再利用可能な構成</li>
-<li>組織標準の確立</li>
-</ul>
-<h4 id="Lambdaには使わない理由"><a href="#Lambdaには使わない理由" class="headerlink" title="Lambdaには使わない理由"></a>Lambdaには使わない理由</h4><p>✗ Lambda専用に最適化されていない</p>
-<ul>
-<li>ビルドプロセスが煩雑</li>
-<li>Layer管理が面倒</li>
-<li>ローカルテストが困難</li>
-</ul>
-<p>✗ デプロイが遅い</p>
-<ul>
-<li>plan&#x2F;apply のオーバーヘッド</li>
-<li>全リソースのチェック</li>
-<li>Lambda更新に数分以上</li>
-</ul>
-<p>✗ 開発者体験</p>
-<ul>
-<li>アプリ開発者にTerraformを強制</li>
-<li>学習コストが高い</li>
-<li>イテレーション速度が低下</li>
-</ul>
-<h3 id="SAM（Lambda管理）"><a href="#SAM（Lambda管理）" class="headerlink" title="SAM（Lambda管理）"></a>SAM（Lambda管理）</h3><h4 id="選定理由-1"><a href="#選定理由-1" class="headerlink" title="選定理由"></a>選定理由</h4><p>✓ Lambda専用に最適化</p>
-<ul>
-<li>sam build で自動ビルド</li>
-<li>Layer管理が簡単</li>
-<li>依存関係の自動解決</li>
-</ul>
-<p>✓ 開発者体験</p>
-<ul>
-<li>sam local で局所テスト</li>
-<li>シンプルなYAML設定</li>
-<li>高速なデプロイ（1-2分）</li>
-</ul>
-<p>✓ AWS公式サポート</p>
-<ul>
-<li>CloudFormationベース</li>
-<li>AWSベストプラクティス</li>
-<li>継続的な機能追加</li>
-</ul>
-<p>✓ エイリアス管理</p>
-<ul>
-<li>AutoPublishAlias機能</li>
-<li>デプロイメントプリファレンス</li>
-<li>カナリアデプロイ標準装備</li>
-</ul>
-<h4 id="他ツールとの比較"><a href="#他ツールとの比較" class="headerlink" title="他ツールとの比較"></a>他ツールとの比較</h4><p>vs Serverless Framework:<br>SAMを選んだ理由:</p>
-<ul>
-<li>AWS公式（長期サポート保証）</li>
-<li>CloudFormationとの親和性</li>
-<li>学習コストが低い</li>
-<li>AWS統合（X-Ray、CloudWatch等）</li>
-</ul>
-<p>vs Terraform（Lambda管理）:<br>SAMを選んだ理由:</p>
-<ul>
-<li>Lambda特化の機能</li>
-<li>デプロイ速度（10倍以上高速）</li>
-<li>開発者体験</li>
-<li>ローカルテスト環境</li>
-</ul>
-<h3 id="GitHub-Actions（CI-CD）"><a href="#GitHub-Actions（CI-CD）" class="headerlink" title="GitHub Actions（CI&#x2F;CD）"></a>GitHub Actions（CI&#x2F;CD）</h3><h4 id="選定理由-2"><a href="#選定理由-2" class="headerlink" title="選定理由"></a>選定理由</h4><p>✓ 既存資産</p>
-<ul>
-<li>既にCI&#x2F;CDで使用中</li>
-<li>GitHub Enterprise利用</li>
-</ul>
-<p>✓ GitHubネイティブ</p>
-<ul>
-<li>Pull Request連動</li>
-<li>レビューフロー統合</li>
-<li>Secretsストア</li>
-</ul>
-<p>✓ 柔軟性</p>
-<ul>
-<li>ワークフローをコードで管理</li>
-<li>複雑なロジックも実装可能</li>
-<li>再利用可能なアクション</li>
-</ul>
-<p>✓ コスト</p>
-<ul>
-<li>GitHub Enterprise契約内</li>
-<li>追加コスト不要</li>
+<li><strong>Development</strong>: 制約なし → 開発速度最大化</li>
+<li><strong>Staging</strong>: 自動化 → 検証サイクル高速化</li>
+<li><strong>Production</strong>: 手動承認 → リスク最小化</li>
 </ul>
 <hr>
-<h2 id="スケーラビリティとガバナンス"><a href="#スケーラビリティとガバナンス" class="headerlink" title="スケーラビリティとガバナンス"></a>スケーラビリティとガバナンス</h2><h3 id="スケーラビリティへの対応"><a href="#スケーラビリティへの対応" class="headerlink" title="スケーラビリティへの対応"></a>スケーラビリティへの対応</h3><h4 id="関数数の増加"><a href="#関数数の増加" class="headerlink" title="関数数の増加"></a>関数数の増加</h4><p>課題: 100個以上のLambda関数</p>
-<p>対策:</p>
-<ol>
-<li><p>関数のグルーピング<br>├── auth-functions<br>├── data-functions<br>├── api-functions<br>└── batch-functions</p>
-</li>
-<li><p>並列デプロイ</p>
+<h2 id="設計の3原則"><a href="#設計の3原則" class="headerlink" title="設計の3原則"></a>設計の3原則</h2><h3 id="原則1-単一責任の原則"><a href="#原則1-単一責任の原則" class="headerlink" title="原則1: 単一責任の原則"></a>原則1: 単一責任の原則</h3><p><strong>各ツールは1つの責任のみを持つ</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Terraform:</span><br><span class="line">  ✓ インフラ管理</span><br><span class="line">  ✗ Lambda関数のコード</span><br><span class="line"></span><br><span class="line">Lambroll:</span><br><span class="line">  ✓ Lambda関数</span><br><span class="line">  ✗ インフラリソース</span><br><span class="line"></span><br><span class="line">GitHub Actions:</span><br><span class="line">  ✓ CI/CDパイプライン</span><br><span class="line">  ✗ リソース管理</span><br></pre></td></tr></table></figure>
+
+<p><strong>メリット:</strong></p>
 <ul>
-<li>各グループを並列実行</li>
-<li>デプロイ時間の短縮</li>
+<li>変更の影響範囲が明確</li>
+<li>トラブルシューティングが容易</li>
+<li>チーム間の責任分界点が明確</li>
 </ul>
-</li>
-<li><p>選択的デプロイ</p>
+<h3 id="原則2-疎結合の原則"><a href="#原則2-疎結合の原則" class="headerlink" title="原則2: 疎結合の原則"></a>原則2: 疎結合の原則</h3><p><strong>コンポーネント間は間接的に連携</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Terraform outputs</span><br><span class="line">    ↓</span><br><span class="line">環境変数</span><br><span class="line">    ↓</span><br><span class="line">Lambroll</span><br></pre></td></tr></table></figure>
+
+<p><strong>メリット:</strong></p>
 <ul>
-<li>変更検知（git diff）</li>
-<li>影響範囲のみデプロイ</li>
+<li>Terraformの変更がLambrollに影響しない</li>
+<li>独立してデプロイ可能</li>
+<li>テストが容易</li>
 </ul>
-</li>
-</ol>
-<h4 id="チーム数の増加"><a href="#チーム数の増加" class="headerlink" title="チーム数の増加"></a>チーム数の増加</h4><p>課題: 複数チームでのLambda開発</p>
-<p>対策:</p>
-<ol>
-<li><p>リポジトリ分離<br>team-a-lambdas&#x2F;<br>team-b-lambdas&#x2F;<br>team-c-lambdas&#x2F;</p>
-</li>
-<li><p>共通基盤の提供</p>
+<h3 id="原則3-不変性の原則"><a href="#原則3-不変性の原則" class="headerlink" title="原則3: 不変性の原則"></a>原則3: 不変性の原則</h3><p><strong>Lambda Versionは不変</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Version 15 → 一度作成したら変更不可</span><br><span class="line">             ↓</span><br><span class="line">          削除のみ可能</span><br></pre></td></tr></table></figure>
+
+<p><strong>メリット:</strong></p>
 <ul>
-<li>共通Layer（Terraformで管理）</li>
-<li>デプロイテンプレート</li>
-<li>ベストプラクティス</li>
+<li>ロールバックが確実</li>
+<li>監査証跡が残る</li>
+<li>エイリアスの切替のみでリリース・ロールバック</li>
 </ul>
-</li>
-<li><p>独立したデプロイ</p>
-<ul>
-<li>チーム間の依存を最小化</li>
-<li>並行開発を可能に</li>
-</ul>
-</li>
-</ol>
-<h3 id="ガバナンスの確保"><a href="#ガバナンスの確保" class="headerlink" title="ガバナンスの確保"></a>ガバナンスの確保</h3><h4 id="承認フロー"><a href="#承認フロー" class="headerlink" title="承認フロー"></a>承認フロー</h4><p>ステージごとの承認レベル:</p>
-<p>Development:</p>
-<ul>
-<li>承認: 不要</li>
-<li>デプロイ: 自動（プッシュ時）</li>
-<li>リスク: 低</li>
-</ul>
-<p>Staging:</p>
-<ul>
-<li>承認: Pull Request承認</li>
-<li>デプロイ: 自動（merge時）</li>
-<li>リスク: 低</li>
-</ul>
-<p>Production:</p>
-<ul>
-<li>承認: 必須<ol>
-<li>Pull Request承認（コードレビュー）</li>
-<li>リリース申請（Slack等）</li>
-<li>インフラチーム承認</li>
-<li>リリース実行</li>
-</ol>
-</li>
-<li>デプロイ: 手動トリガー</li>
-<li>リスク: 高</li>
-</ul>
-<h4 id="監査証跡"><a href="#監査証跡" class="headerlink" title="監査証跡"></a>監査証跡</h4><p>記録する情報:</p>
-<ul>
-<li>Git commit（コード変更）</li>
-<li>GitHub Actions実行ログ</li>
-<li>Lambda バージョン発行履歴</li>
-<li>エイリアス切り替え履歴</li>
-<li>SSM Parameter Store変更履歴</li>
-<li>CloudWatch Logs</li>
-</ul>
-<p>用途:</p>
-<ul>
-<li>問題発生時の原因調査</li>
-<li>コンプライアンス対応</li>
-<li>セキュリティ監査</li>
-</ul>
-<h4 id="セキュリティ管理"><a href="#セキュリティ管理" class="headerlink" title="セキュリティ管理"></a>セキュリティ管理</h4><p>原則:</p>
-<ul>
-<li>最小権限の原則</li>
-<li>ロールベースアクセス制御</li>
-<li>シークレット管理の徹底</li>
-</ul>
-<p>実装:</p>
-<ol>
-<li><p>IAMロール（Terraformで管理）</p>
-<ul>
-<li>インフラチームがレビュー</li>
-<li>承認プロセス必須</li>
-</ul>
-</li>
-<li><p>GitHub Secrets</p>
-<ul>
-<li>AWS認証情報</li>
-<li>API Key等</li>
-</ul>
-</li>
-<li><p>Secrets Manager &#x2F; SSM Parameter Store</p>
-<ul>
-<li>実行時のシークレット</li>
-<li>暗号化必須</li>
-</ul>
-</li>
-<li><p>OIDCによる認証</p>
-<ul>
-<li>長期認証情報の排除</li>
-<li>動的な権限付与</li>
-</ul>
-</li>
+<hr>
+<h2 id="まとめ"><a href="#まとめ" class="headerlink" title="まとめ"></a>まとめ</h2><h3 id="この設計の核心"><a href="#この設計の核心" class="headerlink" title="この設計の核心"></a>この設計の核心</h3><p><strong>エイリアスによる環境分離</strong> + <strong>ツールの責任分離</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────┐</span><br><span class="line">│ Terraform（インフラ）            │</span><br><span class="line">│  - VPC, IAM, RDS, S3...         │</span><br><span class="line">│  - 変更が稀                      │</span><br><span class="line">│  - インフラチームが管理           │</span><br><span class="line">└─────────────────────────────────┘</span><br><span class="line">              ↓ outputs</span><br><span class="line">┌─────────────────────────────────┐</span><br><span class="line">│ Lambroll（Lambda関数）           │</span><br><span class="line">│  - コード、設定                  │</span><br><span class="line">│  - 頻繁に変更                    │</span><br><span class="line">│  - アプリチームが管理             │</span><br><span class="line">└─────────────────────────────────┘</span><br><span class="line">              ↓ deploy</span><br><span class="line">┌─────────────────────────────────┐</span><br><span class="line">│ Lambda Versions + Aliases       │</span><br><span class="line">│  - development → $LATEST        │</span><br><span class="line">│  - staging → v16（自動）         │</span><br><span class="line">│  - production → v15（手動）      │</span><br><span class="line">└─────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="実現すること"><a href="#実現すること" class="headerlink" title="実現すること"></a>実現すること</h3><ol>
+<li><strong>高速デプロイ</strong>: 2分以内</li>
+<li><strong>安全リリース</strong>: 手動承認</li>
+<li><strong>瞬時ロールバック</strong>: 5秒以内</li>
+<li><strong>明確な責任</strong>: チーム間の分業</li>
+<li><strong>段階的展開</strong>: カナリアリリース</li>
 </ol>
 <hr>
-<h2 id="方針のまとめ"><a href="#方針のまとめ" class="headerlink" title="方針のまとめ"></a>方針のまとめ</h2><h3 id="核心的な原則"><a href="#核心的な原則" class="headerlink" title="核心的な原則"></a>核心的な原則</h3><ol>
-<li><p>関心の分離</p>
-<ul>
-<li>Terraform: インフラ（低頻度変更）</li>
-<li>SAM: Lambda（高頻度変更）</li>
-</ul>
-</li>
-<li><p>デプロイとリリースの分離</p>
-<ul>
-<li>デプロイ: 自由に、頻繁に</li>
-<li>リリース: 慎重に、承認後に</li>
-</ul>
-</li>
-<li><p>Infrastructure as Code</p>
-<ul>
-<li>全てをコードで管理</li>
-<li>Gitで追跡可能</li>
-</ul>
-</li>
-<li><p>段階的な検証</p>
-<ul>
-<li>development → staging → production</li>
-<li>各環境で確認</li>
-</ul>
-</li>
-<li><p>適切なツール選択</p>
-<ul>
-<li>既存資産の活用</li>
-<li>Lambda特化ツール（SAM）の導入</li>
-</ul>
-</li>
-</ol>
-<h3 id="達成される価値"><a href="#達成される価値" class="headerlink" title="達成される価値"></a>達成される価値</h3><p>開発チーム:<br>✓ 高速なイテレーション<br>✓ ローカルテスト環境<br>✓ シンプルな設定</p>
-<p>インフラチーム:<br>✓ ガバナンスの確保<br>✓ リリース制御<br>✓ セキュリティ管理</p>
-<p>ビジネス:<br>✓ リリースタイミングの制御<br>✓ リスクの最小化<br>✓ 迅速なロールバック</p>
-<p>組織全体:<br>✓ 明確な責任範囲<br>✓ スケーラビリティ<br>✓ 監査証跡の確保</p>
-<hr>
-<h2 id="次のステップ"><a href="#次のステップ" class="headerlink" title="次のステップ"></a>次のステップ</h2><p>この方針を具体的なアーキテクチャに落とし込みます。</p>
-<p>👉 <a href="/2025/11/02/lambda-cicd-02-components/" title="Lambda CI&#x2F;CD アーキテクチャ - 2. 構成要素と役割">次へ: 2. 具体的な構成要素と役割</a></p>
-</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/AWS-Lambda/">AWS Lambda</a><a class="link-muted mr-2" rel="tag" href="/tags/CI-CD/">CI/CD</a><a class="link-muted mr-2" rel="tag" href="/tags/Terraform/">Terraform</a><a class="link-muted mr-2" rel="tag" href="/tags/SAM/">SAM</a><a class="link-muted mr-2" rel="tag" href="/tags/GitHub-Actions/">GitHub Actions</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/">アーキテクチャ</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9/">インフラ</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2025/11/02/lambda-cicd-02-components/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Lambda CI/CD アーキテクチャ - 2. 構成要素と役割</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2025/11/02/lambda-cicd-00-index/"><span class="level-item">Lambda CI/CD アーキテクチャ設計書 - 目次</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">投稿</p><a href="/archives/"><p class="title">12</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">カテゴリ</p><a href="/categories/"><p class="title">9</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">タグ</p><a href="/tags/"><p class="title">20</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Homepage" href="https://tamamu.cc"><i class="fa-solid fa-house"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">カタログ</h3><ul class="menu-list"><li><a class="level is-mobile" href="#ドキュメント構成"><span class="level-left"><span class="level-item">1</span><span class="level-item">ドキュメント構成</span></span></a></li><li><a class="level is-mobile" href="#目次"><span class="level-left"><span class="level-item">2</span><span class="level-item">目次</span></span></a></li><li><a class="level is-mobile" href="#設計の背景と課題"><span class="level-left"><span class="level-item">3</span><span class="level-item">設計の背景と課題</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#現状の課題認識"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">現状の課題認識</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-管理の複雑性"><span class="level-left"><span class="level-item">3.1.1</span><span class="level-item">1. 管理の複雑性</span></span></a></li><li><a class="level is-mobile" href="#2-デプロイとリリースの混同"><span class="level-left"><span class="level-item">3.1.2</span><span class="level-item">2. デプロイとリリースの混同</span></span></a></li><li><a class="level is-mobile" href="#3-組織的な課題"><span class="level-left"><span class="level-item">3.1.3</span><span class="level-item">3. 組織的な課題</span></span></a></li><li><a class="level is-mobile" href="#4-既存環境の制約"><span class="level-left"><span class="level-item">3.1.4</span><span class="level-item">4. 既存環境の制約</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#アーキテクチャの基本方針"><span class="level-left"><span class="level-item">4</span><span class="level-item">アーキテクチャの基本方針</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1-関心の分離（Separation-of-Concerns）"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">1. 関心の分離（Separation of Concerns）</span></span></a></li><li><a class="level is-mobile" href="#2-デプロイとリリースの分離"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">2. デプロイとリリースの分離</span></span></a></li><li><a class="level is-mobile" href="#3-Infrastructure-as-Code-の徹底"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">3. Infrastructure as Code の徹底</span></span></a></li><li><a class="level is-mobile" href="#4-段階的な環境構成"><span class="level-left"><span class="level-item">4.4</span><span class="level-item">4. 段階的な環境構成</span></span></a></li></ul></li><li><a class="level is-mobile" href="#デプロイとリリースの分離戦略"><span class="level-left"><span class="level-item">5</span><span class="level-item">デプロイとリリースの分離戦略</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#なぜ分離が必要か"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">なぜ分離が必要か</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#ビジネス要件との整合"><span class="level-left"><span class="level-item">5.1.1</span><span class="level-item">ビジネス要件との整合</span></span></a></li><li><a class="level is-mobile" href="#リスク管理"><span class="level-left"><span class="level-item">5.1.2</span><span class="level-item">リスク管理</span></span></a></li></ul></li><li><a class="level is-mobile" href="#実装メカニズム"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">実装メカニズム</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Lambda-バージョンとエイリアス"><span class="level-left"><span class="level-item">5.2.1</span><span class="level-item">Lambda バージョンとエイリアス</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#ツール選定の理由"><span class="level-left"><span class="level-item">6</span><span class="level-item">ツール選定の理由</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Terraform（インフラ管理）"><span class="level-left"><span class="level-item">6.1</span><span class="level-item">Terraform（インフラ管理）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#選定理由"><span class="level-left"><span class="level-item">6.1.1</span><span class="level-item">選定理由</span></span></a></li><li><a class="level is-mobile" href="#Lambdaには使わない理由"><span class="level-left"><span class="level-item">6.1.2</span><span class="level-item">Lambdaには使わない理由</span></span></a></li></ul></li><li><a class="level is-mobile" href="#SAM（Lambda管理）"><span class="level-left"><span class="level-item">6.2</span><span class="level-item">SAM（Lambda管理）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#選定理由-1"><span class="level-left"><span class="level-item">6.2.1</span><span class="level-item">選定理由</span></span></a></li><li><a class="level is-mobile" href="#他ツールとの比較"><span class="level-left"><span class="level-item">6.2.2</span><span class="level-item">他ツールとの比較</span></span></a></li></ul></li><li><a class="level is-mobile" href="#GitHub-Actions（CI-CD）"><span class="level-left"><span class="level-item">6.3</span><span class="level-item">GitHub Actions（CI/CD）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#選定理由-2"><span class="level-left"><span class="level-item">6.3.1</span><span class="level-item">選定理由</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#スケーラビリティとガバナンス"><span class="level-left"><span class="level-item">7</span><span class="level-item">スケーラビリティとガバナンス</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#スケーラビリティへの対応"><span class="level-left"><span class="level-item">7.1</span><span class="level-item">スケーラビリティへの対応</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#関数数の増加"><span class="level-left"><span class="level-item">7.1.1</span><span class="level-item">関数数の増加</span></span></a></li><li><a class="level is-mobile" href="#チーム数の増加"><span class="level-left"><span class="level-item">7.1.2</span><span class="level-item">チーム数の増加</span></span></a></li></ul></li><li><a class="level is-mobile" href="#ガバナンスの確保"><span class="level-left"><span class="level-item">7.2</span><span class="level-item">ガバナンスの確保</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#承認フロー"><span class="level-left"><span class="level-item">7.2.1</span><span class="level-item">承認フロー</span></span></a></li><li><a class="level is-mobile" href="#監査証跡"><span class="level-left"><span class="level-item">7.2.2</span><span class="level-item">監査証跡</span></span></a></li><li><a class="level is-mobile" href="#セキュリティ管理"><span class="level-left"><span class="level-item">7.2.3</span><span class="level-item">セキュリティ管理</span></span></a></li></ul></li></ul></li><li><a class="level is-mobile" href="#方針のまとめ"><span class="level-left"><span class="level-item">8</span><span class="level-item">方針のまとめ</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#核心的な原則"><span class="level-left"><span class="level-item">8.1</span><span class="level-item">核心的な原則</span></span></a></li><li><a class="level is-mobile" href="#達成される価値"><span class="level-left"><span class="level-item">8.2</span><span class="level-item">達成される価値</span></span></a></li></ul></li><li><a class="level is-mobile" href="#次のステップ"><span class="level-left"><span class="level-item">9</span><span class="level-item">次のステップ</span></span></a></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">タグ</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/AWS-Lambda/"><span class="tag">AWS Lambda</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Bedrock/"><span class="tag">Bedrock</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/CI-CD/"><span class="tag">CI/CD</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/DNS/"><span class="tag">DNS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/GitHub-Actions/"><span class="tag">GitHub Actions</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Node-js/"><span class="tag">Node.js</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Python/"><span class="tag">Python</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Route53/"><span class="tag">Route53</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/SAM/"><span class="tag">SAM</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Slack/"><span class="tag">Slack</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Terraform/"><span class="tag">Terraform</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Zed/"><span class="tag">Zed</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bash/"><span class="tag">bash</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mise/"><span class="tag">mise</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/sshd/"><span class="tag">sshd</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/uv/"><span class="tag">uv</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/zsh/"><span class="tag">zsh</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"><span class="tag">アーキテクチャ</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9/"><span class="tag">インフラ</span><span class="tag">5</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">カテゴリ</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/AWS/"><span class="level-start"><span class="level-item">AWS</span></span><span class="level-end"><span class="level-item tag">5</span></span></a><ul><li><a class="level is-mobile" href="/categories/AWS/DevOps/"><span class="level-start"><span class="level-item">DevOps</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/DNS/"><span class="level-start"><span class="level-item">DNS</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Linux/"><span class="level-start"><span class="level-item">Linux</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Mac/"><span class="level-start"><span class="level-item">Mac</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Node-js/"><span class="level-start"><span class="level-item">Node.js</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Python/"><span class="level-start"><span class="level-item">Python</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Slack/"><span class="level-start"><span class="level-item">Slack</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Zed/"><span class="level-start"><span class="level-item">Zed</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最近の記事</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:04:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-04-tradeoffs/">Lambda CI/CD アーキテクチャ - 4. メリット・デメリット</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:03:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-03-implementation/">Lambda CI/CD アーキテクチャ - 3. 実装ガイドライン</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:02:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-02-components/">Lambda CI/CD アーキテクチャ - 2. 構成要素と役割</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:01:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-01-principles/">Lambda CI/CD アーキテクチャ - 1. 環境構築における方針</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:00:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-00-index/">Lambda CI/CD アーキテクチャ設計書 - 目次</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">アーカイブ</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/11/"><span class="level-start"><span class="level-item">11月 2025</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/06/"><span class="level-start"><span class="level-item">6月 2025</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">9月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2025 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script><script>moment.locale("ja");</script><script>var IcarusThemeSettings = {
+<h2 id="次のステップ"><a href="#次のステップ" class="headerlink" title="次のステップ"></a>次のステップ</h2><p>方針を理解したら、具体的な構成要素を見ていきましょう。</p>
+<p>👉 <a href="/2025/11/02/lambda-cicd-02-components/" title="Lambda CI&#x2F;CD アーキテクチャ - 2. 構成要素と役割">次へ: 2. 構成要素と役割</a></p>
+</div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/AWS-Lambda/">AWS Lambda</a><a class="link-muted mr-2" rel="tag" href="/tags/CI-CD/">CI/CD</a><a class="link-muted mr-2" rel="tag" href="/tags/Terraform/">Terraform</a><a class="link-muted mr-2" rel="tag" href="/tags/Lambroll/">Lambroll</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/">アーキテクチャ</a><a class="link-muted mr-2" rel="tag" href="/tags/%E3%82%A8%E3%82%A4%E3%83%AA%E3%82%A2%E3%82%B9/">エイリアス</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2025/11/02/lambda-cicd-02-components/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Lambda CI/CD アーキテクチャ - 2. 構成要素と役割</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2025/11/02/lambda-cicd-00-index/"><span class="level-item">Lambda CI/CD アーキテクチャ - 目次</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/images/iam.png" alt="たまむー"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">たまむー</p><p class="is-size-6 is-block">Cloud Architect</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>ap-northeast-3</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">投稿</p><a href="/archives/"><p class="title">12</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">カテゴリ</p><a href="/categories/"><p class="title">9</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">タグ</p><a href="/tags/"><p class="title">23</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="me noopener" title="Homepage" href="https://tamamu.cc"><i class="fa-solid fa-house"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">カタログ</h3><ul class="menu-list"><li><a class="level is-mobile" href="#ドキュメント構成"><span class="level-left"><span class="level-item">1</span><span class="level-item">ドキュメント構成</span></span></a></li><li><a class="level is-mobile" href="#この章で理解すること"><span class="level-left"><span class="level-item">2</span><span class="level-item">この章で理解すること</span></span></a></li><li><a class="level is-mobile" href="#デプロイとリリースの分離"><span class="level-left"><span class="level-item">3</span><span class="level-item">デプロイとリリースの分離</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#従来の課題"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">従来の課題</span></span></a></li><li><a class="level is-mobile" href="#解決策-エイリアスによる分離"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">解決策: エイリアスによる分離</span></span></a></li></ul></li><li><a class="level is-mobile" href="#TerraformとLambrollの使い分け"><span class="level-left"><span class="level-item">4</span><span class="level-item">TerraformとLambrollの使い分け</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#なぜ2つのツールを使うのか？"><span class="level-left"><span class="level-item">4.1</span><span class="level-item">なぜ2つのツールを使うのか？</span></span></a></li><li><a class="level is-mobile" href="#Terraform-インフラの真実の源泉"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">Terraform: インフラの真実の源泉</span></span></a></li><li><a class="level is-mobile" href="#Lambroll-Lambda関数に特化"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">Lambroll: Lambda関数に特化</span></span></a></li></ul></li><li><a class="level is-mobile" href="#エイリアス戦略の核心"><span class="level-left"><span class="level-item">5</span><span class="level-item">エイリアス戦略の核心</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#エイリアスとは"><span class="level-left"><span class="level-item">5.1</span><span class="level-item">エイリアスとは</span></span></a></li><li><a class="level is-mobile" href="#3環境の戦略"><span class="level-left"><span class="level-item">5.2</span><span class="level-item">3環境の戦略</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Development環境"><span class="level-left"><span class="level-item">5.2.1</span><span class="level-item">Development環境</span></span></a></li><li><a class="level is-mobile" href="#Staging環境"><span class="level-left"><span class="level-item">5.2.2</span><span class="level-item">Staging環境</span></span></a></li><li><a class="level is-mobile" href="#Production環境"><span class="level-left"><span class="level-item">5.2.3</span><span class="level-item">Production環境</span></span></a></li></ul></li><li><a class="level is-mobile" href="#なぜこの戦略なのか？"><span class="level-left"><span class="level-item">5.3</span><span class="level-item">なぜこの戦略なのか？</span></span></a></li></ul></li><li><a class="level is-mobile" href="#設計の3原則"><span class="level-left"><span class="level-item">6</span><span class="level-item">設計の3原則</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#原則1-単一責任の原則"><span class="level-left"><span class="level-item">6.1</span><span class="level-item">原則1: 単一責任の原則</span></span></a></li><li><a class="level is-mobile" href="#原則2-疎結合の原則"><span class="level-left"><span class="level-item">6.2</span><span class="level-item">原則2: 疎結合の原則</span></span></a></li><li><a class="level is-mobile" href="#原則3-不変性の原則"><span class="level-left"><span class="level-item">6.3</span><span class="level-item">原則3: 不変性の原則</span></span></a></li></ul></li><li><a class="level is-mobile" href="#まとめ"><span class="level-left"><span class="level-item">7</span><span class="level-item">まとめ</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#この設計の核心"><span class="level-left"><span class="level-item">7.1</span><span class="level-item">この設計の核心</span></span></a></li><li><a class="level is-mobile" href="#実現すること"><span class="level-left"><span class="level-item">7.2</span><span class="level-item">実現すること</span></span></a></li></ul></li><li><a class="level is-mobile" href="#次のステップ"><span class="level-left"><span class="level-item">8</span><span class="level-item">次のステップ</span></span></a></li></ul></div></div><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">タグ</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/AWS-Lambda/"><span class="tag">AWS Lambda</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Bedrock/"><span class="tag">Bedrock</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/CI-CD/"><span class="tag">CI/CD</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/DNS/"><span class="tag">DNS</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/GitHub-Actions/"><span class="tag">GitHub Actions</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Lambroll/"><span class="tag">Lambroll</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Linux/"><span class="tag">Linux</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Node-js/"><span class="tag">Node.js</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Python/"><span class="tag">Python</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Route53/"><span class="tag">Route53</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Slack/"><span class="tag">Slack</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Terraform/"><span class="tag">Terraform</span><span class="tag">5</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Zed/"><span class="tag">Zed</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/bash/"><span class="tag">bash</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/mise/"><span class="tag">mise</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/sshd/"><span class="tag">sshd</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/uv/"><span class="tag">uv</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/zsh/"><span class="tag">zsh</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"><span class="tag">アーキテクチャ</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9/"><span class="tag">インフラ</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E3%82%A8%E3%82%A4%E3%83%AA%E3%82%A2%E3%82%B9/"><span class="tag">エイリアス</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E5%AE%9F%E8%A3%85/"><span class="tag">実装</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E9%81%8B%E7%94%A8/"><span class="tag">運用</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">カテゴリ</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/AWS/"><span class="level-start"><span class="level-item">AWS</span></span><span class="level-end"><span class="level-item tag">5</span></span></a><ul><li><a class="level is-mobile" href="/categories/AWS/DevOps/"><span class="level-start"><span class="level-item">DevOps</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/DNS/"><span class="level-start"><span class="level-item">DNS</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Linux/"><span class="level-start"><span class="level-item">Linux</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Mac/"><span class="level-start"><span class="level-item">Mac</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Node-js/"><span class="level-start"><span class="level-item">Node.js</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Python/"><span class="level-start"><span class="level-item">Python</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Slack/"><span class="level-start"><span class="level-item">Slack</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/Zed/"><span class="level-start"><span class="level-item">Zed</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最近の記事</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:04:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-04-tradeoffs/">Lambda CI/CD アーキテクチャ - 4. トレードオフと運用上の考慮点</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:03:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-03-implementation/">Lambda CI/CD アーキテクチャ - 3. 実装ガイドライン</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:02:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-02-components/">Lambda CI/CD アーキテクチャ - 2. 構成要素と役割</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:01:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-01-principles/">Lambda CI/CD アーキテクチャ - 1. CI/CD環境構築における方針</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2025-11-02T13:00:00.000Z">2025-11-02</time></p><p class="title"><a href="/2025/11/02/lambda-cicd-00-index/">Lambda CI/CD アーキテクチャ - 目次</a></p><p class="categories"><a href="/categories/AWS/">AWS</a> / <a href="/categories/AWS/DevOps/">DevOps</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">アーカイブ</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2025/11/"><span class="level-start"><span class="level-item">11月 2025</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/archives/2025/06/"><span class="level-start"><span class="level-item">6月 2025</span></span><span class="level-end"><span class="level-item tag">6</span></span></a></li><li><a class="level is-mobile" href="/archives/2024/09/"><span class="level-start"><span class="level-item">9月 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/">Tamamu blog</a><p class="is-size-7"><span>&copy; 2025 ktamamu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script><script>moment.locale("ja");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
