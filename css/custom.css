@@ -1,0 +1,37 @@
+/* カスタムスタイル - 本文幅の調整 */
+
+/* PC表示時（デスクトップ以上）でメインカラムの幅を広げる */
+@media screen and (min-width: 1024px) {
+  /* 2カラムレイアウト（左サイドバー + メインコンテンツ） */
+  .is-2-column .column-main.is-8-tablet.is-8-desktop.is-8-widescreen {
+    width: 75% !important;
+    flex: none;
+  }
+
+  .is-2-column .column-left {
+    width: 25% !important;
+    flex: none;
+  }
+}
+
+/* ワイドスクリーン以上でさらに広げる */
+@media screen and (min-width: 1216px) {
+  .is-2-column .column-main.is-8-tablet.is-8-desktop.is-8-widescreen {
+    width: 80% !important;
+  }
+
+  .is-2-column .column-left {
+    width: 20% !important;
+  }
+}
+
+/* フルHD画面でさらに最適化 */
+@media screen and (min-width: 1408px) {
+  .is-2-column .column-main.is-8-tablet.is-8-desktop.is-8-widescreen {
+    width: 82% !important;
+  }
+
+  .is-2-column .column-left {
+    width: 18% !important;
+  }
+}
