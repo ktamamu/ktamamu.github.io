@@ -1,73 +1,9 @@
-/* カスタムスタイル - 左右の空白を減らして画面を広く使う */
+/* カスタムスタイル - コンテンツ幅を固定して読みやすく */
 
-/* 中サイズ画面（1088px〜1215px）で幅を制御 */
-@media screen and (min-width: 1088px) and (max-width: 1215px) {
+/* 一定サイズ以上ではコンテンツ幅を1200pxに固定 */
+@media screen and (min-width: 1088px) {
   .is-1-column .container,
   .is-2-column .container {
-    max-width: 95% !important;
-    width: 95% !important;
-  }
-}
-
-/* ワイドスクリーン以上で左右の空白を減らす */
-@media screen and (min-width: 1216px) {
-  .is-1-column .container,
-  .is-2-column .container {
-    max-width: 90% !important;
-    width: 90% !important;
-  }
-}
-
-/* フルHD以上でさらに広く */
-@media screen and (min-width: 1408px) {
-  .is-1-column .container,
-  .is-2-column .container {
-    max-width: 85% !important;
-    width: 85% !important;
-  }
-}
-
-/* 超ワイド画面（2K/4K）では最大幅を設定しつつ広く使う */
-@media screen and (min-width: 1920px) {
-  .is-1-column .container,
-  .is-2-column .container {
-    max-width: 1800px !important;
-    width: 80% !important;
-  }
-}
-
-/* カラムの比率調整（PC表示時） */
-@media screen and (min-width: 1024px) {
-  /* 2カラムレイアウト: メインコンテンツを広く */
-  .is-2-column .column-main.is-8-tablet.is-8-desktop.is-8-widescreen {
-    width: 75% !important;
-    flex: none;
-  }
-
-  .is-2-column .column-left {
-    width: 25% !important;
-    flex: none;
-  }
-}
-
-/* ワイドスクリーン以上でさらにメインを広く */
-@media screen and (min-width: 1216px) {
-  .is-2-column .column-main.is-8-tablet.is-8-desktop.is-8-widescreen {
-    width: 78% !important;
-  }
-
-  .is-2-column .column-left {
-    width: 22% !important;
-  }
-}
-
-/* フルHD以上 */
-@media screen and (min-width: 1408px) {
-  .is-2-column .column-main.is-8-tablet.is-8-desktop.is-8-widescreen {
-    width: 80% !important;
-  }
-
-  .is-2-column .column-left {
-    width: 20% !important;
+    max-width: 1200px !important;
   }
 }
