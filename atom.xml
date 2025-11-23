@@ -6,7 +6,7 @@
   <link href="https://blog.tamamu.cc/atom.xml" rel="self"/>
   
   <link href="https://blog.tamamu.cc/"/>
-  <updated>2025-11-23T17:04:19.021Z</updated>
+  <updated>2025-11-23T17:09:37.395Z</updated>
   <id>https://blog.tamamu.cc/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/</id>
     <published>2025-11-02T13:04:00.000Z</published>
-    <updated>2025-11-23T17:04:19.021Z</updated>
+    <updated>2025-11-23T17:09:37.395Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -30,6 +30,7 @@
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-03-implementation/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 3. 実装ガイドライン&quot;&gt;3. 実装ガイドライン&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;→ 4. トレードオフと運用上の考慮点&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&quot;免責事項&quot;&gt;&lt;a href=&quot;#免責事項&quot; class=&quot;headerlink&quot; title=&quot;免責事項&quot;&gt;&lt;/a&gt;免責事項&lt;/h2&gt;&lt;p&gt;本記事はAI(Claude)を活用して執筆しています。内容の正確性については保証いたしかねますので、重要な情報は必ず一次情報源をご確認ください。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&quot;この章で理解すること&quot;&gt;&lt;a href=&quot;#この章で理解すること&quot; class=&quot;headerlink&quot; title=&quot;この章で理解すること&quot;&gt;&lt;/a&gt;この章で理解すること&lt;/h2&gt;&lt;p&gt;このアーキテクチャの現実的な評価と、採用判断に必要な情報を提供します。&lt;/p&gt;
 &lt;ul&gt;
@@ -66,7 +67,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-03-implementation/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-03-implementation/</id>
     <published>2025-11-02T13:03:00.000Z</published>
-    <updated>2025-11-23T17:05:20.595Z</updated>
+    <updated>2025-11-23T17:09:33.562Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -75,6 +76,7 @@
 &lt;li&gt;→ 3. 実装ガイドライン&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-04-tradeoffs/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 4. トレードオフと運用上の考慮点&quot;&gt;4. トレードオフと運用上の考慮点&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&quot;免責事項&quot;&gt;&lt;a href=&quot;#免責事項&quot; class=&quot;headerlink&quot; title=&quot;免責事項&quot;&gt;&lt;/a&gt;免責事項&lt;/h2&gt;&lt;p&gt;本記事はAI(Claude)を活用して執筆しています。内容の正確性については保証いたしかねますので、重要な情報は必ず一次情報源をご確認ください。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&quot;この章で理解すること&quot;&gt;&lt;a href=&quot;#この章で理解すること&quot; class=&quot;headerlink&quot; title=&quot;この章で理解すること&quot;&gt;&lt;/a&gt;この章で理解すること&lt;/h2&gt;&lt;p&gt;実際に構築する際の具体的な手順とコード例を示します。&lt;/p&gt;
 &lt;ul&gt;
@@ -112,7 +114,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-02-components/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-02-components/</id>
     <published>2025-11-02T13:02:00.000Z</published>
-    <updated>2025-11-23T17:02:26.500Z</updated>
+    <updated>2025-11-23T17:09:29.128Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -121,6 +123,7 @@
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-03-implementation/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 3. 実装ガイドライン&quot;&gt;3. 実装ガイドライン&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-04-tradeoffs/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 4. トレードオフと運用上の考慮点&quot;&gt;4. トレードオフと運用上の考慮点&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&quot;免責事項&quot;&gt;&lt;a href=&quot;#免責事項&quot; class=&quot;headerlink&quot; title=&quot;免責事項&quot;&gt;&lt;/a&gt;免責事項&lt;/h2&gt;&lt;p&gt;本記事はAI(Claude)を活用して執筆しています。内容の正確性については保証いたしかねますので、重要な情報は必ず一次情報源をご確認ください。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&quot;この章で理解すること&quot;&gt;&lt;a href=&quot;#この章で理解すること&quot; class=&quot;headerlink&quot; title=&quot;この章で理解すること&quot;&gt;&lt;/a&gt;この章で理解すること&lt;/h2&gt;&lt;p&gt;システム全体の構成と、各コンポーネントの責任範囲を明確にします。&lt;/p&gt;
 &lt;ul&gt;
@@ -159,7 +162,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/</id>
     <published>2025-11-02T13:01:00.000Z</published>
-    <updated>2025-11-23T17:02:15.029Z</updated>
+    <updated>2025-11-23T17:09:20.326Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -168,6 +171,7 @@
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-03-implementation/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 3. 実装ガイドライン&quot;&gt;3. 実装ガイドライン&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;/2025/11/02/lambda-cicd-04-tradeoffs/&quot; title=&quot;Lambda CI&amp;#x2F;CD アーキテクチャ - 4. トレードオフと運用上の考慮点&quot;&gt;4. トレードオフと運用上の考慮点&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h2 id=&quot;免責事項&quot;&gt;&lt;a href=&quot;#免責事項&quot; class=&quot;headerlink&quot; title=&quot;免責事項&quot;&gt;&lt;/a&gt;免責事項&lt;/h2&gt;&lt;p&gt;本記事はAI(Claude)を活用して執筆しています。内容の正確性については保証いたしかねますので、重要な情報は必ず一次情報源をご確認ください。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&quot;この章で理解すること&quot;&gt;&lt;a href=&quot;#この章で理解すること&quot; class=&quot;headerlink&quot; title=&quot;この章で理解すること&quot;&gt;&lt;/a&gt;この章で理解すること&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;なぜこの設計なのか？&lt;/strong&gt; の答えがここにあります。&lt;/p&gt;
 &lt;ul&gt;
@@ -203,10 +207,11 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-00-index/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-00-index/</id>
     <published>2025-11-02T13:00:00.000Z</published>
-    <updated>2025-11-23T17:02:01.738Z</updated>
+    <updated>2025-11-23T17:08:58.826Z</updated>
     
     
-    <summary type="html">&lt;h2 id=&quot;このシリーズについて&quot;&gt;&lt;a href=&quot;#このシリーズについて&quot; class=&quot;headerlink&quot; title=&quot;このシリーズについて&quot;&gt;&lt;/a&gt;このシリーズについて&lt;/h2&gt;&lt;p&gt;AWS Lambdaの大規模運用において、&lt;strong&gt;デプロイとリリースを分離&lt;/strong&gt;し、&lt;strong&gt;安全で高速なCI&amp;#x2F;CD&lt;/strong&gt;を実現するアーキテクチャを解説します。&lt;/p&gt;</summary>
+    <summary type="html">&lt;h2 id=&quot;このシリーズについて&quot;&gt;&lt;a href=&quot;#このシリーズについて&quot; class=&quot;headerlink&quot; title=&quot;このシリーズについて&quot;&gt;&lt;/a&gt;このシリーズについて&lt;/h2&gt;&lt;p&gt;AWS Lambdaの大規模運用において、&lt;strong&gt;デプロイとリリースを分離&lt;/strong&gt;し、&lt;strong&gt;安全で高速なCI&amp;#x2F;CD&lt;/strong&gt;を実現するアーキテクチャを解説します。&lt;/p&gt;
+&lt;p&gt;本記事はAI(Claude)を活用して執筆しています。内容の正確性については保証いたしかねますので、重要な情報は必ず一次情報源をご確認ください。&lt;/p&gt;</summary>
     
     
     
