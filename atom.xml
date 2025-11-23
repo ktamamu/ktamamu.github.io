@@ -6,7 +6,7 @@
   <link href="https://blog.tamamu.cc/atom.xml" rel="self"/>
   
   <link href="https://blog.tamamu.cc/"/>
-  <updated>2025-11-15T17:34:01.682Z</updated>
+  <updated>2025-11-23T17:04:19.021Z</updated>
   <id>https://blog.tamamu.cc/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-04-tradeoffs/</id>
     <published>2025-11-02T13:04:00.000Z</published>
-    <updated>2025-11-15T17:34:01.682Z</updated>
+    <updated>2025-11-23T17:04:19.021Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -66,7 +66,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-03-implementation/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-03-implementation/</id>
     <published>2025-11-02T13:03:00.000Z</published>
-    <updated>2025-11-15T17:33:59.380Z</updated>
+    <updated>2025-11-23T17:05:20.595Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -112,7 +112,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-02-components/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-02-components/</id>
     <published>2025-11-02T13:02:00.000Z</published>
-    <updated>2025-11-15T17:42:29.962Z</updated>
+    <updated>2025-11-23T17:02:26.500Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -146,9 +146,9 @@
     
     <category term="Lambroll" scheme="https://blog.tamamu.cc/tags/Lambroll/"/>
     
-    <category term="アーキテクチャ" scheme="https://blog.tamamu.cc/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"/>
-    
     <category term="GitHub Actions" scheme="https://blog.tamamu.cc/tags/GitHub-Actions/"/>
+    
+    <category term="アーキテクチャ" scheme="https://blog.tamamu.cc/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"/>
     
     <category term="インフラ" scheme="https://blog.tamamu.cc/tags/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9/"/>
     
@@ -159,7 +159,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-01-principles/</id>
     <published>2025-11-02T13:01:00.000Z</published>
-    <updated>2025-11-15T17:33:54.664Z</updated>
+    <updated>2025-11-23T17:02:15.029Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;ドキュメント構成&quot;&gt;&lt;a href=&quot;#ドキュメント構成&quot; class=&quot;headerlink&quot; title=&quot;ドキュメント構成&quot;&gt;&lt;/a&gt;ドキュメント構成&lt;/h2&gt;&lt;ul&gt;
@@ -192,9 +192,9 @@
     
     <category term="Lambroll" scheme="https://blog.tamamu.cc/tags/Lambroll/"/>
     
-    <category term="エイリアス" scheme="https://blog.tamamu.cc/tags/%E3%82%A8%E3%82%A4%E3%83%AA%E3%82%A2%E3%82%B9/"/>
-    
     <category term="アーキテクチャ" scheme="https://blog.tamamu.cc/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"/>
+    
+    <category term="エイリアス" scheme="https://blog.tamamu.cc/tags/%E3%82%A8%E3%82%A4%E3%83%AA%E3%82%A2%E3%82%B9/"/>
     
   </entry>
   
@@ -203,7 +203,7 @@
     <link href="https://blog.tamamu.cc/2025/11/02/lambda-cicd-00-index/"/>
     <id>https://blog.tamamu.cc/2025/11/02/lambda-cicd-00-index/</id>
     <published>2025-11-02T13:00:00.000Z</published>
-    <updated>2025-11-15T17:32:52.044Z</updated>
+    <updated>2025-11-23T17:02:01.738Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;このシリーズについて&quot;&gt;&lt;a href=&quot;#このシリーズについて&quot; class=&quot;headerlink&quot; title=&quot;このシリーズについて&quot;&gt;&lt;/a&gt;このシリーズについて&lt;/h2&gt;&lt;p&gt;AWS Lambdaの大規模運用において、&lt;strong&gt;デプロイとリリースを分離&lt;/strong&gt;し、&lt;strong&gt;安全で高速なCI&amp;#x2F;CD&lt;/strong&gt;を実現するアーキテクチャを解説します。&lt;/p&gt;</summary>
@@ -223,9 +223,9 @@
     
     <category term="Lambroll" scheme="https://blog.tamamu.cc/tags/Lambroll/"/>
     
-    <category term="アーキテクチャ" scheme="https://blog.tamamu.cc/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"/>
-    
     <category term="GitHub Actions" scheme="https://blog.tamamu.cc/tags/GitHub-Actions/"/>
+    
+    <category term="アーキテクチャ" scheme="https://blog.tamamu.cc/tags/%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3/"/>
     
     <category term="インフラ" scheme="https://blog.tamamu.cc/tags/%E3%82%A4%E3%83%B3%E3%83%95%E3%83%A9/"/>
     
