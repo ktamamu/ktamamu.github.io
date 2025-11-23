@@ -1,5 +1,14 @@
 /* カスタムスタイル - 左右の空白を減らして画面を広く使う */
 
+/* 中サイズ画面（1088px〜1215px）で幅を制御 */
+@media screen and (min-width: 1088px) and (max-width: 1215px) {
+  .is-1-column .container,
+  .is-2-column .container {
+    max-width: 95% !important;
+    width: 95% !important;
+  }
+}
+
 /* ワイドスクリーン以上で左右の空白を減らす */
 @media screen and (min-width: 1216px) {
   .is-1-column .container,
