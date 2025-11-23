@@ -1,7 +1,7 @@
 /* カスタムスタイル - コンテンツ幅を固定して読みやすく */
 
-/* 一定サイズ以上ではコンテンツ幅を1200pxに固定 */
-@media screen and (min-width: 1088px) {
+/* 1200px以上の画面ではコンテンツ幅を1200pxに固定 */
+@media screen and (min-width: 1200px) {
   .is-1-column .container,
   .is-2-column .container {
     max-width: 1200px !important;
