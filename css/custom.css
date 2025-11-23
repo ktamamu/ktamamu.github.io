@@ -4,8 +4,8 @@
 @media screen and (min-width: 1216px) {
   .is-1-column .container,
   .is-2-column .container {
-    max-width: 95% !important;
-    width: 95% !important;
+    max-width: 90% !important;
+    width: 90% !important;
   }
 }
 
@@ -13,8 +13,8 @@
 @media screen and (min-width: 1408px) {
   .is-1-column .container,
   .is-2-column .container {
-    max-width: 90% !important;
-    width: 90% !important;
+    max-width: 85% !important;
+    width: 85% !important;
   }
 }
 
@@ -23,7 +23,7 @@
   .is-1-column .container,
   .is-2-column .container {
     max-width: 1800px !important;
-    width: 85% !important;
+    width: 80% !important;
   }
 }
 
