@@ -6,7 +6,7 @@
   <link href="https://blog.tamamu.cc/atom.xml" rel="self"/>
   
   <link href="https://blog.tamamu.cc/"/>
-  <updated>2025-12-06T21:58:15.842Z</updated>
+  <updated>2025-12-06T22:01:33.961Z</updated>
   <id>https://blog.tamamu.cc/</id>
   
   <author>
@@ -17,15 +17,25 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>独自ドメインのアドレスを使ってGmailで送受信する（Cloudflare Email Routing）</title>
     <link href="https://blog.tamamu.cc/2025/12/07/cloud_flare_email_routing/"/>
     <id>https://blog.tamamu.cc/2025/12/07/cloud_flare_email_routing/</id>
-    <published>2025-12-06T21:58:15.842Z</published>
-    <updated>2025-12-06T21:58:15.842Z</updated>
+    <published>2025-12-07T13:04:00.000Z</published>
+    <updated>2025-12-06T22:01:33.961Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Cloudflareでドメインを取得していて、DNSを管理している状態であれば、&lt;br&gt;Cloudflare Email Routingという機能を使って、Gmailによる独自ドメイン&lt;br&gt;のメールアドレス運用が可能&lt;/p&gt;</summary>
     
     
     
+    <category term="Cloudflare" scheme="https://blog.tamamu.cc/categories/Cloudflare/"/>
     
+    <category term="Email" scheme="https://blog.tamamu.cc/categories/Cloudflare/Email/"/>
+    
+    
+    <category term="Cloudflare" scheme="https://blog.tamamu.cc/tags/Cloudflare/"/>
+    
+    <category term="Email" scheme="https://blog.tamamu.cc/tags/Email/"/>
     
   </entry>
   
