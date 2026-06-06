@@ -1,0 +1,5 @@
+/* custom-avatar.css – make avatar background white */
+:root {
+    --avatar-background-color: #ffffff;
+    /* white */
+}
