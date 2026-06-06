@@ -16,3 +16,29 @@
   --header-title-font-family: var(--base-font-family);
   --first-screen-font-family: var(--base-font-family);
 }
+/* スマホ用ロゴサイズの微調整 */
+@media screen and (max-width: 768px) {
+  .header-wrapper .header-content .left .logo-image {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .header-wrapper .header-content .left .logo-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+}
+
+/* PC/スマホ共通：ロゴサイズの強制固定 */
+.header-wrapper .header-content .left .logo-image {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex;
+  align-items: center;
+}
+.header-wrapper .header-content .left .logo-image img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100%;
+  object-fit: contain;
+}
