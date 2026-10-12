@@ -227,7 +227,7 @@
             
                 <span class="meta-info-item post-update-date">
                     <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                    <span class="datetime" data-updated="Mon Oct 12 2026 19:34:56 GMT+0900">2026-10-12 19:34:56</span>
+                    <span class="datetime" data-updated="Mon Oct 12 2026 19:38:41 GMT+0900">2026-10-12 19:38:41</span>
                 </span>
             
         
@@ -281,20 +281,20 @@
                          <p>Cloudflareでドメインを取得・DNS管理している状態で、Cloudflare Email RoutingとGmailを使って独自ドメインのメールを送受信する設定メモ。</p>
 <span id="more"></span>
 
-<h2 id="前提：メール認証（SPF-DKIM-DMARC）について"><a href="#前提：メール認証（SPF-DKIM-DMARC）について" class="headerlink" title="前提：メール認証（SPF &#x2F; DKIM &#x2F; DMARC）について"></a>前提：メール認証（SPF &#x2F; DKIM &#x2F; DMARC）について</h2><p>2024年のGmail・Yahoo等の送信者ガイドライン強化に伴い、独自ドメインからメールを送信する場合は各種メール認証の設定が重要となっています。</p>
+<h2 id="前提：メール認証（SPF-DKIM-DMARC）について"><a href="#前提：メール認証（SPF-DKIM-DMARC）について" class="headerlink" title="前提：メール認証（SPF &#x2F; DKIM &#x2F; DMARC）について"></a>前提：メール認証（SPF &#x2F; DKIM &#x2F; DMARC）について</h2><p>2024年のGmail・Yahoo等の送信者ガイドライン強化に伴い、独自ドメインのメール運用では各種メール認証の設定が重要になっています。</p>
 <ul>
-<li><strong>SPF</strong>: 送信元メールサーバーのIPアドレスが正当かをDNSレコードで宣言する仕組み</li>
-<li><strong>DKIM</strong>: 送信メールに電子署名を付与し、改ざんを検知する仕組み</li>
-<li><strong>DMARC</strong>: SPFまたはDKIMの認証結果に基づき、なりすましメールの処理方針（監視・隔離・拒否）を宣言する仕組み</li>
+<li><strong>SPF</strong>: 送信元メールサーバーのIPアドレスが正当かをDNSで宣言</li>
+<li><strong>DKIM</strong>: 送信メールに電子署名を付与し、改ざんを検知</li>
+<li><strong>DMARC</strong>: SPF&#x2F;DKIMの認証結果（ドメインの一致）に基づき、なりすましメールの処理方針を宣言</li>
 </ul>
-<p>DMARCは「SPFまたはDKIMのどちらか一方でもアライメントを満たしてPassすれば認証成功」となる仕様です。<br>受信転送用の設定やDMARCレコードはCloudflare側で自動設定されますが、<strong>「GmailのSMTPサーバーから送信する」設定はCloudflare側では関知できないため、SPFレコードの手動修正が必要</strong>になります。</p>
+<p>受信転送やDMARCの設定はCloudflare側でほぼ自動化されていますが、GmailのSMTPサーバーから送信する設定は手動で補う必要があります。</p>
 <h2 id="1-メール受信設定（Cloudflare-Email-Routing）"><a href="#1-メール受信設定（Cloudflare-Email-Routing）" class="headerlink" title="1. メール受信設定（Cloudflare Email Routing）"></a>1. メール受信設定（Cloudflare Email Routing）</h2><p>Cloudflareダッシュボード ＞ <strong>メールアドレス</strong> ＞ <strong>Email Routing</strong></p>
 <ol>
 <li>宛先メールアドレスに転送先のGmailアドレスを登録</li>
 <li>カスタムアドレスに設定したいアドレス（例: <code>info@example.com</code>）を設定</li>
 <li>画面に表示されるDNSレコード（MXレコード等）を登録</li>
 </ol>
-<h3 id="（任意）Catch-all（キャッチオール）設定"><a href="#（任意）Catch-all（キャッチオール）設定" class="headerlink" title="（任意）Catch-all（キャッチオール）設定"></a>（任意）Catch-all（キャッチオール）設定</h3><p>特定のアドレスだけでなく、<code>*@example.com</code> で任意のプレフィックスを受信したい場合は <strong>Catch-all address</strong> を有効にします。<br>都度ルールを追加しなくてもサービス登録用のアドレス等を自由に使い分けられます。</p>
+<h3 id="（任意）Catch-all（キャッチオール）設定"><a href="#（任意）Catch-all（キャッチオール）設定" class="headerlink" title="（任意）Catch-all（キャッチオール）設定"></a>（任意）Catch-all（キャッチオール）設定</h3><p>特定のアドレスだけでなく、<code>*@example.com</code> で任意の文字列を受信したい場合は <strong>Catch-all address</strong> を有効にします。<br>都度ルールを追加しなくてもサービス登録用のアドレス等を自由に使い分けられます。</p>
 <h2 id="2-メール送信設定（Gmailでのアドレス追加）"><a href="#2-メール送信設定（Gmailでのアドレス追加）" class="headerlink" title="2. メール送信設定（Gmailでのアドレス追加）"></a>2. メール送信設定（Gmailでのアドレス追加）</h2><ol>
 <li>Googleアカウントで <a class="link"   target="_blank" rel="noopener" href="https://myaccount.google.com/apppasswords" >アプリパスワード<i class="fas fa-external-link-alt"></i></a> を発行</li>
 <li>Gmailの「設定（歯車）」＞「すべての設定を表示」＞「アカウントとインポート」</li>
@@ -329,19 +329,20 @@
 </tr>
 </tbody></table>
 <p>登録後、Gmail宛てに届く確認メールのリンクをクリックして完了。</p>
-<h2 id="3-DNSレコード設定（SPF・DMARC・DKIM）"><a href="#3-DNSレコード設定（SPF・DMARC・DKIM）" class="headerlink" title="3. DNSレコード設定（SPF・DMARC・DKIM）"></a>3. DNSレコード設定（SPF・DMARC・DKIM）</h2><h3 id="SPFレコードの修正（要手動設定）"><a href="#SPFレコードの修正（要手動設定）" class="headerlink" title="SPFレコードの修正（要手動設定）"></a>SPFレコードの修正（要手動設定）</h3><p>Email Routingの初期セットアップ時、Cloudflareは受信転送用のSPFレコード（<code>include:_spf.mx.cloudflare.net</code>）を自動生成します。<br>しかし、送信元となるGmailのSMTPサーバー（<code>_spf.google.com</code>）の許可までは含まれません。そのため、既存のSPFレコードへGoogleの送信サーバーを手動で追記します。</p>
-<p>CloudflareのDNS管理画面で、該当のTXTレコードを編集します。</p>
+<h2 id="3-DNSレコード設定（SPF・DMARC・DKIM）"><a href="#3-DNSレコード設定（SPF・DMARC・DKIM）" class="headerlink" title="3. DNSレコード設定（SPF・DMARC・DKIM）"></a>3. DNSレコード設定（SPF・DMARC・DKIM）</h2><h3 id="SPFレコードの修正"><a href="#SPFレコードの修正" class="headerlink" title="SPFレコードの修正"></a>SPFレコードの修正</h3><p>Cloudflareが自動生成するSPFレコードは受信転送用のみのため、Gmailの送信サーバー（<code>_spf.google.com</code>）を手動で追記します。</p>
 <ul>
 <li><strong>変更前</strong>:<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v=spf1 include:_spf.mx.cloudflare.net ~all</span><br></pre></td></tr></table></figure></li>
 <li><strong>変更後</strong>:<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v=spf1 include:_spf.mx.cloudflare.net include:_spf.google.com ~all</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="DMARCレコード（自動生成）"><a href="#DMARCレコード（自動生成）" class="headerlink" title="DMARCレコード（自動生成）"></a>DMARCレコード（自動生成）</h3><p>Cloudflareの「Email Routing」や「DMARC Management」を有効にすると、<code>_dmarc</code> のTXTレコード（<code>v=DMARC1; p=quarantine; rua=mailto:...</code> など）が自動的に生成・登録されます。<br>基本的にはCloudflareが提示する推奨値のままで問題ありません。</p>
-<h3 id="DKIMレコードについて"><a href="#DKIMレコードについて" class="headerlink" title="DKIMレコードについて"></a>DKIMレコードについて</h3><p>CloudflareのDNSを確認すると、<strong><code>cf2024-1._domainkey</code></strong> というTXTレコードが自動登録されています。</p>
+<h3 id="DMARCレコード（自動生成）"><a href="#DMARCレコード（自動生成）" class="headerlink" title="DMARCレコード（自動生成）"></a>DMARCレコード（自動生成）</h3><p>Cloudflareの「Email Routing」や「DMARC Management」を有効にすると、<code>_dmarc</code> のTXTレコードが自動的に生成・登録されます。基本的には推奨値のままでOKです。</p>
+<h3 id="DKIMレコードと無料Gmail送信時の注意点"><a href="#DKIMレコードと無料Gmail送信時の注意点" class="headerlink" title="DKIMレコードと無料Gmail送信時の注意点"></a>DKIMレコードと無料Gmail送信時の注意点</h3><p>CloudflareのDNSを確認すると、<code>cf2024-1._domainkey</code> というTXTレコードが自動登録されています。これはCloudflareが<strong>Gmailへ転送する際に迷惑メール扱いされないよう付与する転送用の署名鍵</strong>です。</p>
+<p>一方、<strong>無料GmailのSMTPから送信する場合、いくつか仕様上の制限</strong>があります。</p>
 <ul>
-<li><strong>受信・転送時</strong>:<br>メール転送時に転送先（Gmail）で迷惑メール扱いされないよう、Cloudflareがこの鍵を用いて転送メールにDKIM署名を付与します（自動管理のため作業不要）。</li>
-<li><strong>送信時（Gmail SMTP経由）</strong>:<br>無料の個人用Gmailから送信する際は独自ドメインのDKIM秘密鍵を持たないため、独自ドメインでのDKIM署名は付与されません。ただし、前述の<strong>SPF（Gmail許可）がPassし、DMARCの認証条件を満たす</strong>ため、送信時用のDKIMを別途設定しなくても問題なくメールが相手に届きます。</li>
+<li><strong>DMARCがFailになる</strong>:<br>無料GmailのSMTP経由で送信すると、実際の送信元（Return-Path）やDKIM署名が <code>@gmail.com</code> になります。ヘッダーのFrom（独自ドメイン）とドメインが一致しない（アライメント不一致）ため、DMARC検証はFailになります。<br>DMARCポリシーを <code>p=quarantine</code> や <code>p=reject</code> にしていると相手先で迷惑メール扱いされたり拒否されたりするリスクがあるため、ポリシーは <code>p=none</code>（監視）にしておく必要があります。</li>
+<li><strong>「〜経由」の表示</strong>:<br>受信側のメーラー（OutlookやWeb版Gmail等）によっては、「<code>xxx@gmail.com 経由</code>」という表記が送信者名に付きます。</li>
 </ul>
-<h2 id="4-Gmailの返信動作設定"><a href="#4-Gmailの返信動作設定" class="headerlink" title="4. Gmailの返信動作設定"></a>4. Gmailの返信動作設定</h2><p>デフォルトのままだと独自ドメイン宛てのメールに返信した際に送信元が個人の <code>@gmail.com</code> に戻ってしまうため、設定を変更します。</p>
+<p>本格的に運用し、完全なDMARC合格（Pass）や「経由」表示の解消を目指す場合は、GmailのSMTPではなく無料枠のある外部SMTPサービス（ResendやBrevoなど）で独自ドメインのDKIMを設定し、そのSMTP情報をGmailに登録する構成が無難です。</p>
+<h2 id="4-Gmailの返信動作設定"><a href="#4-Gmailの返信動作設定" class="headerlink" title="4. Gmailの返信動作設定"></a>4. Gmailの返信動作設定</h2><p>デフォルトのままだと独自ドメイン宛てのメールに返信した際に送信元が個人の <code>@gmail.com</code> に戻ってしまうため、設定を変更しておきます。</p>
 <ol>
 <li>Gmailの「すべての設定を表示」＞「アカウントとインポート」</li>
 <li><strong>他のメールアドレスから送信:</strong> セクション</li>
