@@ -69,13 +69,13 @@
     <meta property="og:title" content="独自ドメインのアドレスを使ってGmailで送受信する（Cloudflare Email Routing） | Tamamu blog">
     <meta property="og:url" content="https://blog.tamamu.cc/2025/12/07/cloud_flare_email_routing/">
     <meta property="og:site_name" content="Tamamu blog">
-    <meta property="og:description" content="Cloudflareでドメインを取得していて、DNSを管理している状態であれば、Cloudflare Email Routingという機能を使って、Gmailによる独自ドメインのメールアドレス運用が可能">
+    <meta property="og:description" content="Cloudflareでドメインを取得・DNS管理している状態で、Cloudflare Email RoutingとGmailを使って独自ドメインのメールを送受信する設定メモ。">
     <meta property="og:image" content="https://blog.tamamu.cc/images/twcard.jpeg">
     
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@ktamamu">
     <meta name="twitter:title" content="独自ドメインのアドレスを使ってGmailで送受信する（Cloudflare Email Routing） | Tamamu blog">
-    <meta name="twitter:description" content="Cloudflareでドメインを取得していて、DNSを管理している状態であれば、Cloudflare Email Routingという機能を使って、Gmailによる独自ドメインのメールアドレス運用が可能">
+    <meta name="twitter:description" content="Cloudflareでドメインを取得・DNS管理している状態で、Cloudflare Email RoutingとGmailを使って独自ドメインのメールを送受信する設定メモ。">
     <meta name="twitter:image" content="https://blog.tamamu.cc/images/twcard.jpeg">
   
 </head>
@@ -227,7 +227,7 @@
             
                 <span class="meta-info-item post-update-date">
                     <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                    <span class="datetime" data-updated="Sun Dec 07 2025 21:30:32 GMT+0900">2025-12-07 21:30:32</span>
+                    <span class="datetime" data-updated="Mon Oct 12 2026 19:24:20 GMT+0900">2026-10-12 19:24:20</span>
                 </span>
             
         
@@ -278,26 +278,27 @@
                     
 
                     
-                         <p>Cloudflareでドメインを取得していて、DNSを管理している状態であれば、<br>Cloudflare Email Routingという機能を使って、Gmailによる独自ドメイン<br>のメールアドレス運用が可能</p>
+                         <p>Cloudflareでドメインを取得・DNS管理している状態で、Cloudflare Email RoutingとGmailを使って独自ドメインのメールを送受信する設定メモ。</p>
 <span id="more"></span>
 
-<h2 id="メール受信設定（Gmailへの転送設定）"><a href="#メール受信設定（Gmailへの転送設定）" class="headerlink" title="メール受信設定（Gmailへの転送設定）"></a>メール受信設定（Gmailへの転送設定）</h2><p>Cloudflareのダッシュボード＞メールアドレス＞Email Routing</p>
-<ol>
-<li>画面の指示に従って宛先メールアドレスにGmailのアドレスを設定する</li>
-<li>カスタムアドレスに設定したいアドレスを設定（[XXX]@example.com)</li>
-<li>必要なDNSレコードが表示されるので、それを指示通りに設定する（ボタンを押すだけ）</li>
-</ol>
-<h2 id="メール送信設定（Gmailでのメールアドレス追加）"><a href="#メール送信設定（Gmailでのメールアドレス追加）" class="headerlink" title="メール送信設定（Gmailでのメールアドレス追加）"></a>メール送信設定（Gmailでのメールアドレス追加）</h2><ol>
-<li>Googleアカウントでアプリパスワードを作成する</li>
-</ol>
+<h2 id="前提：メール認証（SPF-DKIM-DMARC）について"><a href="#前提：メール認証（SPF-DKIM-DMARC）について" class="headerlink" title="前提：メール認証（SPF &#x2F; DKIM &#x2F; DMARC）について"></a>前提：メール認証（SPF &#x2F; DKIM &#x2F; DMARC）について</h2><p>2024年のGmail・Yahoo等の送信者ガイドライン強化に伴い、独自ドメインから送信する場合はSPFやDMARCの設定がほぼ必須となっています。</p>
 <ul>
-<li><a class="link"   target="_blank" rel="noopener" href="https://myaccount.google.com/apppasswords" >アプリパスワードの作成<i class="fas fa-external-link-alt"></i></a></li>
+<li><strong>SPF</strong>: 送信元メールサーバーのIPが正当かをDNSレコードで宣言</li>
+<li><strong>DKIM</strong>: メールの電子署名による改ざん検知（※個人用Gmail SMTP経由のため今回は設定不可）</li>
+<li><strong>DMARC</strong>: SPF&#x2F;DKIM認証に失敗したメールの扱い（監視・隔離・拒否）を宣言</li>
 </ul>
-<ol start="2">
-<li><p>Gmailの歯車を選び、すべての設定を表示<br>アカウントとインポート＞名前＞他のメールアドレスを追加</p>
-</li>
-<li><p>メールアドレスにカスタムアドレスを設定（[XXX]@example.com）</p>
-</li>
+<p>Cloudflare Email Routingは「受信転送」のみを担当するため、送信に使うGmail側のSPF・DMARCレコードは手動で追加・修正する必要があります。</p>
+<h2 id="1-メール受信設定（Cloudflare-Email-Routing）"><a href="#1-メール受信設定（Cloudflare-Email-Routing）" class="headerlink" title="1. メール受信設定（Cloudflare Email Routing）"></a>1. メール受信設定（Cloudflare Email Routing）</h2><p>Cloudflareダッシュボード ＞ <strong>メールアドレス</strong> ＞ <strong>Email Routing</strong></p>
+<ol>
+<li>宛先メールアドレスに転送先のGmailアドレスを登録</li>
+<li>カスタムアドレスに設定したいアドレス（例: <code>info@example.com</code>）を設定</li>
+<li>画面に表示されるDNSレコード（MXレコード等）を登録</li>
+</ol>
+<h3 id="（任意）Catch-all（キャッチオール）設定"><a href="#（任意）Catch-all（キャッチオール）設定" class="headerlink" title="（任意）Catch-all（キャッチオール）設定"></a>（任意）Catch-all（キャッチオール）設定</h3><p>特定のアドレスだけでなく、<code>*@example.com</code> で任意のプレフィックスを受信したい場合は <strong>Catch-all address</strong> を有効にします。<br>都度ルールを追加しなくてもサービス登録用のアドレス等を自由に使い分けられます。</p>
+<h2 id="2-メール送信設定（Gmailでのアドレス追加）"><a href="#2-メール送信設定（Gmailでのアドレス追加）" class="headerlink" title="2. メール送信設定（Gmailでのアドレス追加）"></a>2. メール送信設定（Gmailでのアドレス追加）</h2><ol>
+<li>Googleアカウントで <a class="link"   target="_blank" rel="noopener" href="https://myaccount.google.com/apppasswords" >アプリパスワード<i class="fas fa-external-link-alt"></i></a> を発行</li>
+<li>Gmailの「設定（歯車）」＞「すべての設定を表示」＞「アカウントとインポート」</li>
+<li>「他のメールアドレスを追加」からカスタムアドレスを登録</li>
 </ol>
 <table>
 <thead>
@@ -316,29 +317,49 @@
 </tr>
 <tr>
 <td align="left"><strong>ユーザー名</strong></td>
-<td align="left"><strong>Gmailアドレス</strong></td>
+<td align="left">Gmailアドレス（<code>xxx@gmail.com</code>）</td>
 </tr>
 <tr>
 <td align="left"><strong>パスワード</strong></td>
-<td align="left">先ほど作成した<strong>アプリパスワード</strong></td>
+<td align="left">発行したアプリパスワード</td>
 </tr>
 <tr>
 <td align="left"><strong>接続方法</strong></td>
-<td align="left"><strong>TLS</strong></td>
+<td align="left">TLS</td>
 </tr>
 </tbody></table>
-<p>Gmailから該当のカスタムアドレス宛に確認メールが送信される<br>先ほどの転送設定でGmail側で受信できるので、そのリンクを押すと連携完了</p>
-<ol start="4">
-<li>Cloudflare側のSPFレコード設定<br>Cloudflareによって作成されたTXTレコードに送信メール設定を入れる</li>
+<p>登録後、Gmail宛てに届く確認メールのリンクをクリックして完了。</p>
+<h2 id="3-DNSレコード設定（SPF・DMARC）"><a href="#3-DNSレコード設定（SPF・DMARC）" class="headerlink" title="3. DNSレコード設定（SPF・DMARC）"></a>3. DNSレコード設定（SPF・DMARC）</h2><p>CloudflareのDNS管理画面で送信認証用のレコードを調整します。</p>
+<h3 id="SPFレコードの修正"><a href="#SPFレコードの修正" class="headerlink" title="SPFレコードの修正"></a>SPFレコードの修正</h3><p>Cloudflareが自動生成したTXTレコードに、Gmail送信用の <code>include:_spf.google.com</code> を追加します。</p>
+<ul>
+<li><strong>変更前</strong>:<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v=spf1 include:_spf.mx.cloudflare.net ~all</span><br></pre></td></tr></table></figure></li>
+<li><strong>変更後</strong>:<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v=spf1 include:_spf.mx.cloudflare.net include:_spf.google.com ~all</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="DMARCレコードの追加"><a href="#DMARCレコードの追加" class="headerlink" title="DMARCレコードの追加"></a>DMARCレコードの追加</h3><p>なりすまし判定や迷惑メール扱いを回避するため、以下のTXTレコードを追加します。</p>
+<table>
+<thead>
+<tr>
+<th align="left">タイプ</th>
+<th align="left">名前</th>
+<th align="left">コンテンツ</th>
+<th align="left">TTL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">TXT</td>
+<td align="left"><code>_dmarc</code></td>
+<td align="left"><code>v=DMARC1; p=none;</code></td>
+<td align="left">Auto</td>
+</tr>
+</tbody></table>
+<p>※ <code>p=none</code>（監視モード）を指定しておきます。</p>
+<h3 id="DKIMについて"><a href="#DKIMについて" class="headerlink" title="DKIMについて"></a>DKIMについて</h3><p>Cloudflare Email Routingには送信サーバー機能がなく、また無料の個人用Gmail SMTPでは独自ドメインのDKIM鍵を発行できないため、この構成では設定しません（SPFとDMARCのみで運用します）。</p>
+<h2 id="4-Gmailの返信動作設定"><a href="#4-Gmailの返信動作設定" class="headerlink" title="4. Gmailの返信動作設定"></a>4. Gmailの返信動作設定</h2><p>デフォルトのままだと独自ドメイン宛てのメールに返信した際に送信元が個人の <code>@gmail.com</code> に戻ってしまうため、設定を変更します。</p>
+<ol>
+<li>Gmailの「すべての設定を表示」＞「アカウントとインポート」</li>
+<li><strong>他のメールアドレスから送信:</strong> セクション</li>
+<li><strong>「メッセージを受信したのと同じアドレスから返信する」</strong> にチェックを入れる</li>
 </ol>
-<ul>
-<li>変更前</li>
-</ul>
-<p><code>v=spf1 include:_spf.mx.cloudflare.net ~all</code></p>
-<ul>
-<li>変更後</li>
-</ul>
-<p><code>v=spf1 include:_spf.mx.cloudflare.net include:_spf.google.com ~all</code></p>
 
                     
                 </div>

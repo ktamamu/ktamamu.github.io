@@ -11,7 +11,7 @@
   <rights>All rights reserved 2026, ktamamu</rights>
   <subtitle>blog</subtitle>
   <title>Tamamu blog</title>
-  <updated>2025-12-07T12:30:32.231Z</updated>
+  <updated>2026-10-12T10:24:20.853Z</updated>
   <entry>
     <author>
       <name>ktamamu</name>
@@ -24,10 +24,10 @@
     <link href="https://blog.tamamu.cc/2025/12/07/cloud_flare_email_routing/"/>
     <published>2025-12-07T13:04:00.000Z</published>
     <summary>
-      <![CDATA[<p>Cloudflareでドメインを取得していて、DNSを管理している状態であれば、<br>Cloudflare Email Routingという機能を使って、Gmailによる独自ドメイン<br>のメールアドレス運用が可能</p>]]>
+      <![CDATA[<p>Cloudflareでドメインを取得・DNS管理している状態で、Cloudflare Email RoutingとGmailを使って独自ドメインのメールを送受信する設定メモ。</p>]]>
     </summary>
     <title>独自ドメインのアドレスを使ってGmailで送受信する（Cloudflare Email Routing）</title>
-    <updated>2025-12-07T12:30:32.231Z</updated>
+    <updated>2026-10-12T10:24:20.853Z</updated>
   </entry>
   <entry>
     <author>
