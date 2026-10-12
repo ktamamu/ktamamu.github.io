@@ -301,6 +301,7 @@
   --text-color-4: #808091;
   --text-color-5: #b7b7c0;
   --text-color-6: #ededef;
+  --text-color-badge: #fff;
   --toc-text-color: #6f6f80;
   --badge-color: #f0f0f0;
   --badge-background-color: #9393a1;
@@ -332,108 +333,7 @@
   --keep-danger-color: #f43f5e;
   --keep-danger-background-color: rgba(244,63,94,0.1);
   --keep-danger-border-color: rgba(244,63,94,0.6);
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --primary-color: #06c;
-    --primary-color-light-1: #0075eb;
-    --primary-color-light-2: #0a85ff;
-    --primary-color-dark-1: #005cb8;
-    --primary-color-dark-2: #0052a3;
-    --background-color-1: #fff;
-    --background-color-1-transparent: rgba(255,255,255,0.6);
-    --background-color-2: #f7f7f7;
-    --background-color-3: #f0f0f0;
-    --content-background-color: #fff;
-    --text-color-1: #484853;
-    --text-color-2: #4c4c57;
-    --text-color-3: #50505c;
-    --text-color-4: #808091;
-    --text-color-5: #b7b7c0;
-    --text-color-6: #ededef;
-    --toc-text-color: #6f6f80;
-    --badge-color: #f0f0f0;
-    --badge-background-color: #9393a1;
-    --border-color: #b3b3b3;
-    --selection-color: #0075eb;
-    --shadow-color: rgba(0,0,0,0.16);
-    --shadow-hover-color: rgba(0,0,0,0.22);
-    --scrollbar-color: #686877;
-    --scrollbar-background-color: #e6e6e6;
-    --toc-scrollbar-color: rgba(80,80,92,0.1);
-    --copyright-icon-bg-color: rgba(80,80,92,0.12);
-    --avatar-background-color: #005cb8;
-    --header-transparent-background-1: rgba(255,255,255,0.28);
-    --header-transparent-background-2: rgba(255,255,255,0.4);
-    --pjax-progress-bar-color: linear-gradient(45deg, #f10006, #ef5b00, #e59c01, #19ca05, #00cab5, #0264c8, #c303c3);
-    --post-h-bottom-border-color: rgba(80,80,92,0.15);
-    --keep-info-color: rgba(117,117,122,0.8);
-    --keep-info-background-color: rgba(117,117,122,0.1);
-    --keep-info-border-color: rgba(117,117,122,0.6);
-    --keep-primary-color: #0458ab;
-    --keep-primary-background-color: rgba(4,88,171,0.1);
-    --keep-primary-border-color: rgba(4,88,171,0.6);
-    --keep-warning-color: #b78d0f;
-    --keep-warning-background-color: rgba(183,141,15,0.1);
-    --keep-warning-border-color: rgba(183,141,15,0.6);
-    --keep-success-color: #10b981;
-    --keep-success-background-color: rgba(16,185,129,0.1);
-    --keep-success-border-color: rgba(16,185,129,0.6);
-    --keep-danger-color: #f43f5e;
-    --keep-danger-background-color: rgba(244,63,94,0.1);
-    --keep-danger-border-color: rgba(244,63,94,0.6);
-  }
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary-color: #06c;
-    --primary-color-light-1: #0075eb;
-    --primary-color-light-2: #0a85ff;
-    --primary-color-dark-1: #005cb8;
-    --primary-color-dark-2: #0052a3;
-    --background-color-1: #22272e;
-    --background-color-1-transparent: rgba(34,39,46,0.6);
-    --background-color-2: #292f38;
-    --background-color-3: #313842;
-    --content-background-color: #21262d;
-    --text-color-1: #b7c2cc;
-    --text-color-2: #b2bec8;
-    --text-color-3: #adbac5;
-    --text-color-4: #6c8397;
-    --text-color-5: #4d5e6c;
-    --text-color-6: #2e3841;
-    --toc-text-color: #8296a6;
-    --badge-color: #343c47;
-    --badge-background-color: #ced6dc;
-    --border-color: #596678;
-    --selection-color: #005ebc;
-    --shadow-color: rgba(120,120,120,0.18);
-    --shadow-hover-color: rgba(120,120,120,0.24);
-    --scrollbar-color: #505b6c;
-    --scrollbar-background-color: #1d2127;
-    --toc-scrollbar-color: rgba(173,186,197,0.1);
-    --copyright-icon-bg-color: rgba(173,186,197,0.12);
-    --avatar-background-color: #004a93;
-    --header-transparent-background-1: rgba(34,39,46,0.28);
-    --header-transparent-background-2: rgba(34,39,46,0.4);
-    --pjax-progress-bar-color: linear-gradient(45deg, #ea404a, #ea722f, #e9a71f, #67e559, #18ecec, #1b85f1, #ee1dee);
-    --post-h-bottom-border-color: rgba(173,186,197,0.15);
-    --keep-info-color: #9999a2;
-    --keep-info-background-color: rgba(153,153,162,0.1);
-    --keep-info-border-color: rgba(153,153,162,0.5);
-    --keep-primary-color: #268bef;
-    --keep-primary-background-color: rgba(38,139,239,0.1);
-    --keep-primary-border-color: rgba(38,139,239,0.6);
-    --keep-warning-color: #ecc34d;
-    --keep-warning-background-color: rgba(236,195,77,0.1);
-    --keep-warning-border-color: rgba(236,195,77,0.6);
-    --keep-success-color: #10b981;
-    --keep-success-background-color: rgba(16,185,129,0.1);
-    --keep-success-border-color: rgba(16,185,129,0.6);
-    --keep-danger-color: #f43f5e;
-    --keep-danger-background-color: rgba(244,63,94,0.1);
-    --keep-danger-border-color: rgba(244,63,94,0.6);
-  }
+  display: none;
 }
 .light-mode {
   --primary-color: #06c;
@@ -452,6 +352,7 @@
   --text-color-4: #808091;
   --text-color-5: #b7b7c0;
   --text-color-6: #ededef;
+  --text-color-badge: #fff;
   --toc-text-color: #6f6f80;
   --badge-color: #f0f0f0;
   --badge-background-color: #9393a1;
@@ -483,6 +384,7 @@
   --keep-danger-color: #f43f5e;
   --keep-danger-background-color: rgba(244,63,94,0.1);
   --keep-danger-border-color: rgba(244,63,94,0.6);
+  display: unset;
 }
 .dark-mode {
   --primary-color: #06c;
@@ -501,6 +403,7 @@
   --text-color-4: #6c8397;
   --text-color-5: #4d5e6c;
   --text-color-6: #2e3841;
+  --text-color-badge: #ddd;
   --toc-text-color: #8296a6;
   --badge-color: #343c47;
   --badge-background-color: #ced6dc;
@@ -532,6 +435,7 @@
   --keep-danger-color: #f43f5e;
   --keep-danger-background-color: rgba(244,63,94,0.1);
   --keep-danger-border-color: rgba(244,63,94,0.6);
+  display: unset;
 }
 * {
   transition-delay: 0s, 0s, 0s, 0s;
@@ -883,6 +787,10 @@ img[lazyload]::after {
 .keep-markdown-body > .post em {
   color: var(--text-color-3);
 }
+.keep-markdown-body del,
+.keep-markdown-body > .post del {
+  color: var(--text-color-3);
+}
 .keep-markdown-body ul li,
 .keep-markdown-body > .post ul li,
 .keep-markdown-body ol li,
@@ -931,11 +839,10 @@ img[lazyload]::after {
 .keep-markdown-body h6,
 .keep-markdown-body > .post h6 {
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  order: 0;
+  display: block;
   box-sizing: border-box;
   padding-top: 0.4rem;
+  padding-right: 2.2rem;
   padding-bottom: 0.2rem;
   overflow: hidden;
   color: var(--text-color-2);
@@ -1024,16 +931,25 @@ img[lazyload]::after {
 .keep-markdown-body > .post h5 a.markdownIt-Anchor,
 .keep-markdown-body h6 a.markdownIt-Anchor,
 .keep-markdown-body > .post h6 a.markdownIt-Anchor {
-  position: relative;
-  order: 1;
+  position: absolute;
+  top: 0.4rem;
+  right: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  margin-left: 0.4rem;
-  padding-top: 0.2rem;
+  width: 1.6em;
+  height: 1.6em;
+  margin-left: 0;
+  padding: 0;
   color: var(--text-color-4);
   font-size: 1.2rem;
+  line-height: 1;
   text-decoration: none;
   border: none;
   visibility: hidden;
+  cursor: pointer;
 }
 .keep-markdown-body h1 a.headerlink:hover,
 .keep-markdown-body > .post h1 a.headerlink:hover,
@@ -1060,6 +976,7 @@ img[lazyload]::after {
 .keep-markdown-body h6 a.markdownIt-Anchor:hover,
 .keep-markdown-body > .post h6 a.markdownIt-Anchor:hover {
   color: var(--text-color-3);
+  text-decoration: none;
 }
 .keep-markdown-body h1 a.headerlink::before,
 .keep-markdown-body > .post h1 a.headerlink::before,
@@ -1088,6 +1005,22 @@ img[lazyload]::after {
   font-weight: 600;
   font-family: 'Font Awesome 6 Free';
   content: '\f0c1';
+}
+.keep-markdown-body h1 code,
+.keep-markdown-body > .post h1 code,
+.keep-markdown-body h2 code,
+.keep-markdown-body > .post h2 code,
+.keep-markdown-body h3 code,
+.keep-markdown-body > .post h3 code,
+.keep-markdown-body h4 code,
+.keep-markdown-body > .post h4 code,
+.keep-markdown-body h5 code,
+.keep-markdown-body > .post h5 code,
+.keep-markdown-body h6 code,
+.keep-markdown-body > .post h6 code {
+  position: relative;
+  display: inline-block;
+  transform: translateY(-0.2rem) !important;
 }
 .keep-markdown-body h1,
 .keep-markdown-body > .post h1 {
@@ -1319,8 +1252,8 @@ img[lazyload]::after {
   --highlight-aqua: #3e999f;
   --highlight-blue: #4271ae;
   --highlight-purple: #8959a8;
-  --highlight-deletion: #fdd;
-  --highlight-addition: #dfd;
+  --highlight-deletion: #ec685e;
+  --highlight-addition: #509c35;
   --highlight-gutter-color: #585865;
   --highlight-gutter-bg-color: #f2f2f2;
   --mac-toolbar-background-color: #21252b;
@@ -1345,8 +1278,8 @@ img[lazyload]::after {
     --highlight-aqua: #3e999f;
     --highlight-blue: #4271ae;
     --highlight-purple: #8959a8;
-    --highlight-deletion: #fdd;
-    --highlight-addition: #dfd;
+    --highlight-deletion: #ec685e;
+    --highlight-addition: #509c35;
     --highlight-gutter-color: #585865;
     --highlight-gutter-bg-color: #f2f2f2;
     --mac-toolbar-background-color: #21252b;
@@ -1372,8 +1305,8 @@ img[lazyload]::after {
     --highlight-aqua: #8abeb7;
     --highlight-blue: #81a2be;
     --highlight-purple: #b294bb;
-    --highlight-deletion: #700;
-    --highlight-addition: #005f00;
+    --highlight-deletion: #ec685e;
+    --highlight-addition: #509c35;
     --highlight-gutter-color: #b1bdc8;
     --highlight-gutter-bg-color: #1f2329;
     --mac-toolbar-background-color: #1f2021;
@@ -1398,8 +1331,8 @@ img[lazyload]::after {
   --highlight-aqua: #3e999f;
   --highlight-blue: #4271ae;
   --highlight-purple: #8959a8;
-  --highlight-deletion: #fdd;
-  --highlight-addition: #dfd;
+  --highlight-deletion: #ec685e;
+  --highlight-addition: #509c35;
   --highlight-gutter-color: #585865;
   --highlight-gutter-bg-color: #f2f2f2;
   --mac-toolbar-background-color: #21252b;
@@ -1423,8 +1356,8 @@ img[lazyload]::after {
   --highlight-aqua: #8abeb7;
   --highlight-blue: #81a2be;
   --highlight-purple: #b294bb;
-  --highlight-deletion: #700;
-  --highlight-addition: #005f00;
+  --highlight-deletion: #ec685e;
+  --highlight-addition: #509c35;
   --highlight-gutter-color: #b1bdc8;
   --highlight-gutter-bg-color: #1f2329;
   --mac-toolbar-background-color: #1f2021;
@@ -1547,12 +1480,10 @@ pre code {
   border: none;
 }
 pre .deletion {
-  color: var(--highlight-foreground);
-  background: var(--highlight-deletion);
+  color: var(--highlight-deletion);
 }
 pre .addition {
-  color: var(--highlight-foreground);
-  background: var(--highlight-addition);
+  color: var(--highlight-addition);
 }
 pre .meta {
   color: var(--highlight-purple);
@@ -1766,8 +1697,8 @@ figure.highlight .shrink-line:hover::before {
   --highlight-aqua: #3e999f;
   --highlight-blue: #4271ae;
   --highlight-purple: #8959a8;
-  --highlight-deletion: #fdd;
-  --highlight-addition: #dfd;
+  --highlight-deletion: #ec685e;
+  --highlight-addition: #509c35;
   --highlight-gutter-color: #585865;
   --highlight-gutter-bg-color: #f2f2f2;
   --mac-toolbar-background-color: #21252b;
@@ -1792,8 +1723,8 @@ figure.highlight .shrink-line:hover::before {
     --highlight-aqua: #3e999f;
     --highlight-blue: #4271ae;
     --highlight-purple: #8959a8;
-    --highlight-deletion: #fdd;
-    --highlight-addition: #dfd;
+    --highlight-deletion: #ec685e;
+    --highlight-addition: #509c35;
     --highlight-gutter-color: #585865;
     --highlight-gutter-bg-color: #f2f2f2;
     --mac-toolbar-background-color: #21252b;
@@ -1819,8 +1750,8 @@ figure.highlight .shrink-line:hover::before {
     --highlight-aqua: #8abeb7;
     --highlight-blue: #81a2be;
     --highlight-purple: #b294bb;
-    --highlight-deletion: #700;
-    --highlight-addition: #005f00;
+    --highlight-deletion: #ec685e;
+    --highlight-addition: #509c35;
     --highlight-gutter-color: #b1bdc8;
     --highlight-gutter-bg-color: #1f2329;
     --mac-toolbar-background-color: #1f2021;
@@ -1845,8 +1776,8 @@ figure.highlight .shrink-line:hover::before {
   --highlight-aqua: #3e999f;
   --highlight-blue: #4271ae;
   --highlight-purple: #8959a8;
-  --highlight-deletion: #fdd;
-  --highlight-addition: #dfd;
+  --highlight-deletion: #ec685e;
+  --highlight-addition: #509c35;
   --highlight-gutter-color: #585865;
   --highlight-gutter-bg-color: #f2f2f2;
   --mac-toolbar-background-color: #21252b;
@@ -1870,8 +1801,8 @@ figure.highlight .shrink-line:hover::before {
   --highlight-aqua: #8abeb7;
   --highlight-blue: #81a2be;
   --highlight-purple: #b294bb;
-  --highlight-deletion: #700;
-  --highlight-addition: #005f00;
+  --highlight-deletion: #ec685e;
+  --highlight-addition: #509c35;
   --highlight-gutter-color: #b1bdc8;
   --highlight-gutter-bg-color: #1f2329;
   --mac-toolbar-background-color: #1f2021;
@@ -2067,6 +1998,48 @@ figure.highlight .shrink-line:hover::before {
 }
 .keep-tabs .tabs-content .tab-pane:not(.active) {
   display: none;
+}
+.keep-timeline {
+  margin: 2rem 0;
+  padding-top: 2rem;
+  padding-left: 2rem;
+}
+.keep-timeline::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0.4rem;
+  width: 0.2rem;
+  background-color: var(--primary-color);
+  border-radius: 0.1rem;
+  content: '';
+}
+.keep-timeline .keep-timeline-item {
+  margin-bottom: 2rem;
+}
+.keep-timeline .keep-timeline-item::before {
+  position: absolute;
+  top: 0;
+  left: -2rem;
+  width: 1rem;
+  height: 1rem;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  content: '';
+}
+.keep-timeline .keep-timeline-item:last-child {
+  margin-bottom: 0;
+}
+.keep-timeline .keep-timeline-date {
+  margin-bottom: 0.5rem;
+  color: var(--text-color-2);
+  font-size: 1.02rem;
+  transform: translateY(-0.2rem);
+}
+.keep-timeline .keep-timeline-card {
+  padding: 1.2rem 1.4rem;
+  background-color: var(--background-color-2);
+  border-radius: 0.5rem;
 }
 .page-container {
   width: 100%;
@@ -4050,7 +4023,7 @@ figure.highlight .shrink-line:hover::before {
 .post-page-container .post-content-container .post-content-bottom .post-header .info-box .author .author-badge {
   margin-left: 0.8rem;
   padding: 0 0.4rem;
-  color: #fff;
+  color: var(--text-color-badge);
   font-weight: 500;
   font-size: 0.8rem;
   background: var(--primary-color);

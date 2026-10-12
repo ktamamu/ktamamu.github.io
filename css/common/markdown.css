@@ -88,6 +88,10 @@
 .keep-markdown-body > .post em {
   color: var(--text-color-3);
 }
+.keep-markdown-body del,
+.keep-markdown-body > .post del {
+  color: var(--text-color-3);
+}
 .keep-markdown-body ul li,
 .keep-markdown-body > .post ul li,
 .keep-markdown-body ol li,
@@ -136,11 +140,10 @@
 .keep-markdown-body h6,
 .keep-markdown-body > .post h6 {
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  order: 0;
+  display: block;
   box-sizing: border-box;
   padding-top: 0.4rem;
+  padding-right: 2.2rem;
   padding-bottom: 0.2rem;
   overflow: hidden;
   color: var(--text-color-2);
@@ -199,16 +202,25 @@ keep-mobile()
 .keep-markdown-body > .post h5 a.markdownIt-Anchor,
 .keep-markdown-body h6 a.markdownIt-Anchor,
 .keep-markdown-body > .post h6 a.markdownIt-Anchor {
-  position: relative;
-  order: 1;
+  position: absolute;
+  top: 0.4rem;
+  right: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  margin-left: 0.4rem;
-  padding-top: 0.2rem;
+  width: 1.6em;
+  height: 1.6em;
+  margin-left: 0;
+  padding: 0;
   color: var(--text-color-4);
   font-size: 1.2rem;
+  line-height: 1;
   text-decoration: none;
   border: none;
   visibility: hidden;
+  cursor: pointer;
 }
 .keep-markdown-body h1 a.headerlink:hover,
 .keep-markdown-body > .post h1 a.headerlink:hover,
@@ -235,6 +247,7 @@ keep-mobile()
 .keep-markdown-body h6 a.markdownIt-Anchor:hover,
 .keep-markdown-body > .post h6 a.markdownIt-Anchor:hover {
   color: var(--text-color-3);
+  text-decoration: none;
 }
 .keep-markdown-body h1 a.headerlink::before,
 .keep-markdown-body > .post h1 a.headerlink::before,
@@ -263,6 +276,22 @@ keep-mobile()
   font-weight: 600;
   font-family: 'Font Awesome 6 Free';
   content: '\f0c1';
+}
+.keep-markdown-body h1 code,
+.keep-markdown-body > .post h1 code,
+.keep-markdown-body h2 code,
+.keep-markdown-body > .post h2 code,
+.keep-markdown-body h3 code,
+.keep-markdown-body > .post h3 code,
+.keep-markdown-body h4 code,
+.keep-markdown-body > .post h4 code,
+.keep-markdown-body h5 code,
+.keep-markdown-body > .post h5 code,
+.keep-markdown-body h6 code,
+.keep-markdown-body > .post h6 code {
+  position: relative;
+  display: inline-block;
+  transform: translateY(-0.2rem) !important;
 }
 .keep-markdown-body h1,
 .keep-markdown-body > .post h1 {
